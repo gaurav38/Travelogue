@@ -14,6 +14,7 @@
 		C6E9F0081E57DF4100DE2C21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0071E57DF4100DE2C21 /* Assets.xcassets */; };
 		C6E9F00B1E57DF4100DE2C21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0091E57DF4100DE2C21 /* LaunchScreen.storyboard */; };
 		C6E9F0151E5D2CD800DE2C21 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0141E5D2CD800DE2C21 /* GoogleService-Info.plist */; };
+		C6E9F01B1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F01A1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		C6E9F00A1E57DF4100DE2C21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C6E9F00C1E57DF4100DE2C21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6E9F0141E5D2CD800DE2C21 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C6E9F01A1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelogueAuthViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,15 +82,32 @@
 		C6E9EFFF1E57DF4100DE2C21 /* Travelogue */ = {
 			isa = PBXGroup;
 			children = (
-				C6E9F0141E5D2CD800DE2C21 /* GoogleService-Info.plist */,
+				C6E9F0171E5D2F8400DE2C21 /* ViewControllers */,
+				C6E9F0161E5D2F7300DE2C21 /* Supporting Files */,
 				C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */,
-				C6E9F0021E57DF4100DE2C21 /* ViewController.swift */,
 				C6E9F0041E57DF4100DE2C21 /* Main.storyboard */,
 				C6E9F0071E57DF4100DE2C21 /* Assets.xcassets */,
 				C6E9F0091E57DF4100DE2C21 /* LaunchScreen.storyboard */,
 				C6E9F00C1E57DF4100DE2C21 /* Info.plist */,
 			);
 			path = Travelogue;
+			sourceTree = "<group>";
+		};
+		C6E9F0161E5D2F7300DE2C21 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C6E9F0141E5D2CD800DE2C21 /* GoogleService-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C6E9F0171E5D2F8400DE2C21 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				C6E9F0021E57DF4100DE2C21 /* ViewController.swift */,
+				C6E9F01A1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +237,7 @@
 			files = (
 				C6E9F0031E57DF4100DE2C21 /* ViewController.swift in Sources */,
 				C6E9F0011E57DF4100DE2C21 /* AppDelegate.swift in Sources */,
+				C6E9F01B1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +401,7 @@
 				C6E9F0111E57DF4100DE2C21 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
