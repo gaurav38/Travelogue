@@ -34,7 +34,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>JTAppleCalendar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Travelogue.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Protobuf.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -57,12 +67,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>6209D3A84D5BD8E024DF96464F602638</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>681BE6E3D02A43F9BA63777AC435C8FD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>95DE5AB3A2A64D395FD215DA7C01BE66</key>
+		<key>8B9D569CBE4F6EC858750DF83BEDD286</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9B22756F1BC69AB282A6C7FFC7EB05C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -82,7 +102,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E58FCBD5290432EB2B490C8E0EA94348</key>
+		<key>E8117889E4DD15D71C9B1E2376141C3F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

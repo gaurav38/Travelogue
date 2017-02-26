@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		63796DE7428A21910B8C233D /* Pods_Travelogue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C9591C93ADE5EA1D34F928 /* Pods_Travelogue.framework */; };
+		C61761AE1E5E885A0041F23F /* CalendarCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C61761AD1E5E885A0041F23F /* CalendarCellView.xib */; };
+		C61761B01E5E88CA0041F23F /* CalendarCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761AF1E5E88CA0041F23F /* CalendarCellView.swift */; };
+		C61761B21E5E919D0041F23F /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761B11E5E919D0041F23F /* ColorExtensions.swift */; };
 		C6E9F0011E57DF4100DE2C21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */; };
 		C6E9F0031E57DF4100DE2C21 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0021E57DF4100DE2C21 /* ViewController.swift */; };
 		C6E9F0061E57DF4100DE2C21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0041E57DF4100DE2C21 /* Main.storyboard */; };
@@ -15,12 +18,16 @@
 		C6E9F00B1E57DF4100DE2C21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0091E57DF4100DE2C21 /* LaunchScreen.storyboard */; };
 		C6E9F0151E5D2CD800DE2C21 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0141E5D2CD800DE2C21 /* GoogleService-Info.plist */; };
 		C6E9F01B1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F01A1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift */; };
+		C6E9F01D1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F01C1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		00C9591C93ADE5EA1D34F928 /* Pods_Travelogue.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Travelogue.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4350F1715B7F401C17373FAC /* Pods-Travelogue.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Travelogue.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Travelogue/Pods-Travelogue.debug.xcconfig"; sourceTree = "<group>"; };
 		9DC9FCBDA8E2EC0B80A515B9 /* Pods-Travelogue.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Travelogue.release.xcconfig"; path = "Pods/Target Support Files/Pods-Travelogue/Pods-Travelogue.release.xcconfig"; sourceTree = "<group>"; };
+		C61761AD1E5E885A0041F23F /* CalendarCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarCellView.xib; sourceTree = "<group>"; };
+		C61761AF1E5E88CA0041F23F /* CalendarCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCellView.swift; sourceTree = "<group>"; };
+		C61761B11E5E919D0041F23F /* ColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		C6E9EFFD1E57DF4100DE2C21 /* Travelogue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Travelogue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6E9F0021E57DF4100DE2C21 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -30,6 +37,7 @@
 		C6E9F00C1E57DF4100DE2C21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6E9F0141E5D2CD800DE2C21 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C6E9F01A1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelogueAuthViewController.swift; sourceTree = "<group>"; };
+		C6E9F01C1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTripDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +97,7 @@
 				C6E9F0071E57DF4100DE2C21 /* Assets.xcassets */,
 				C6E9F0091E57DF4100DE2C21 /* LaunchScreen.storyboard */,
 				C6E9F00C1E57DF4100DE2C21 /* Info.plist */,
+				C61761B11E5E919D0041F23F /* ColorExtensions.swift */,
 			);
 			path = Travelogue;
 			sourceTree = "<group>";
@@ -106,6 +115,9 @@
 			children = (
 				C6E9F0021E57DF4100DE2C21 /* ViewController.swift */,
 				C6E9F01A1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift */,
+				C6E9F01C1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift */,
+				C61761AD1E5E885A0041F23F /* CalendarCellView.xib */,
+				C61761AF1E5E88CA0041F23F /* CalendarCellView.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -177,6 +189,7 @@
 				C6E9F0151E5D2CD800DE2C21 /* GoogleService-Info.plist in Resources */,
 				C6E9F0081E57DF4100DE2C21 /* Assets.xcassets in Resources */,
 				C6E9F0061E57DF4100DE2C21 /* Main.storyboard in Resources */,
+				C61761AE1E5E885A0041F23F /* CalendarCellView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,8 +249,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6E9F0031E57DF4100DE2C21 /* ViewController.swift in Sources */,
+				C61761B01E5E88CA0041F23F /* CalendarCellView.swift in Sources */,
+				C6E9F01D1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift in Sources */,
 				C6E9F0011E57DF4100DE2C21 /* AppDelegate.swift in Sources */,
 				C6E9F01B1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift in Sources */,
+				C61761B21E5E919D0041F23F /* ColorExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
