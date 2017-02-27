@@ -12,49 +12,119 @@ import JTAppleCalendar
 class NewTripDetailsViewController: ViewController {
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
-    @IBOutlet weak var startDateTextField: UITextField!
-    @IBOutlet weak var endDateTextField: UITextField!
+    @IBOutlet weak var startDateLabel: UILabel!
+    @IBOutlet weak var endDateLabel: UILabel!
+    @IBOutlet weak var monthLabel: UILabel!
+    @IBOutlet weak var yearLabel: UILabel!
+    @IBOutlet weak var locationsCollectionView: UICollectionView!
+    @IBOutlet weak var locationsFlowLayout: UICollectionViewFlowLayout!
     
     let white = UIColor(colorWithHexValue: 0xECEAED)
-    let darkPurple = UIColor(colorWithHexValue: 0x3A284C)
-    let dimPurple = UIColor(colorWithHexValue: 0x574865)
     let purple = UIColor(red: CGFloat(64)/255, green: CGFloat(0)/255, blue: CGFloat(128)/255, alpha: 1.0)
     let formatter = DateFormatter()
+    let headerFormatter = DateFormatter()
+    var startDate: Date? = nil
+    var endDate: Date? = nil
+    var dataContainer = NewTripDataContainer.instance
+    var numberOfLocationsAdded = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        formatter.dateFormat = "yyyy MM dd"
-        startDateTextField.delegate = self
-        endDateTextField.delegate = self
+        formatter.dateFormat = "MMM d, yyyy"
+        headerFormatter.dateFormat = "MMMM yyyy"
         calendarView.dataSource = self
         calendarView.delegate = self
         calendarView.registerCellViewXib(file: "CalendarCellView") // Registering your cell is manditory
         calendarView.cellInset = CGPoint(x: 0, y: 0)
+        calendarView.allowsMultipleSelection  = true
+        locationsCollectionView.delegate = self
+        locationsCollectionView.dataSource = self
+        updateItemSizeBasedOnOrientation()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(dataContainer.selectedLocations)
+        locationsCollectionView.reloadData()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    func updateItemSizeBasedOnOrientation() {
+        var width: CGFloat = 0.0
+        var height: CGFloat = 0.0
+        let space: CGFloat = 5.0
+        
+        width = (locationsCollectionView.frame.size.width - (1 * space)) / 2.0
+        height = (locationsCollectionView.frame.size.height - (3 * space)) / 4.0
+        if height > 0 && width > 0 {
+            var itemSize: CGSize = CGSize()
+            itemSize.height = height
+            itemSize.width = width
+            
+            locationsFlowLayout.minimumInteritemSpacing = space
+            locationsFlowLayout.itemSize = itemSize
+        }
     }
     
     @IBAction func onCancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
+     // MARK: - Navigation
+     
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "AddPlanForDay" {
+            let vc = segue.destination as! CreateDayPlanViewController
+            dataContainer.selectedLocations.append("Enter your location:")
+            vc.locationNumber = numberOfLocationsAdded
+            vc.dataContainer = dataContainer
+            numberOfLocationsAdded += 1
+        }
+     }
 }
 
-extension NewTripDetailsViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        calendarView.isHidden = false
+// MARK: - UICollectionViewDelegate
+
+extension NewTripDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(dataContainer.selectedLocations.count)
+        return dataContainer.selectedLocations.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "locationsCell", for: indexPath) as! LocationsCellView
+        
+        cell.location.text = ""
+        cell.location.text = dataContainer.selectedLocations[indexPath.row]
+        return cell
     }
 }
+
+// MARK: - JTAppleCalendarViewDelegate
 
 extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCalendarViewDelegate {
     func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
         
-        let startDate = formatter.date(from: "2017 02 01")! // You can use date generated from a formatter
-        let endDate = Date()                                // You can also use dates created from this function
+        let startDate = Date() // You can use date generated from a formatter
+        let dateString = headerFormatter.string(for: startDate)
+        var components = dateString?.components(separatedBy: " ")
+        monthLabel.text = components?[0]
+        yearLabel.text = components?[1]
+        let endDate = Calendar.current.date(byAdding: .year, value: 2, to: startDate)
         let parameters = ConfigurationParameters(startDate: startDate,
-                                                 endDate: endDate,
-                                                 numberOfRows: 6, // Only 1, 2, 3, & 6 are allowed
-            calendar: Calendar.current,
-            generateInDates: .forAllMonths,
-            generateOutDates: .tillEndOfGrid,
-            firstDayOfWeek: .sunday)
+                                                 endDate: endDate!,
+                                                 numberOfRows: 6,
+                                                 calendar: Calendar.current,
+                                                 generateInDates: .forAllMonths,
+                                                 generateOutDates: .tillEndOfGrid,
+                                                 firstDayOfWeek: .sunday)
         return parameters
     }
     
@@ -102,15 +172,30 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
             return
         }
         if cellState.isSelected {
-            myCustomCell.selectedView.layer.cornerRadius =  25
+            myCustomCell.selectedView.layer.cornerRadius =  20
             myCustomCell.selectedView.isHidden = false
-            if startDateTextField.isFirstResponder {
-                startDateTextField.text = formatter.string(from: cellState.date)
-                startDateTextField.resignFirstResponder()
+            let date = cellState.date
+            let formattedDateString = formatter.string(from: date)
+            if startDate == nil && endDate == nil {
+                startDate = date
+                startDateLabel.text = formattedDateString
+            } else if endDate == nil {
+                endDate = date
+                endDateLabel.text = formattedDateString
             } else {
-                endDateTextField.text = formatter.string(from: cellState.date)
-                endDateTextField.resignFirstResponder()
+                if date.compare(endDate!) == ComparisonResult.orderedDescending {
+                    endDate = date
+                    endDateLabel.text = formattedDateString
+                } else if (date.compare(startDate!) == ComparisonResult.orderedAscending) {
+                    startDate = date
+                    startDateLabel.text = formattedDateString
+                }
             }
+            if !dataContainer.selectedDates.contains(formattedDateString) {
+                dataContainer.selectedDates.append(formattedDateString)
+                performSegue(withIdentifier: "AddPlanForDay", sender: self)
+            }
+
         } else {
             myCustomCell.selectedView.isHidden = true
         }
