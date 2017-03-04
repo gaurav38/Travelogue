@@ -14,10 +14,10 @@ class CreateDayPlanViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var locationTextField: UITextField!
-    @IBOutlet weak var activitiesView: UIStackView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var dateView: UIView!
+    @IBOutlet weak var activitiesTableView: UITableView!
     
     var locationNumber: Int!
     var dataContainer: NewTripDataContainer!
@@ -27,6 +27,8 @@ class CreateDayPlanViewController: UIViewController {
     let googlePlacesClient: GMSPlacesClient! = GMSPlacesClient.shared()
     var suggestedPlaces = [FoursquarePhoto]()
     let dateFormatter = DateFormatter()
+    let timeFormatter = DateFormatter()
+    var activities = [TripActivity]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +43,8 @@ class CreateDayPlanViewController: UIViewController {
         dateLabel.text = dateComponents[0]
         yearLabel.text = dateComponents[1]
         updateItemSizeBasedOnOrientation()
+        activitiesTableView.delegate = self
+        activitiesTableView.dataSource = self
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -64,11 +68,44 @@ class CreateDayPlanViewController: UIViewController {
         }
     }
     
+    
     @IBAction func addActivity(_ sender: Any) {
-        let label = BetterLabel()
-        label.text = "New label"
-        label.textColor = UIColor.black
-        activitiesView.addArrangedSubview(label)
+        performSegue(withIdentifier: "AddActivity", sender: self)
+    }
+    
+    @IBAction func unWindToHere(_ segue: UIStoryboardSegue) {
+        let vc = segue.source as! AddActivityViewController
+        let activity = TripActivity(time: vc.time, description: vc.activityDescription)
+        activities.append(activity)
+        print(vc.time)
+        print(vc.activityDescription)
+        activitiesTableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "AddActivity" {
+            let vc = segue.destination as! AddActivityViewController
+            vc.date = date
+        }
+    }
+}
+
+extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return activities.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell")! as UITableViewCell
+        cell.textLabel?.text = ""
+        cell.detailTextLabel?.text = ""
+        
+        let activity = activities[indexPath.row]
+        let comp = Calendar.current.dateComponents([.hour, .minute], from: activity.activityTime)
+        cell.textLabel?.text = "\(comp.hour!) : \(comp.minute!)"
+        cell.detailTextLabel?.text = activity.activityDescription
+        return cell
+        
     }
 }
 

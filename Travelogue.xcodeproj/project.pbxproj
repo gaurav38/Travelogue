@@ -19,9 +19,13 @@
 		C61761B91E63ACC30041F23F /* LocationsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761B81E63ACC30041F23F /* LocationsCellView.swift */; };
 		C61761BB1E63CCB20041F23F /* CreateDayPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761BA1E63CCB20041F23F /* CreateDayPlanViewController.swift */; };
 		C61761BE1E63DE590041F23F /* NewTripDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761BD1E63DE590041F23F /* NewTripDataContainer.swift */; };
+		C68002AD1E6B4F2B00362353 /* AddActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002AC1E6B4F2B00362353 /* AddActivityViewController.swift */; };
+		C68002AF1E6B7E1800362353 /* TripActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002AE1E6B7E1800362353 /* TripActivity.swift */; };
+		C6C1B9CF1E6B401500D265B6 /* AddActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */; };
 		C6D4AFCF1E665E4400F2B092 /* BetterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */; };
 		C6D4AFD11E66639000F2B092 /* FoursquarePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */; };
 		C6D4AFD41E67B62F00F2B092 /* ColorResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD31E67B62F00F2B092 /* ColorResources.swift */; };
+		C6E42A1E1E6B33B0001B183C /* AddActivityView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6E42A1D1E6B33B0001B183C /* AddActivityView.xib */; };
 		C6E9F0011E57DF4100DE2C21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */; };
 		C6E9F0031E57DF4100DE2C21 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0021E57DF4100DE2C21 /* ViewController.swift */; };
 		C6E9F0061E57DF4100DE2C21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0041E57DF4100DE2C21 /* Main.storyboard */; };
@@ -47,9 +51,13 @@
 		C61761B81E63ACC30041F23F /* LocationsCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsCellView.swift; sourceTree = "<group>"; };
 		C61761BA1E63CCB20041F23F /* CreateDayPlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDayPlanViewController.swift; sourceTree = "<group>"; };
 		C61761BD1E63DE590041F23F /* NewTripDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTripDataContainer.swift; sourceTree = "<group>"; };
+		C68002AC1E6B4F2B00362353 /* AddActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityViewController.swift; sourceTree = "<group>"; };
+		C68002AE1E6B7E1800362353 /* TripActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripActivity.swift; sourceTree = "<group>"; };
+		C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityView.swift; sourceTree = "<group>"; };
 		C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetterLabel.swift; sourceTree = "<group>"; };
 		C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquarePhoto.swift; sourceTree = "<group>"; };
 		C6D4AFD31E67B62F00F2B092 /* ColorResources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorResources.swift; sourceTree = "<group>"; };
+		C6E42A1D1E6B33B0001B183C /* AddActivityView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddActivityView.xib; sourceTree = "<group>"; };
 		C6E9EFFD1E57DF4100DE2C21 /* Travelogue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Travelogue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C6E9F0021E57DF4100DE2C21 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +110,8 @@
 				C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */,
 				C6E9F0041E57DF4100DE2C21 /* Main.storyboard */,
 				C6E9F0091E57DF4100DE2C21 /* LaunchScreen.storyboard */,
+				C6E42A1D1E6B33B0001B183C /* AddActivityView.xib */,
+				C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -113,6 +123,7 @@
 				C601AB3B1E651B3B0089EFE8 /* FourSquareApiHelper.swift */,
 				C601AB3D1E651F950089EFE8 /* TravelogueClient.swift */,
 				C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */,
+				C68002AE1E6B7E1800362353 /* TripActivity.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -175,6 +186,7 @@
 				C6E9F01A1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift */,
 				C6E9F01C1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift */,
 				C61761BA1E63CCB20041F23F /* CreateDayPlanViewController.swift */,
+				C68002AC1E6B4F2B00362353 /* AddActivityViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -247,6 +259,7 @@
 				C6E9F0081E57DF4100DE2C21 /* Assets.xcassets in Resources */,
 				C6E9F0061E57DF4100DE2C21 /* Main.storyboard in Resources */,
 				C61761AE1E5E885A0041F23F /* CalendarCellView.xib in Resources */,
+				C6E42A1E1E6B33B0001B183C /* AddActivityView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6E9F0031E57DF4100DE2C21 /* ViewController.swift in Sources */,
+				C68002AD1E6B4F2B00362353 /* AddActivityViewController.swift in Sources */,
 				C6D4AFCF1E665E4400F2B092 /* BetterLabel.swift in Sources */,
 				C6D4AFD41E67B62F00F2B092 /* ColorResources.swift in Sources */,
 				C61761BB1E63CCB20041F23F /* CreateDayPlanViewController.swift in Sources */,
@@ -320,6 +334,8 @@
 				C601AB3C1E651B3B0089EFE8 /* FourSquareApiHelper.swift in Sources */,
 				C61761BE1E63DE590041F23F /* NewTripDataContainer.swift in Sources */,
 				C61761B51E6354AF0041F23F /* BetterTextField.swift in Sources */,
+				C6C1B9CF1E6B401500D265B6 /* AddActivityView.swift in Sources */,
+				C68002AF1E6B7E1800362353 /* TripActivity.swift in Sources */,
 				C61761B21E5E919D0041F23F /* ColorExtensions.swift in Sources */,
 				C601AB3A1E65189E0089EFE8 /* Constants.swift in Sources */,
 			);
