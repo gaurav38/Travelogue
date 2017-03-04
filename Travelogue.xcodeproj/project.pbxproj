@@ -10,7 +10,7 @@
 		63796DE7428A21910B8C233D /* Pods_Travelogue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C9591C93ADE5EA1D34F928 /* Pods_Travelogue.framework */; };
 		C601AB381E6509670089EFE8 /* LocationSuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C601AB371E6509670089EFE8 /* LocationSuggestionCollectionViewCell.swift */; };
 		C601AB3A1E65189E0089EFE8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C601AB391E65189E0089EFE8 /* Constants.swift */; };
-		C601AB3C1E651B3B0089EFE8 /* GooglePlacesApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C601AB3B1E651B3B0089EFE8 /* GooglePlacesApiHelper.swift */; };
+		C601AB3C1E651B3B0089EFE8 /* FourSquareApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C601AB3B1E651B3B0089EFE8 /* FourSquareApiHelper.swift */; };
 		C601AB3E1E651F950089EFE8 /* TravelogueClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C601AB3D1E651F950089EFE8 /* TravelogueClient.swift */; };
 		C61761AE1E5E885A0041F23F /* CalendarCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C61761AD1E5E885A0041F23F /* CalendarCellView.xib */; };
 		C61761B01E5E88CA0041F23F /* CalendarCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761AF1E5E88CA0041F23F /* CalendarCellView.swift */; };
@@ -20,7 +20,7 @@
 		C61761BB1E63CCB20041F23F /* CreateDayPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761BA1E63CCB20041F23F /* CreateDayPlanViewController.swift */; };
 		C61761BE1E63DE590041F23F /* NewTripDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761BD1E63DE590041F23F /* NewTripDataContainer.swift */; };
 		C6D4AFCF1E665E4400F2B092 /* BetterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */; };
-		C6D4AFD11E66639000F2B092 /* SuggestedPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD01E66639000F2B092 /* SuggestedPhoto.swift */; };
+		C6D4AFD11E66639000F2B092 /* FoursquarePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */; };
 		C6D4AFD41E67B62F00F2B092 /* ColorResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD31E67B62F00F2B092 /* ColorResources.swift */; };
 		C6E9F0011E57DF4100DE2C21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */; };
 		C6E9F0031E57DF4100DE2C21 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0021E57DF4100DE2C21 /* ViewController.swift */; };
@@ -38,7 +38,7 @@
 		9DC9FCBDA8E2EC0B80A515B9 /* Pods-Travelogue.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Travelogue.release.xcconfig"; path = "Pods/Target Support Files/Pods-Travelogue/Pods-Travelogue.release.xcconfig"; sourceTree = "<group>"; };
 		C601AB371E6509670089EFE8 /* LocationSuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSuggestionCollectionViewCell.swift; sourceTree = "<group>"; };
 		C601AB391E65189E0089EFE8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		C601AB3B1E651B3B0089EFE8 /* GooglePlacesApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlacesApiHelper.swift; sourceTree = "<group>"; };
+		C601AB3B1E651B3B0089EFE8 /* FourSquareApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourSquareApiHelper.swift; sourceTree = "<group>"; };
 		C601AB3D1E651F950089EFE8 /* TravelogueClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelogueClient.swift; sourceTree = "<group>"; };
 		C61761AD1E5E885A0041F23F /* CalendarCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarCellView.xib; sourceTree = "<group>"; };
 		C61761AF1E5E88CA0041F23F /* CalendarCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCellView.swift; sourceTree = "<group>"; };
@@ -48,7 +48,7 @@
 		C61761BA1E63CCB20041F23F /* CreateDayPlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDayPlanViewController.swift; sourceTree = "<group>"; };
 		C61761BD1E63DE590041F23F /* NewTripDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTripDataContainer.swift; sourceTree = "<group>"; };
 		C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetterLabel.swift; sourceTree = "<group>"; };
-		C6D4AFD01E66639000F2B092 /* SuggestedPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedPhoto.swift; sourceTree = "<group>"; };
+		C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquarePhoto.swift; sourceTree = "<group>"; };
 		C6D4AFD31E67B62F00F2B092 /* ColorResources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorResources.swift; sourceTree = "<group>"; };
 		C6E9EFFD1E57DF4100DE2C21 /* Travelogue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Travelogue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,9 +110,9 @@
 			isa = PBXGroup;
 			children = (
 				C61761BD1E63DE590041F23F /* NewTripDataContainer.swift */,
-				C601AB3B1E651B3B0089EFE8 /* GooglePlacesApiHelper.swift */,
+				C601AB3B1E651B3B0089EFE8 /* FourSquareApiHelper.swift */,
 				C601AB3D1E651F950089EFE8 /* TravelogueClient.swift */,
-				C6D4AFD01E66639000F2B092 /* SuggestedPhoto.swift */,
+				C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -310,14 +310,14 @@
 				C6D4AFD41E67B62F00F2B092 /* ColorResources.swift in Sources */,
 				C61761BB1E63CCB20041F23F /* CreateDayPlanViewController.swift in Sources */,
 				C61761B91E63ACC30041F23F /* LocationsCellView.swift in Sources */,
-				C6D4AFD11E66639000F2B092 /* SuggestedPhoto.swift in Sources */,
+				C6D4AFD11E66639000F2B092 /* FoursquarePhoto.swift in Sources */,
 				C601AB381E6509670089EFE8 /* LocationSuggestionCollectionViewCell.swift in Sources */,
 				C61761B01E5E88CA0041F23F /* CalendarCellView.swift in Sources */,
 				C6E9F01D1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift in Sources */,
 				C601AB3E1E651F950089EFE8 /* TravelogueClient.swift in Sources */,
 				C6E9F0011E57DF4100DE2C21 /* AppDelegate.swift in Sources */,
 				C6E9F01B1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift in Sources */,
-				C601AB3C1E651B3B0089EFE8 /* GooglePlacesApiHelper.swift in Sources */,
+				C601AB3C1E651B3B0089EFE8 /* FourSquareApiHelper.swift in Sources */,
 				C61761BE1E63DE590041F23F /* NewTripDataContainer.swift in Sources */,
 				C61761B51E6354AF0041F23F /* BetterTextField.swift in Sources */,
 				C61761B21E5E919D0041F23F /* ColorExtensions.swift in Sources */,

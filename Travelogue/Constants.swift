@@ -59,6 +59,7 @@ struct Constants {
             static let PHOTO_WIDTH = "width"
             static let PHOTO_HEIGHT = "height"
             static let PHOTO_VISIBILITY = "public"
+            static let FEATURED_PHOTOS = "featuredPhotos"
         }
     }
     

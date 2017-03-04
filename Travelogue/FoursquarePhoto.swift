@@ -9,12 +9,14 @@
 import Foundation
 import GooglePlaces
 
-class SuggestedPhoto {
-    var placeMetadata: GMSPlacePhotoMetadata!
+class FoursquarePhoto {
+    var photoDescription: String!
     var isLoaded = false
     var photo: UIImage?
+    var photoUrl: String!
     
-    init(photoMetadata: GMSPlacePhotoMetadata) {
-        self.placeMetadata = photoMetadata
+    init(photoUrl: String, photoDescription: String) {
+        self.photoUrl = photoUrl
+        self.photoDescription = photoDescription
     }
 }

@@ -23,9 +23,9 @@ class CreateDayPlanViewController: UIViewController {
     var dataContainer: NewTripDataContainer!
     var date: Date!
     var location: String!
-    let googlePlacesApiHelper = GooglePlacesApiHelper.instance
+    let fourSquareApiHelper = FourSquareApiHelper.instance
     let googlePlacesClient: GMSPlacesClient! = GMSPlacesClient.shared()
-    var photosToLoad = [SuggestedPhoto]()
+    var suggestedPlaces = [FoursquarePhoto]()
     let dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
@@ -92,22 +92,11 @@ extension CreateDayPlanViewController: UITextFieldDelegate {
 
 extension CreateDayPlanViewController {
     func fetchSuggestedLocationPhotos() {
-        googlePlacesApiHelper.getPlaceIdForLocation(location: location) { (placeId) in
-            if let placeId = placeId {
-                print(placeId)
-                self.googlePlacesClient.lookUpPhotos(forPlaceID: placeId) { (photosMetadata, error) in
-                    if let error = error {
-                        // TODO: handle the error.
-                        print("Error: \(error.localizedDescription)")
-                    } else {
-                        if let photoMetadata = photosMetadata {
-                            print("Number of photos: \(photoMetadata.results.count)")
-                            for photo in photoMetadata.results {
-                                self.photosToLoad.append(SuggestedPhoto(photoMetadata: photo))
-                            }
-                            self.collectionView.reloadData()
-                        }
-                    }
+        fourSquareApiHelper.getPhotosNear(location: location) { (success, photos) in
+            if let photos = photos {
+                self.suggestedPlaces = photos
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
                 }
             }
         }
@@ -116,30 +105,30 @@ extension CreateDayPlanViewController {
 
 extension CreateDayPlanViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(photosToLoad.count)
-        return photosToLoad.count
+        print(suggestedPlaces.count)
+        return suggestedPlaces.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SuggestedPhotosCell", for: indexPath) as! LocationSuggestionCollectionViewCell
         
         cell.photo.image = nil
-        let suggestedPhoto = photosToLoad[indexPath.row]
+        let suggestedPhoto = suggestedPlaces[indexPath.row]
         if suggestedPhoto.isLoaded {
             cell.photo.image = suggestedPhoto.photo
             cell.activityIndicator.stopAnimating()
         } else {
             cell.activityIndicator.startAnimating()
-            googlePlacesClient.loadPlacePhoto(suggestedPhoto.placeMetadata) { (photo, error) in
-                cell.activityIndicator.stopAnimating()
+            fourSquareApiHelper.downloadFoursquarePhoto(imagePath: suggestedPhoto.photoUrl) { (photo, error) in
                 if let error = error {
-                    // TODO: handle the error.
-                    print("Error: \(error.localizedDescription)")
+                    print("Error: \(error)")
                 } else {
-                    cell.photo.image = photo
-                    suggestedPhoto.photo = photo
-                    suggestedPhoto.isLoaded = true
-                    print(suggestedPhoto.placeMetadata.attributions?.string ?? "--- No data ---")
+                    DispatchQueue.main.async {
+                        cell.activityIndicator.stopAnimating()
+                        cell.photo.image = UIImage(data: photo!)
+                        suggestedPhoto.photo = UIImage(data: photo!)
+                        suggestedPhoto.isLoaded = true
+                    }
                 }
             }
         }
@@ -147,16 +136,30 @@ extension CreateDayPlanViewController: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let suggestedPhoto = photosToLoad[indexPath.row]
+        let suggestedPhoto = suggestedPlaces[indexPath.row]
         if suggestedPhoto.isLoaded {
-            let newImageView = UIImageView(image: suggestedPhoto.photo)
-            newImageView.frame = self.view.frame
-            newImageView.backgroundColor = .black
+            let newView = UIView()
+            newView.frame = self.view.frame
+            newView.backgroundColor = .black
+            
+            let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+            newImageView.image = suggestedPhoto.photo
             newImageView.contentMode = .scaleAspectFit
-            newImageView.isUserInteractionEnabled = true
+            
+            let label = BetterLabel(frame: CGRect(x: 0, y: -(self.view.frame.height/2) + 40, width: self.view.frame.width, height: self.view.frame.height))
+            label.text = suggestedPhoto.photoDescription
+            label.textAlignment = NSTextAlignment.center
+            label.textColor = .white
+            label.font.withSize(16)
+            
             let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
-            newImageView.addGestureRecognizer(tap)
-            self.view.addSubview(newImageView)
+            newView.addGestureRecognizer(tap)
+            
+            newView.addSubview(newImageView)
+            newView.addSubview(label)
+            
+            self.view.addSubview(newView)
+            self.navigationController?.isNavigationBarHidden = true
         }
     }
 }
@@ -164,9 +167,6 @@ extension CreateDayPlanViewController: UICollectionViewDelegate, UICollectionVie
 extension CreateDayPlanViewController {
     func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
         sender.view?.removeFromSuperview()
+        self.navigationController?.isNavigationBarHidden = false
     }
-}
-
-extension CreateDayPlanViewController {
-    
 }
