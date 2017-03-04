@@ -18,18 +18,20 @@ class NewTripDetailsViewController: ViewController {
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var locationsCollectionView: UICollectionView!
     @IBOutlet weak var locationsFlowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var tripNameTextField: BetterTextField!
     
-    let white = UIColor(colorWithHexValue: 0xECEAED)
-    let purple = UIColor(red: CGFloat(64)/255, green: CGFloat(0)/255, blue: CGFloat(128)/255, alpha: 1.0)
     let formatter = DateFormatter()
     let headerFormatter = DateFormatter()
     var startDate: Date? = nil
     var endDate: Date? = nil
     var dataContainer = NewTripDataContainer.instance
     var numberOfLocationsAdded = 0
+    var tripName = ""
+    var selectedDate: Date?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tripNameTextField.delegate = self
         formatter.dateFormat = "MMM d, yyyy"
         headerFormatter.dateFormat = "MMMM yyyy"
         calendarView.dataSource = self
@@ -44,7 +46,6 @@ class NewTripDetailsViewController: ViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(dataContainer.selectedLocations)
         locationsCollectionView.reloadData()
     }
     
@@ -78,12 +79,23 @@ class NewTripDetailsViewController: ViewController {
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddPlanForDay" {
             let vc = segue.destination as! CreateDayPlanViewController
-            dataContainer.selectedLocations.append("Enter your location:")
             vc.locationNumber = numberOfLocationsAdded
             vc.dataContainer = dataContainer
+            vc.date = selectedDate ?? Date()
             numberOfLocationsAdded += 1
         }
      }
+}
+
+extension NewTripDetailsViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        tripName = textField.text!
+    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -138,6 +150,17 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
         handleCellSelection(view: cell, cellState: cellState)
     }
     
+    func calendar(_ calendar: JTAppleCalendarView, shouldSelectDate date: Date, cell: JTAppleDayCellView, cellState: CellState) -> Bool {
+        let currentDate = Date()
+        if Calendar.current.isDateInToday(date) {
+            return true
+        }
+        if cellState.dateBelongsTo == .thisMonth && date.compare(currentDate) == ComparisonResult.orderedDescending {
+            return true
+        }
+        return false
+    }
+    
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleDayCellView?, cellState: CellState) {
         handleCellSelection(view: cell, cellState: cellState)
         handleCellTextColor(view: cell, cellState: cellState)
@@ -156,12 +179,15 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
         }
         
         if cellState.isSelected {
-            myCustomCell.dayLabel.textColor = white
+            myCustomCell.dayLabel.textColor = ColorResources.SelectedDateColor
         } else {
-            if cellState.dateBelongsTo == .thisMonth {
-                myCustomCell.dayLabel.textColor = white
+            let currentDate = Date()
+            if Calendar.current.isDateInToday(cellState.date) {
+                myCustomCell.dayLabel.textColor = ColorResources.CurrentDateColor
+            } else if cellState.dateBelongsTo == .thisMonth && cellState.date.compare(currentDate) == ComparisonResult.orderedDescending  {
+                myCustomCell.dayLabel.textColor = ColorResources.CurrentMonthDateColor
             } else {
-                myCustomCell.dayLabel.textColor = UIColor.gray
+                myCustomCell.dayLabel.textColor = ColorResources.OutsideMonthDateColor
             }
         }
     }
@@ -193,6 +219,7 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
             }
             if !dataContainer.selectedDates.contains(formattedDateString) {
                 dataContainer.selectedDates.append(formattedDateString)
+                selectedDate = cellState.date
                 performSegue(withIdentifier: "AddPlanForDay", sender: self)
             }
 

@@ -4,7 +4,7 @@
 
 #### Q: How will my calendar dateCells look with this library?
 **A**: However you want it to look.
-
+### Tutorials now @ [patchthecode.github.io](https://patchthecode.github.io/)
 
 <p align="center">
    <a href="https://github.com/patchthecode/JTAppleCalendar/issues/2">
@@ -15,7 +15,6 @@
    <a href="https://github.com/patchthecode/JTAppleCalendar/issues/2">More Images</a>
 </p>
 
-### Tutorials located @ [patchthecode.github.io](https://patchthecode.github.io/)
 
 ## Features
 ---
@@ -54,7 +53,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'JTAppleCalendar', '~> 6.0'
+    pod 'JTAppleCalendar', '~> 6.1'
 end
 ```
 
@@ -66,11 +65,11 @@ $ pod install
 
 **Completed!**
 
-New to cocoapods? Did the steps above fail? Then read on.
+New to Cocoapods? Did the steps above fail? Then read on.
 
-If youre new to CocoaPods, simply do search on how to integrate cocoapods into your project. Trust me that 5-7 minuites of research will bring you much benefit. CocoaPods one of the top dependency manager for integrating 3rd party frameworks into your project. But in a nut-shell, here is how I did my installation with a sample project called **test**
+If you're new to CocoaPods, simply search how to integrate Cocoapods into your project. Trust me that 5-7 minutes of research will bring you much benefit. CocoaPods one of the top dependency manager for integrating 3rd party frameworks into your project. But in a nut-shell, here is how I did my installation with a sample project called **test**
 
-1. Install cocoapods.
+1. Install Cocoapods.
 2. Create a new xcode project. Save the name as: **test**
 3. Go to your console in the directory location where your project is located.
 4. Type and run the command: **pod init**
@@ -84,10 +83,10 @@ If youre new to CocoaPods, simply do search on how to integrate cocoapods into y
 
 target 'test' do
   use_frameworks!
-  pod 'JTAppleCalendar', '~> 6.0'
+  pod 'JTAppleCalendar', '~> 6.1'
 end
 ```
-	
+
 Save, and head back to terminal and run: **pod install**.  If all Went well, installation should be complete. Close the XCodeproject, and instead reopen it using the **workspace** file which generated when installation was completed. Done.
 
 ### 2. Installing via Carthage
@@ -104,7 +103,7 @@ $ brew install carthage
 To integrate JTAppleCalendar into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "patchthecode/JTAppleCalendar" ~> 6.0
+github "patchthecode/JTAppleCalendar" ~> 6.1
 ```
 
 Run `carthage update` to build the framework and drag the built `JTApplecalendar.framework` into your Xcode project.

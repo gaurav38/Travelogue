@@ -91,7 +91,6 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
         }
         cell.setupView(cellViewSource, leftToRightOrientation: orientation)
         cell.updateCellView(cellInset.x, cellInsetY: cellInset.y)
-        cell.bounds.origin = CGPoint(x: 0, y: 0)
         let cellState = cellStateFromIndexPath(indexPath)
         delegate?.calendar(self, willDisplayCell:
             cell.view!, date: cellState.date, cellState: cellState)
@@ -139,8 +138,7 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
     /// deselects an item in the collection view.
     /// It does not call this method when you programmatically deselect items.
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let indexPathsToReload = rangeSelectionWillBeUsed ?
-        validForwardAndBackwordSelectedIndexes(forIndexPath: indexPath) : []
+        let indexPathsToReload = rangeSelectionWillBeUsed ? validForwardAndBackwordSelectedIndexes(forIndexPath: indexPath) : []
         if
             let delegate = self.delegate,
             let dateInfoDeselectedByUser = dateOwnerInfoFromPath(indexPath) {
@@ -149,7 +147,7 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
             var pathsToReload = indexPathsToReload
             let selectedCell = collectionView.cellForItem(at: indexPath) as? JTAppleDayCell
             if selectedCell == nil {
-                pathsToReload.append(indexPath)
+                calendarView.reloadItems(at: [indexPath])
             }
             // Cell may be nil if user switches month sections
             // Although the cell may be nil, we still want to
@@ -168,9 +166,7 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
                 }
             }
             if pathsToReload.count > 0 {
-                delayRunOnMainThread(0.0) {
-                    self.batchReloadIndexPaths(pathsToReload)
-                }
+                self.batchReloadIndexPaths(pathsToReload)
             }
             delegate.calendar(self, didDeselectDate: dateInfoDeselectedByUser.date, cell: selectedCell?.view, cellState: cellState)
         }
@@ -196,19 +192,23 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
     /// It does not call this method when you programmatically
     /// set the selection.
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // index paths to be reloaded should be index to the left and right of the selected index
-        let indexPathsToReload = rangeSelectionWillBeUsed ? validForwardAndBackwordSelectedIndexes(forIndexPath: indexPath) : []
         guard
             let delegate = self.delegate,
             let infoOfDateSelectedByUser = dateOwnerInfoFromPath(indexPath) else {
                 return
         }
+        
+    
+        // index paths to be reloaded should be index to the left and right of the selected index
+        let indexPathsToReload = rangeSelectionWillBeUsed ? validForwardAndBackwordSelectedIndexes(forIndexPath: indexPath) : []
+        
         // Update model
         addCellToSelectedSetIfUnselected(indexPath, date: infoOfDateSelectedByUser.date)
         let selectedCell = collectionView.cellForItem(at: indexPath) as? JTAppleDayCell
         // If cell has a counterpart cell, then select it as well
         let cellState = cellStateFromIndexPath(indexPath,
-            withDateInfo: infoOfDateSelectedByUser, cell: selectedCell)
+                                               withDateInfo: infoOfDateSelectedByUser,
+                                               cell: selectedCell)
         var pathsToReload = indexPathsToReload
         if let selectedCounterPartIndexPath = selectCounterPartCellIndexPathIfExists(indexPath,
                                                                                      date: infoOfDateSelectedByUser.date,
@@ -222,9 +222,7 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
             }
         }
         if pathsToReload.count > 0 {
-            delayRunOnMainThread(0.0) {
-                self.batchReloadIndexPaths(pathsToReload)
-            }
+            self.batchReloadIndexPaths(pathsToReload)
         }
         delegate.calendar(self, didSelectDate: infoOfDateSelectedByUser.date, cell: selectedCell?.view, cellState: cellState)
     }

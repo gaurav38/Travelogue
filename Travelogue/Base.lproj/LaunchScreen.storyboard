@@ -25,15 +25,15 @@
                                 <rect key="frame" x="0.0" y="70" width="375" height="547"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="MainImage" translatesAutoresizingMaskIntoConstraints="NO" id="NTw-gD-RUt">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="405"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="417"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="AppName" translatesAutoresizingMaskIntoConstraints="NO" id="Chs-pA-9zO">
-                                        <rect key="frame" x="0.0" y="435" width="375" height="112"/>
+                                        <rect key="frame" x="0.0" y="447" width="375" height="100"/>
                                     </imageView>
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.35686274509803922" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="rn3-6m-cep" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="7Yj-sb-S3b"/>
                             <constraint firstItem="rn3-6m-cep" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="50" id="d6B-27-2d9"/>
@@ -48,7 +48,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AppName" width="249" height="112"/>
-        <image name="MainImage" width="333" height="331"/>
+        <image name="AppName" width="250" height="100"/>
+        <image name="MainImage" width="200" height="200"/>
     </resources>
 </document>

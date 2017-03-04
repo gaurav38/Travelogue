@@ -9,6 +9,8 @@ pod 'Firebase/Database'
 pod 'Firebase/RemoteConfig'
 pod 'FirebaseUI'
 pod 'JTAppleCalendar', '~>6.0'
+pod 'GooglePlaces'
+pod 'GoogleMaps'
 
 target 'Travelogue' do
 end
