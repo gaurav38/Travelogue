@@ -10,10 +10,10 @@ import Foundation
 
 class TripActivity {
     var activityId: String!
-    var activityTime: Date!
+    var activityTime: String!
     var activityDescription: String!
     
-    init(time: Date, description: String) {
+    init(time: String, description: String) {
         self.activityTime = time
         self.activityDescription = description
         self.activityId = "ACTIVITY1234567890"

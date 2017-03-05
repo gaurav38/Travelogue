@@ -13,31 +13,38 @@ class AddActivityViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
-    @IBOutlet weak var activityTextView: UITextView!
+    @IBOutlet weak var activityTextField: UITextField!
     
-    var time: Date {
+    var time: String {
         get {
-            return datePicker.date
+            return timeFormatter.string(from: datePicker.date)
         }
     }
     
     var activityDescription: String {
         get {
-            return activityTextView.text ?? ""
+            return activityTextField.text ?? ""
         }
     }
     
     var date: Date!
     let dateFormatter = DateFormatter()
+    let timeFormatter = DateFormatter()
     var screenScrolledUp = false
+    var preSelectedPlace: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityTextField.delegate = self
         dateFormatter.dateFormat = "MMM d, yyyy"
+        timeFormatter.dateFormat = "h:mm a"
         let dateString = dateFormatter.string(from: date)
         let dateComponents = dateString.components(separatedBy: ", ")
         dateLabel.text = dateComponents[0]
         yearLabel.text = dateComponents[1]
+        if preSelectedPlace != nil {
+            activityTextField.text = preSelectedPlace
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -45,9 +52,14 @@ class AddActivityViewController: UIViewController {
     }
 }
 
-extension AddActivityViewController: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
-        textView.resignFirstResponder()
+extension AddActivityViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 
@@ -63,7 +75,7 @@ extension AddActivityViewController {
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        if activityTextView.isFirstResponder {
+        if activityTextField.isEditing {
             self.view.frame.origin.y = getKeyboardHeight(notification: notification) * (-1)
             screenScrolledUp = true
         }

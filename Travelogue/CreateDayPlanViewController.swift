@@ -29,6 +29,7 @@ class CreateDayPlanViewController: UIViewController {
     let dateFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     var activities = [TripActivity]()
+    var selectedSuggestedPhoto: FoursquarePhoto?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +39,7 @@ class CreateDayPlanViewController: UIViewController {
         collectionView.dataSource = self
         dateView.layer.cornerRadius = 37
         dateFormatter.dateFormat = "MMM d, yyyy"
+        timeFormatter.dateFormat = "h:mm a"
         let dateString = dateFormatter.string(from: date)
         let dateComponents = dateString.components(separatedBy: ", ")
         dateLabel.text = dateComponents[0]
@@ -68,11 +70,6 @@ class CreateDayPlanViewController: UIViewController {
         }
     }
     
-    
-    @IBAction func addActivity(_ sender: Any) {
-        performSegue(withIdentifier: "AddActivity", sender: self)
-    }
-    
     @IBAction func unWindToHere(_ segue: UIStoryboardSegue) {
         let vc = segue.source as! AddActivityViewController
         let activity = TripActivity(time: vc.time, description: vc.activityDescription)
@@ -86,6 +83,9 @@ class CreateDayPlanViewController: UIViewController {
         if segue.identifier == "AddActivity" {
             let vc = segue.destination as! AddActivityViewController
             vc.date = date
+            if selectedSuggestedPhoto != nil {
+                vc.preSelectedPlace = selectedSuggestedPhoto?.photoDescription
+            }
         }
     }
 }
@@ -101,8 +101,7 @@ extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSourc
         cell.detailTextLabel?.text = ""
         
         let activity = activities[indexPath.row]
-        let comp = Calendar.current.dateComponents([.hour, .minute], from: activity.activityTime)
-        cell.textLabel?.text = "\(comp.hour!) : \(comp.minute!)"
+        cell.textLabel?.text = activity.activityTime
         cell.detailTextLabel?.text = activity.activityDescription
         return cell
         
@@ -173,27 +172,34 @@ extension CreateDayPlanViewController: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let suggestedPhoto = suggestedPlaces[indexPath.row]
-        if suggestedPhoto.isLoaded {
+        selectedSuggestedPhoto = suggestedPlaces[indexPath.row]
+        if selectedSuggestedPhoto!.isLoaded {
             let newView = UIView()
             newView.frame = self.view.frame
             newView.backgroundColor = .black
             
             let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
-            newImageView.image = suggestedPhoto.photo
+            newImageView.image = selectedSuggestedPhoto!.photo
             newImageView.contentMode = .scaleAspectFit
             
             let label = BetterLabel(frame: CGRect(x: 0, y: -(self.view.frame.height/2) + 40, width: self.view.frame.width, height: self.view.frame.height))
-            label.text = suggestedPhoto.photoDescription
+            label.text = selectedSuggestedPhoto!.photoDescription
             label.textAlignment = NSTextAlignment.center
             label.textColor = .white
             label.font.withSize(16)
+            
+            let button = UIButton(frame: CGRect(x: 15, y: self.view.frame.height - 60, width: self.view.frame.width - 30, height: 40))
+            button.backgroundColor = UIColor(red: CGFloat(1), green: CGFloat(102)/255.0, blue: CGFloat(102)/255.0, alpha: 1)
+            button.setTitle("Select place", for: UIControlState.normal)
+            button.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
+            button.addTarget(self, action: #selector(addActivityForSelectedPlace), for: UIControlEvents.touchUpInside)
             
             let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
             newView.addGestureRecognizer(tap)
             
             newView.addSubview(newImageView)
             newView.addSubview(label)
+            newView.addSubview(button)
             
             self.view.addSubview(newView)
             self.navigationController?.isNavigationBarHidden = true
@@ -205,5 +211,10 @@ extension CreateDayPlanViewController {
     func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
         sender.view?.removeFromSuperview()
         self.navigationController?.isNavigationBarHidden = false
+        selectedSuggestedPhoto = nil
+    }
+    
+    func addActivityForSelectedPlace() {
+        performSegue(withIdentifier: "AddActivity", sender: self)
     }
 }
