@@ -14,10 +14,27 @@ class AddActivityViewController: UIViewController {
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var activityTextField: UITextField!
+    @IBOutlet weak var startTimeTextField: UITextField!
+    @IBOutlet weak var endTimeTextField: UITextField!
+    @IBOutlet weak var selectTimeButton: UIButton!
     
-    var time: String {
+    var startTime: String {
         get {
-            return timeFormatter.string(from: datePicker.date)
+            if startTimeTextField.text == nil || startTimeTextField.text == "" {
+                return ""
+            } else {
+                return startTimeTextField.text!
+            }
+        }
+    }
+    
+    var endTime: String {
+        get {
+            if endTimeTextField.text == nil || endTimeTextField.text == "" {
+                return ""
+            } else {
+                return endTimeTextField.text!
+            }
         }
     }
     
@@ -27,19 +44,19 @@ class AddActivityViewController: UIViewController {
         }
     }
     
-    var date: Date!
+    var date: String!
     let dateFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     var screenScrolledUp = false
     var preSelectedPlace: String?
+    var selectingStartTime = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         activityTextField.delegate = self
         dateFormatter.dateFormat = "MMM d, yyyy"
         timeFormatter.dateFormat = "h:mm a"
-        let dateString = dateFormatter.string(from: date)
-        let dateComponents = dateString.components(separatedBy: ", ")
+        let dateComponents = date.components(separatedBy: ", ")
         dateLabel.text = dateComponents[0]
         yearLabel.text = dateComponents[1]
         if preSelectedPlace != nil {
@@ -47,13 +64,33 @@ class AddActivityViewController: UIViewController {
         }
     }
     
+    @IBAction func selectTime(_ sender: Any) {
+        if selectingStartTime {
+            startTimeTextField.text = timeFormatter.string(from: datePicker.date)
+            selectingStartTime = false
+            selectTimeButton.setTitle("Select end time", for: UIControlState.normal)
+        } else {
+            endTimeTextField.text = timeFormatter.string(from: datePicker.date)
+            selectingStartTime = true
+            selectTimeButton.setTitle("Select start time", for: UIControlState.normal)
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if startTimeTextField.isFirstResponder {
+            startTimeTextField.text = timeFormatter.string(from: datePicker.date)
+        } else if endTimeTextField.isFirstResponder {
+            endTimeTextField.text = timeFormatter.string(from: datePicker.date)
+        }
         view.endEditing(true)
     }
 }
 
 extension AddActivityViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == startTimeTextField || textField == endTimeTextField {
+            textField.text = timeFormatter.string(from: datePicker.date)
+        }
         textField.resignFirstResponder()
     }
     

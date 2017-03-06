@@ -9,7 +9,7 @@
 import UIKit
 import JTAppleCalendar
 
-class NewTripDetailsViewController: ViewController {
+class NewTripDetailsViewController: UIViewController {
     
     @IBOutlet weak var calendarView: JTAppleCalendarView!
     @IBOutlet weak var startDateLabel: UILabel!
@@ -18,25 +18,27 @@ class NewTripDetailsViewController: ViewController {
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var locationsCollectionView: UICollectionView!
     @IBOutlet weak var locationsFlowLayout: UICollectionViewFlowLayout!
-    @IBOutlet weak var tripNameTextField: BetterTextField!
+    @IBOutlet weak var tripNameLabel: UILabel!
     
     let formatter = DateFormatter()
     let headerFormatter = DateFormatter()
+    let delegate = UIApplication.shared.delegate as! AppDelegate
     var startDate: Date? = nil
     var endDate: Date? = nil
     var dataContainer = NewTripDataContainer.instance
     var numberOfLocationsAdded = 0
-    var tripName = ""
+    var trip: Trip!
     var selectedDate: Date?
+    var selectedDateModelInstance: TripDay!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tripNameTextField.delegate = self
+        tripNameLabel.text = trip.name!
         formatter.dateFormat = "MMM d, yyyy"
         headerFormatter.dateFormat = "MMMM yyyy"
         calendarView.dataSource = self
         calendarView.delegate = self
-        calendarView.registerCellViewXib(file: "CalendarCellView") // Registering your cell is manditory
+        calendarView.registerCellViewXib(file: "CalendarCellView") 
         calendarView.cellInset = CGPoint(x: 0, y: 0)
         calendarView.allowsMultipleSelection  = true
         locationsCollectionView.delegate = self
@@ -81,21 +83,10 @@ class NewTripDetailsViewController: ViewController {
             let vc = segue.destination as! CreateDayPlanViewController
             vc.locationNumber = numberOfLocationsAdded
             vc.dataContainer = dataContainer
-            vc.date = selectedDate ?? Date()
+            vc.tripDayModel = selectedDateModelInstance
             numberOfLocationsAdded += 1
         }
      }
-}
-
-extension NewTripDetailsViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        tripName = textField.text!
-    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -217,9 +208,20 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
                     startDateLabel.text = formattedDateString
                 }
             }
+            trip.startDate = startDateLabel.text
+            trip.endDate = endDateLabel.text
+            self.delegate.stack.save()
             if !dataContainer.selectedDates.contains(formattedDateString) {
                 dataContainer.selectedDates.append(formattedDateString)
                 selectedDate = cellState.date
+                
+                let timeStamp = cellState.date.timeIntervalSince1970 * 1000
+                let userId = self.delegate.user!.uid
+                let tripDayId = "TRIP-\(userId)-\(timeStamp)"
+                let tripDay = TripDay(dayId: tripDayId, date: formattedDateString, context: delegate.stack.context)
+                tripDay.trip = trip
+                delegate.stack.save()
+                selectedDateModelInstance = tripDay
                 performSegue(withIdentifier: "AddPlanForDay", sender: self)
             }
 

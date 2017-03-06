@@ -11,23 +11,24 @@ import Firebase
 import FirebaseAuthUI
 import FirebaseGoogleAuthUI
 import FirebaseFacebookAuthUI
+import CoreData
 
-class ViewController: UIViewController, FUIAuthDelegate {
+class HomeTableViewController: CoreDataTableViewController, FUIAuthDelegate {
 
     var ref: FIRDatabaseReference!
+    let delegate = UIApplication.shared.delegate as! AppDelegate
     fileprivate var _refHandle: FIRDatabaseHandle!
     fileprivate var _authHandle: FIRAuthStateDidChangeListenerHandle!
-    var user: FIRUser?
     var displayName = "Anonymous"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAuth()
+        fetchSavedTrips()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: Config
@@ -45,10 +46,10 @@ class ViewController: UIViewController, FUIAuthDelegate {
             // check if there is a current user
             if let activeUser = user {
                 // check if the current app user is the current FIRUser
-                if self.user != activeUser {
-                    self.user = activeUser
+                if self.delegate.user != activeUser {
+                    self.delegate.user = activeUser
                     //self.signedInStatus(isSignedIn: true)
-                    let name = user!.email!.components(separatedBy: "@")[0]
+                    let name = self.delegate.user!.email!.components(separatedBy: "@")[0]
                     self.displayName = name
                 }
             } else {
@@ -90,6 +91,44 @@ class ViewController: UIViewController, FUIAuthDelegate {
     }
     
     func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
+    }
+}
+
+extension HomeTableViewController {
+    func fetchSavedTrips() {
+        
+        // Get the Stack
+        let stack = delegate.stack
+        
+        // Create the fetch request
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Trip")
+        fr.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true), NSSortDescriptor(key: "startDate", ascending: false)]
+        
+        // Create the FetchResultsController
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // Find the notebook
+        let trip = fetchedResultsController!.object(at: indexPath) as! Trip
+        
+        // Create the cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TripCell", for: indexPath)
+        
+        // Sync trip -> cell
+        cell.textLabel?.text = trip.name!
+        if trip.startDate == nil && trip.endDate == nil {
+            cell.detailTextLabel?.text = ""
+        } else if trip.endDate == nil {
+            cell.detailTextLabel?.text = "\(trip.startDate!) -"
+        } else {
+            cell.detailTextLabel?.text = "\(trip.startDate!) - \(trip.endDate!)"
+        }
+        
+        print(trip.tripDay?.count ?? 0)
+        
+        return cell
     }
 }
 

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import GooglePlaces
 
 class CreateDayPlanViewController: UIViewController {
 
@@ -21,15 +20,16 @@ class CreateDayPlanViewController: UIViewController {
     
     var locationNumber: Int!
     var dataContainer: NewTripDataContainer!
-    var date: Date!
+    var tripDayModel: TripDay!
     var location: String!
-    let fourSquareApiHelper = FourSquareApiHelper.instance
-    let googlePlacesClient: GMSPlacesClient! = GMSPlacesClient.shared()
     var suggestedPlaces = [FoursquarePhoto]()
     let dateFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     var activities = [TripActivity]()
     var selectedSuggestedPhoto: FoursquarePhoto?
+    
+    let delegate = UIApplication.shared.delegate as! AppDelegate
+    let fourSquareApiHelper = FourSquareApiHelper.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,7 @@ class CreateDayPlanViewController: UIViewController {
         dateView.layer.cornerRadius = 37
         dateFormatter.dateFormat = "MMM d, yyyy"
         timeFormatter.dateFormat = "h:mm a"
-        let dateString = dateFormatter.string(from: date)
+        let dateString = tripDayModel.date!
         let dateComponents = dateString.components(separatedBy: ", ")
         dateLabel.text = dateComponents[0]
         yearLabel.text = dateComponents[1]
@@ -72,17 +72,18 @@ class CreateDayPlanViewController: UIViewController {
     
     @IBAction func unWindToHere(_ segue: UIStoryboardSegue) {
         let vc = segue.source as! AddActivityViewController
-        let activity = TripActivity(time: vc.time, description: vc.activityDescription)
+        let activity = TripActivity(time: "\(vc.startTime) - \(vc.endTime)", description: vc.activityDescription)
+        let tripVisitModel = TripVisit(place: activity.activityDescription, startTime: vc.startTime, endTime: vc.endTime, context: delegate.stack.context)
+        tripVisitModel.tripDay = tripDayModel
+        delegate.stack.save()
         activities.append(activity)
-        print(vc.time)
-        print(vc.activityDescription)
         activitiesTableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddActivity" {
             let vc = segue.destination as! AddActivityViewController
-            vc.date = date
+            vc.date = tripDayModel.date!
             if selectedSuggestedPhoto != nil {
                 vc.preSelectedPlace = selectedSuggestedPhoto?.photoDescription
             }
@@ -122,6 +123,8 @@ extension CreateDayPlanViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         dataContainer.selectedLocations[locationNumber] = textField.text!
         location = textField.text!
+        tripDayModel.location = location
+        delegate.stack.save()
         fetchSuggestedLocationPhotos()
     }
 }

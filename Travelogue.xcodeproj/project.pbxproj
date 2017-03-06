@@ -21,13 +21,23 @@
 		C61761BE1E63DE590041F23F /* NewTripDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61761BD1E63DE590041F23F /* NewTripDataContainer.swift */; };
 		C68002AD1E6B4F2B00362353 /* AddActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002AC1E6B4F2B00362353 /* AddActivityViewController.swift */; };
 		C68002AF1E6B7E1800362353 /* TripActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002AE1E6B7E1800362353 /* TripActivity.swift */; };
+		C68002B61E6C686600362353 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C68002B41E6C686600362353 /* Model.xcdatamodeld */; };
+		C68002C41E6C8ADC00362353 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002C31E6C8ADC00362353 /* CoreDataStack.swift */; };
+		C68002C61E6C8D4000362353 /* NewTripStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002C51E6C8D4000362353 /* NewTripStartViewController.swift */; };
+		C68002C81E6CA6EF00362353 /* CoreDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002C71E6CA6EF00362353 /* CoreDataTableViewController.swift */; };
+		C68002DB1E6D0E4B00362353 /* TripVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002D51E6D0E4B00362353 /* TripVisit.swift */; };
+		C68002DC1E6D0E4B00362353 /* TripVisit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002D61E6D0E4B00362353 /* TripVisit+CoreDataProperties.swift */; };
+		C68002DD1E6D0E4B00362353 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002D71E6D0E4B00362353 /* Trip.swift */; };
+		C68002DE1E6D0E4B00362353 /* Trip+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002D81E6D0E4B00362353 /* Trip+CoreDataProperties.swift */; };
+		C68002DF1E6D0E4B00362353 /* TripDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002D91E6D0E4B00362353 /* TripDay.swift */; };
+		C68002E01E6D0E4B00362353 /* TripDay+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002DA1E6D0E4B00362353 /* TripDay+CoreDataProperties.swift */; };
 		C6C1B9CF1E6B401500D265B6 /* AddActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */; };
 		C6D4AFCF1E665E4400F2B092 /* BetterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */; };
 		C6D4AFD11E66639000F2B092 /* FoursquarePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */; };
 		C6D4AFD41E67B62F00F2B092 /* ColorResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD31E67B62F00F2B092 /* ColorResources.swift */; };
 		C6E42A1E1E6B33B0001B183C /* AddActivityView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6E42A1D1E6B33B0001B183C /* AddActivityView.xib */; };
 		C6E9F0011E57DF4100DE2C21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */; };
-		C6E9F0031E57DF4100DE2C21 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0021E57DF4100DE2C21 /* ViewController.swift */; };
+		C6E9F0031E57DF4100DE2C21 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9F0021E57DF4100DE2C21 /* HomeTableViewController.swift */; };
 		C6E9F0061E57DF4100DE2C21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0041E57DF4100DE2C21 /* Main.storyboard */; };
 		C6E9F0081E57DF4100DE2C21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0071E57DF4100DE2C21 /* Assets.xcassets */; };
 		C6E9F00B1E57DF4100DE2C21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6E9F0091E57DF4100DE2C21 /* LaunchScreen.storyboard */; };
@@ -53,6 +63,16 @@
 		C61761BD1E63DE590041F23F /* NewTripDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTripDataContainer.swift; sourceTree = "<group>"; };
 		C68002AC1E6B4F2B00362353 /* AddActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityViewController.swift; sourceTree = "<group>"; };
 		C68002AE1E6B7E1800362353 /* TripActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripActivity.swift; sourceTree = "<group>"; };
+		C68002B51E6C686600362353 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		C68002C31E6C8ADC00362353 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		C68002C51E6C8D4000362353 /* NewTripStartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTripStartViewController.swift; sourceTree = "<group>"; };
+		C68002C71E6CA6EF00362353 /* CoreDataTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTableViewController.swift; sourceTree = "<group>"; };
+		C68002D51E6D0E4B00362353 /* TripVisit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripVisit.swift; sourceTree = "<group>"; };
+		C68002D61E6D0E4B00362353 /* TripVisit+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TripVisit+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C68002D71E6D0E4B00362353 /* Trip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
+		C68002D81E6D0E4B00362353 /* Trip+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Trip+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C68002D91E6D0E4B00362353 /* TripDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDay.swift; sourceTree = "<group>"; };
+		C68002DA1E6D0E4B00362353 /* TripDay+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TripDay+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityView.swift; sourceTree = "<group>"; };
 		C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetterLabel.swift; sourceTree = "<group>"; };
 		C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquarePhoto.swift; sourceTree = "<group>"; };
@@ -60,7 +80,7 @@
 		C6E42A1D1E6B33B0001B183C /* AddActivityView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddActivityView.xib; sourceTree = "<group>"; };
 		C6E9EFFD1E57DF4100DE2C21 /* Travelogue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Travelogue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E9F0001E57DF4100DE2C21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C6E9F0021E57DF4100DE2C21 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C6E9F0021E57DF4100DE2C21 /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		C6E9F0051E57DF4100DE2C21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C6E9F0071E57DF4100DE2C21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C6E9F00A1E57DF4100DE2C21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -104,12 +124,12 @@
 			children = (
 				C61761B41E6354AF0041F23F /* BetterTextField.swift */,
 				C61761AD1E5E885A0041F23F /* CalendarCellView.xib */,
-				C61761AF1E5E88CA0041F23F /* CalendarCellView.swift */,
 				C61761B81E63ACC30041F23F /* LocationsCellView.swift */,
 				C601AB371E6509670089EFE8 /* LocationSuggestionCollectionViewCell.swift */,
 				C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */,
 				C6E9F0041E57DF4100DE2C21 /* Main.storyboard */,
 				C6E9F0091E57DF4100DE2C21 /* LaunchScreen.storyboard */,
+				C61761AF1E5E88CA0041F23F /* CalendarCellView.swift */,
 				C6E42A1D1E6B33B0001B183C /* AddActivityView.xib */,
 				C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */,
 			);
@@ -119,11 +139,19 @@
 		C61761BC1E63DE470041F23F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C68002D51E6D0E4B00362353 /* TripVisit.swift */,
+				C68002D61E6D0E4B00362353 /* TripVisit+CoreDataProperties.swift */,
+				C68002D71E6D0E4B00362353 /* Trip.swift */,
+				C68002D81E6D0E4B00362353 /* Trip+CoreDataProperties.swift */,
+				C68002D91E6D0E4B00362353 /* TripDay.swift */,
+				C68002DA1E6D0E4B00362353 /* TripDay+CoreDataProperties.swift */,
 				C61761BD1E63DE590041F23F /* NewTripDataContainer.swift */,
 				C601AB3B1E651B3B0089EFE8 /* FourSquareApiHelper.swift */,
 				C601AB3D1E651F950089EFE8 /* TravelogueClient.swift */,
 				C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */,
 				C68002AE1E6B7E1800362353 /* TripActivity.swift */,
+				C68002B41E6C686600362353 /* Model.xcdatamodeld */,
+				C68002C31E6C8ADC00362353 /* CoreDataStack.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -182,11 +210,13 @@
 		C6E9F0171E5D2F8400DE2C21 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C6E9F0021E57DF4100DE2C21 /* ViewController.swift */,
+				C6E9F0021E57DF4100DE2C21 /* HomeTableViewController.swift */,
 				C6E9F01A1E5D3CDD00DE2C21 /* TravelogueAuthViewController.swift */,
 				C6E9F01C1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift */,
 				C61761BA1E63CCB20041F23F /* CreateDayPlanViewController.swift */,
 				C68002AC1E6B4F2B00362353 /* AddActivityViewController.swift */,
+				C68002C51E6C8D4000362353 /* NewTripStartViewController.swift */,
+				C68002C71E6CA6EF00362353 /* CoreDataTableViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -318,15 +348,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6E9F0031E57DF4100DE2C21 /* ViewController.swift in Sources */,
+				C68002DF1E6D0E4B00362353 /* TripDay.swift in Sources */,
+				C6E9F0031E57DF4100DE2C21 /* HomeTableViewController.swift in Sources */,
 				C68002AD1E6B4F2B00362353 /* AddActivityViewController.swift in Sources */,
 				C6D4AFCF1E665E4400F2B092 /* BetterLabel.swift in Sources */,
 				C6D4AFD41E67B62F00F2B092 /* ColorResources.swift in Sources */,
+				C68002DC1E6D0E4B00362353 /* TripVisit+CoreDataProperties.swift in Sources */,
+				C68002C61E6C8D4000362353 /* NewTripStartViewController.swift in Sources */,
 				C61761BB1E63CCB20041F23F /* CreateDayPlanViewController.swift in Sources */,
+				C68002DD1E6D0E4B00362353 /* Trip.swift in Sources */,
 				C61761B91E63ACC30041F23F /* LocationsCellView.swift in Sources */,
+				C68002C81E6CA6EF00362353 /* CoreDataTableViewController.swift in Sources */,
+				C68002C41E6C8ADC00362353 /* CoreDataStack.swift in Sources */,
 				C6D4AFD11E66639000F2B092 /* FoursquarePhoto.swift in Sources */,
 				C601AB381E6509670089EFE8 /* LocationSuggestionCollectionViewCell.swift in Sources */,
 				C61761B01E5E88CA0041F23F /* CalendarCellView.swift in Sources */,
+				C68002DE1E6D0E4B00362353 /* Trip+CoreDataProperties.swift in Sources */,
+				C68002DB1E6D0E4B00362353 /* TripVisit.swift in Sources */,
 				C6E9F01D1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift in Sources */,
 				C601AB3E1E651F950089EFE8 /* TravelogueClient.swift in Sources */,
 				C6E9F0011E57DF4100DE2C21 /* AppDelegate.swift in Sources */,
@@ -335,6 +373,8 @@
 				C61761BE1E63DE590041F23F /* NewTripDataContainer.swift in Sources */,
 				C61761B51E6354AF0041F23F /* BetterTextField.swift in Sources */,
 				C6C1B9CF1E6B401500D265B6 /* AddActivityView.swift in Sources */,
+				C68002B61E6C686600362353 /* Model.xcdatamodeld in Sources */,
+				C68002E01E6D0E4B00362353 /* TripDay+CoreDataProperties.swift in Sources */,
 				C68002AF1E6B7E1800362353 /* TripActivity.swift in Sources */,
 				C61761B21E5E919D0041F23F /* ColorExtensions.swift in Sources */,
 				C601AB3A1E65189E0089EFE8 /* Constants.swift in Sources */,
@@ -478,6 +518,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = travelogue.development.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -504,6 +545,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C68002B41E6C686600362353 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C68002B51E6C686600362353 /* Model.xcdatamodel */,
+			);
+			currentVersion = C68002B51E6C686600362353 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C6E9EFF51E57DF4100DE2C21 /* Project object */;
 }
