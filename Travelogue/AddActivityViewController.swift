@@ -54,6 +54,8 @@ class AddActivityViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         activityTextField.delegate = self
+        startTimeTextField.delegate = self
+        endTimeTextField.delegate = self
         dateFormatter.dateFormat = "MMM d, yyyy"
         timeFormatter.dateFormat = "h:mm a"
         let dateComponents = date.components(separatedBy: ", ")
@@ -77,19 +79,18 @@ class AddActivityViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if startTimeTextField.isFirstResponder {
-            startTimeTextField.text = timeFormatter.string(from: datePicker.date)
-        } else if endTimeTextField.isFirstResponder {
-            endTimeTextField.text = timeFormatter.string(from: datePicker.date)
-        }
         view.endEditing(true)
     }
 }
 
 extension AddActivityViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == startTimeTextField || textField == endTimeTextField {
-            textField.text = timeFormatter.string(from: datePicker.date)
+        if textField == startTimeTextField {
+            selectingStartTime = false
+            selectTimeButton.setTitle("Select end time", for: UIControlState.normal)
+        } else {
+            selectingStartTime = true
+            selectTimeButton.setTitle("Select start time", for: UIControlState.normal)
         }
         textField.resignFirstResponder()
     }

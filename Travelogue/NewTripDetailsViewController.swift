@@ -26,7 +26,6 @@ class NewTripDetailsViewController: UIViewController {
     var startDate: Date? = nil
     var endDate: Date? = nil
     var dataContainer = NewTripDataContainer.instance
-    var numberOfLocationsAdded = 0
     var trip: Trip!
     var selectedDate: Date?
     var selectedDateModelInstance: TripDay!
@@ -38,7 +37,7 @@ class NewTripDetailsViewController: UIViewController {
         headerFormatter.dateFormat = "MMMM yyyy"
         calendarView.dataSource = self
         calendarView.delegate = self
-        calendarView.registerCellViewXib(file: "CalendarCellView") 
+        calendarView.registerCellViewXib(file: "CalendarCellView")
         calendarView.cellInset = CGPoint(x: 0, y: 0)
         calendarView.allowsMultipleSelection  = true
         locationsCollectionView.delegate = self
@@ -72,7 +71,7 @@ class NewTripDetailsViewController: UIViewController {
         }
     }
     
-    @IBAction func onCancel(_ sender: Any) {
+    @IBAction func onDone(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -81,10 +80,9 @@ class NewTripDetailsViewController: UIViewController {
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddPlanForDay" {
             let vc = segue.destination as! CreateDayPlanViewController
-            vc.locationNumber = numberOfLocationsAdded
+            
             vc.dataContainer = dataContainer
             vc.tripDayModel = selectedDateModelInstance
-            numberOfLocationsAdded += 1
         }
      }
 }

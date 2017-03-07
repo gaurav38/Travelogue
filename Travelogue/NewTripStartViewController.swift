@@ -19,24 +19,24 @@ class NewTripStartViewController: UIViewController {
         super.viewDidLoad()
         tripNameTextField.delegate = self
         doneButton.isEnabled = false
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func done(_ sender: Any) {
-        // Create a Trip model here
-        let timeStamp = Date().timeIntervalSince1970 * 1000
-        let userId = self.delegate.user!.uid
-        let tripId = "TRIP-\(userId)-\(timeStamp)"
-        let trip = Trip(tripId: tripId, tripName: tripNameTextField.text!, userId: userId, userEmail: delegate.user!.email!, context: delegate.stack.context)
-        delegate.stack.save()
-        let vc = storyboard?.instantiateViewController(withIdentifier: "NewTripDetailsViewController") as! NewTripDetailsViewController
-        vc.trip = trip
-        navigationController?.pushViewController(vc, animated: true)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "CreateTripDetails" {
+            // Create a Trip model here
+            let timeStamp = Date().timeIntervalSince1970 * 1000
+            let userId = self.delegate.user!.uid
+            let tripId = "TRIP-\(userId)-\(timeStamp)"
+            let trip = Trip(tripId: tripId, tripName: tripNameTextField.text!, userId: userId, userEmail: delegate.user!.email!, context: delegate.stack.context)
+            delegate.stack.save()
+            
+            let vc = segue.destination as! NewTripDetailsViewController
+            vc.trip = trip
+        }
     }
 }
 

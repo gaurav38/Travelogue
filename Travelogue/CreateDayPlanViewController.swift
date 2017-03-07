@@ -17,24 +17,25 @@ class CreateDayPlanViewController: UIViewController {
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var dateView: UIView!
     @IBOutlet weak var activitiesTableView: UITableView!
+    @IBOutlet weak var addItineraryButton: UIButton!
     
-    var locationNumber: Int!
     var dataContainer: NewTripDataContainer!
     var tripDayModel: TripDay!
-    var location: String!
-    var suggestedPlaces = [FoursquarePhoto]()
-    let dateFormatter = DateFormatter()
-    let timeFormatter = DateFormatter()
-    var activities = [TripActivity]()
-    var selectedSuggestedPhoto: FoursquarePhoto?
-    
     let delegate = UIApplication.shared.delegate as! AppDelegate
-    let fourSquareApiHelper = FourSquareApiHelper.instance
+    
+    fileprivate var location: String!
+    fileprivate var suggestedPlaces = [FoursquarePhoto]()
+    fileprivate let dateFormatter = DateFormatter()
+    fileprivate let timeFormatter = DateFormatter()
+    fileprivate var tripDayVisits = [TripVisit]()
+    fileprivate var selectedSuggestedPhoto: FoursquarePhoto?
+    fileprivate let fourSquareApiHelper = FourSquareApiHelper.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
         locationTextField.placeholder = "Enter city:"
         locationTextField.delegate = self
+        addItineraryButton.isEnabled = false
         collectionView.delegate = self
         collectionView.dataSource = self
         dateView.layer.cornerRadius = 37
@@ -72,11 +73,12 @@ class CreateDayPlanViewController: UIViewController {
     
     @IBAction func unWindToHere(_ segue: UIStoryboardSegue) {
         let vc = segue.source as! AddActivityViewController
-        let activity = TripActivity(time: "\(vc.startTime) - \(vc.endTime)", description: vc.activityDescription)
-        let tripVisitModel = TripVisit(place: activity.activityDescription, startTime: vc.startTime, endTime: vc.endTime, context: delegate.stack.context)
+        let tripVisitModel = TripVisit(place: vc.activityDescription, startTime: vc.startTime, endTime: vc.endTime, context: delegate.stack.context)
         tripVisitModel.tripDay = tripDayModel
         delegate.stack.save()
-        activities.append(activity)
+        
+        // Caching these models to prevent more db calls
+        tripDayVisits.append(tripVisitModel)
         activitiesTableView.reloadData()
     }
     
@@ -93,7 +95,7 @@ class CreateDayPlanViewController: UIViewController {
 
 extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return activities.count
+        return tripDayVisits.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -101,31 +103,29 @@ extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSourc
         cell.textLabel?.text = ""
         cell.detailTextLabel?.text = ""
         
-        let activity = activities[indexPath.row]
-        cell.textLabel?.text = activity.activityTime
-        cell.detailTextLabel?.text = activity.activityDescription
+        let activity = tripDayVisits[indexPath.row]
+        cell.textLabel?.text = "\(activity.startTime!) - \(activity.endTime!)"
+        cell.detailTextLabel?.text = activity.place!
         return cell
         
     }
 }
 
 extension CreateDayPlanViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        dataContainer.selectedLocations.append("")
-        textField.text = ""
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        dataContainer.selectedLocations[locationNumber] = textField.text!
-        location = textField.text!
-        tripDayModel.location = location
-        delegate.stack.save()
-        fetchSuggestedLocationPhotos()
+        if textField.text!.characters.count > 0 {
+            addItineraryButton.isEnabled = true
+            dataContainer.selectedLocations.append(textField.text!)
+            location = textField.text!
+            tripDayModel.location = location
+            delegate.stack.save()
+            fetchSuggestedLocationPhotos()
+        }
     }
 }
 
