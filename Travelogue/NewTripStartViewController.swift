@@ -14,11 +14,13 @@ class NewTripStartViewController: UIViewController {
     @IBOutlet weak var doneButton: UIButton!
     
     let delegate = UIApplication.shared.delegate as! AppDelegate
+    let dataContainer = NewTripDataContainer.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tripNameTextField.delegate = self
         doneButton.isEnabled = false
+        dataContainer.reset()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -28,14 +30,16 @@ class NewTripStartViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "CreateTripDetails" {
             // Create a Trip model here
-            let timeStamp = Date().timeIntervalSince1970 * 1000
+            let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
+            let userName = self.delegate.user!.displayName ?? ""
             let userId = self.delegate.user!.uid
-            let tripId = "TRIP-\(userId)-\(timeStamp)"
-            let trip = Trip(tripId: tripId, tripName: tripNameTextField.text!, userId: userId, userEmail: delegate.user!.email!, context: delegate.stack.context)
+            let tripId = "TRIP_\(userId)_\(timeStamp)"
+            let trip = Trip(tripId: tripId, tripName: tripNameTextField.text!, userId: userName, userEmail: delegate.user!.email!, context: delegate.stack.context)
             delegate.stack.save()
+            dataContainer.trip = trip
             
             let vc = segue.destination as! NewTripDetailsViewController
-            vc.trip = trip
+            vc.dataContainer = dataContainer
         }
     }
 }

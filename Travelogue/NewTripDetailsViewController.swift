@@ -25,14 +25,14 @@ class NewTripDetailsViewController: UIViewController {
     let delegate = UIApplication.shared.delegate as! AppDelegate
     var startDate: Date? = nil
     var endDate: Date? = nil
-    var dataContainer = NewTripDataContainer.instance
-    var trip: Trip!
+    var dataContainer: NewTripDataContainer!
     var selectedDate: Date?
     var selectedDateModelInstance: TripDay!
+    fileprivate let firebaseService = FirebaseService.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tripNameLabel.text = trip.name!
+        tripNameLabel.text = dataContainer.trip!.name!
         formatter.dateFormat = "MMM d, yyyy"
         headerFormatter.dateFormat = "MMMM yyyy"
         calendarView.dataSource = self
@@ -72,6 +72,7 @@ class NewTripDetailsViewController: UIViewController {
     }
     
     @IBAction func onDone(_ sender: Any) {
+        firebaseService.save(dataContainer: dataContainer)
         dismiss(animated: true, completion: nil)
     }
     
@@ -206,19 +207,20 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
                     startDateLabel.text = formattedDateString
                 }
             }
-            trip.startDate = startDateLabel.text
-            trip.endDate = endDateLabel.text
+            dataContainer.trip!.startDate = startDateLabel.text
+            dataContainer.trip!.endDate = endDateLabel.text
             self.delegate.stack.save()
             if !dataContainer.selectedDates.contains(formattedDateString) {
                 dataContainer.selectedDates.append(formattedDateString)
                 selectedDate = cellState.date
                 
-                let timeStamp = cellState.date.timeIntervalSince1970 * 1000
+                let timeStamp = Int((cellState.date.timeIntervalSince1970 * 1000).rounded())
                 let userId = self.delegate.user!.uid
-                let tripDayId = "TRIP-\(userId)-\(timeStamp)"
+                let tripDayId = "TRIP_DAY_\(userId)_\(timeStamp)"
                 let tripDay = TripDay(dayId: tripDayId, date: formattedDateString, context: delegate.stack.context)
-                tripDay.trip = trip
+                tripDay.trip = dataContainer.trip!
                 delegate.stack.save()
+                dataContainer.tripDays.append(tripDay)
                 selectedDateModelInstance = tripDay
                 performSegue(withIdentifier: "AddPlanForDay", sender: self)
             }

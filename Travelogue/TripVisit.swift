@@ -2,7 +2,7 @@
 //  TripVisit+CoreDataClass.swift
 //  Travelogue
 //
-//  Created by Gaurav Saraf on 3/5/17.
+//  Created by Gaurav Saraf on 3/8/17.
 //  Copyright © 2017 Gaurav Saraf. All rights reserved.
 //
 
@@ -12,10 +12,11 @@ import CoreData
 
 public class TripVisit: NSManagedObject {
 
-    convenience init(place: String, startTime: String, endTime: String, context: NSManagedObjectContext) {
+    convenience init(id: String, place: String, startTime: String, endTime: String, context: NSManagedObjectContext) {
         
         if let ent = NSEntityDescription.entity(forEntityName: "TripVisit", in: context) {
             self.init(entity: ent, insertInto: context)
+            self.id = id
             self.place = place
             self.startTime = startTime
             self.endTime = endTime

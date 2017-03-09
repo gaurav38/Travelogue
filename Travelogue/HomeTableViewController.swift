@@ -19,6 +19,7 @@ class HomeTableViewController: CoreDataTableViewController, FUIAuthDelegate {
     let delegate = UIApplication.shared.delegate as! AppDelegate
     fileprivate var _refHandle: FIRDatabaseHandle!
     fileprivate var _authHandle: FIRAuthStateDidChangeListenerHandle!
+    fileprivate var firebaseService = FirebaseService.instance
     var displayName = "Anonymous"
     
     override func viewDidLoad() {
@@ -48,9 +49,9 @@ class HomeTableViewController: CoreDataTableViewController, FUIAuthDelegate {
                 // check if the current app user is the current FIRUser
                 if self.delegate.user != activeUser {
                     self.delegate.user = activeUser
-                    //self.signedInStatus(isSignedIn: true)
                     let name = self.delegate.user!.email!.components(separatedBy: "@")[0]
                     self.displayName = name
+                    self.firebaseService.configure(ref: FIRDatabase.database().reference())
                 }
             } else {
                 // user must sign in
@@ -59,15 +60,6 @@ class HomeTableViewController: CoreDataTableViewController, FUIAuthDelegate {
             }
         }
         
-    }
-    
-    func configureDatabase() {
-        ref = FIRDatabase.database().reference()
-//        _refHandle = ref.child("messages").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
-//            self.messages.append(snapshot)
-//            self.messagesTable.insertRows(at: [IndexPath(row: self.messages.count - 1, section: 0)], with: .automatic)
-//            self.scrollToBottomMessage()
-//        }
     }
     
     func configureStorage() {
@@ -102,7 +94,7 @@ extension HomeTableViewController {
         
         // Create the fetch request
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Trip")
-        fr.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true), NSSortDescriptor(key: "startDate", ascending: false)]
+        fr.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: true)]
         
         // Create the FetchResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
@@ -129,6 +121,31 @@ extension HomeTableViewController {
         print(trip.tripDay?.count ?? 0)
         
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowTripDetails" {
+            if let tripDetailsVC = segue.destination as? TripDetailsViewController {
+                
+                // Create Fetch Request
+                let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TripDay")
+                fr.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+                
+                let indexPath = tableView.indexPathForSelectedRow!
+                let trip = fetchedResultsController?.object(at: indexPath) as! Trip
+                
+                let predicate = NSPredicate(format: "trip = %@", [trip])
+                fr.predicate = predicate
+                
+                // Create FetchResultsController
+                let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: fetchedResultsController!.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+                
+                // Inject it into the notesVC
+                tripDetailsVC.fetchedResultsController = fc
+                
+                tripDetailsVC.trip = trip
+            }
+        }
     }
 }
 

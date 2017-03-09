@@ -73,9 +73,13 @@ class CreateDayPlanViewController: UIViewController {
     
     @IBAction func unWindToHere(_ segue: UIStoryboardSegue) {
         let vc = segue.source as! AddActivityViewController
-        let tripVisitModel = TripVisit(place: vc.activityDescription, startTime: vc.startTime, endTime: vc.endTime, context: delegate.stack.context)
+        let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
+        let userId = self.delegate.user!.uid
+        let tripVisitId = "TRIP_VISIT_\(userId)_\(timeStamp)"
+        let tripVisitModel = TripVisit(id: tripVisitId, place: vc.activityDescription, startTime: vc.startTime, endTime: vc.endTime, context: delegate.stack.context)
         tripVisitModel.tripDay = tripDayModel
         delegate.stack.save()
+        dataContainer.tripVisits.append(tripVisitModel)
         
         // Caching these models to prevent more db calls
         tripDayVisits.append(tripVisitModel)
