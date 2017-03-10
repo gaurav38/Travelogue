@@ -44,7 +44,7 @@ class AddActivityViewController: UIViewController {
         }
     }
     
-    var date: String!
+    var date: Date!
     let dateFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     var screenScrolledUp = false
@@ -58,7 +58,7 @@ class AddActivityViewController: UIViewController {
         endTimeTextField.delegate = self
         dateFormatter.dateFormat = "MMM d, yyyy"
         timeFormatter.dateFormat = "h:mm a"
-        let dateComponents = date.components(separatedBy: ", ")
+        let dateComponents = dateFormatter.string(from: date).components(separatedBy: ", ")
         dateLabel.text = dateComponents[0]
         yearLabel.text = dateComponents[1]
         if preSelectedPlace != nil {

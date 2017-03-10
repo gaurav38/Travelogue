@@ -134,6 +134,8 @@ extension HomeTableViewController {
                 let indexPath = tableView.indexPathForSelectedRow!
                 let trip = fetchedResultsController?.object(at: indexPath) as! Trip
                 
+                print(trip.name!)
+                
                 let predicate = NSPredicate(format: "trip = %@", [trip])
                 fr.predicate = predicate
                 

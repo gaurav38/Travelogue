@@ -41,7 +41,7 @@ class CreateDayPlanViewController: UIViewController {
         dateView.layer.cornerRadius = 37
         dateFormatter.dateFormat = "MMM d, yyyy"
         timeFormatter.dateFormat = "h:mm a"
-        let dateString = tripDayModel.date!
+        let dateString = dateFormatter.string(from: tripDayModel.date! as Date)
         let dateComponents = dateString.components(separatedBy: ", ")
         dateLabel.text = dateComponents[0]
         yearLabel.text = dateComponents[1]
@@ -89,7 +89,7 @@ class CreateDayPlanViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddActivity" {
             let vc = segue.destination as! AddActivityViewController
-            vc.date = tripDayModel.date!
+            vc.date = tripDayModel.date! as Date!
             if selectedSuggestedPhoto != nil {
                 vc.preSelectedPlace = selectedSuggestedPhoto?.photoDescription
             }

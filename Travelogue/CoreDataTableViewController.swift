@@ -19,6 +19,7 @@ class CoreDataTableViewController: UITableViewController {
         didSet {
             // Whenever the frc changes, we execute the search and
             // reload the table
+            fetchedResultsController?.delegate = nil
             fetchedResultsController?.delegate = self
             executeSearch()
             tableView.reloadData()

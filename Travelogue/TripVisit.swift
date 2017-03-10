@@ -2,7 +2,7 @@
 //  TripVisit+CoreDataClass.swift
 //  Travelogue
 //
-//  Created by Gaurav Saraf on 3/8/17.
+//  Created by Gaurav Saraf on 3/9/17.
 //  Copyright © 2017 Gaurav Saraf. All rights reserved.
 //
 

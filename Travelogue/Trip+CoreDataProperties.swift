@@ -2,7 +2,7 @@
 //  Trip+CoreDataProperties.swift
 //  Travelogue
 //
-//  Created by Gaurav Saraf on 3/5/17.
+//  Created by Gaurav Saraf on 3/9/17.
 //  Copyright © 2017 Gaurav Saraf. All rights reserved.
 //
 
@@ -16,13 +16,13 @@ extension Trip {
         return NSFetchRequest<Trip>(entityName: "Trip");
     }
 
+    @NSManaged public var createByUseremail: String?
+    @NSManaged public var createdByUsername: String?
+    @NSManaged public var duration: Int16
+    @NSManaged public var endDate: NSDate?
     @NSManaged public var id: String?
     @NSManaged public var name: String?
-    @NSManaged public var startDate: String?
-    @NSManaged public var endDate: String?
-    @NSManaged public var duration: Int16
-    @NSManaged public var createdByUsername: String?
-    @NSManaged public var createByUseremail: String?
+    @NSManaged public var startDate: NSDate?
     @NSManaged public var tripDay: NSSet?
 
 }

@@ -12,11 +12,17 @@ import CoreData
 
 class TripDetailsViewController: CoreDataTableViewController {
     
-    var trip: Trip!
+    var trip: Trip?
+    var dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = trip.name!
+        dateFormatter.dateFormat = "MMM dd, yyyy"
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationItem.title = trip?.name ?? ""
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -31,7 +37,7 @@ class TripDetailsViewController: CoreDataTableViewController {
         print(tripDay.location!)
         print(tripDay.date!)
         cell.textLabel?.text = tripDay.location!
-        cell.detailTextLabel?.text = tripDay.date!
+        cell.detailTextLabel?.text = dateFormatter.string(from: tripDay.date! as Date)
         
         return cell
     }

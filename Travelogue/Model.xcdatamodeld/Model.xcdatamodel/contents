@@ -4,14 +4,14 @@
         <attribute name="createByUseremail" attributeType="String" syncable="YES"/>
         <attribute name="createdByUsername" attributeType="String" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="endDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="id" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="startDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="tripDay" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TripDay" inverseName="trip" inverseEntity="TripDay" syncable="YES"/>
     </entity>
     <entity name="TripDay" representedClassName=".TripDay" syncable="YES">
-        <attribute name="date" attributeType="String" syncable="YES"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="id" attributeType="String" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="trip" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Trip" inverseName="tripDay" inverseEntity="Trip" syncable="YES"/>

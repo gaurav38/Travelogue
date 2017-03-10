@@ -207,8 +207,8 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
                     startDateLabel.text = formattedDateString
                 }
             }
-            dataContainer.trip!.startDate = startDateLabel.text
-            dataContainer.trip!.endDate = endDateLabel.text
+            dataContainer.trip!.startDate = startDate as NSDate?
+            dataContainer.trip!.endDate = endDate as NSDate?
             self.delegate.stack.save()
             if !dataContainer.selectedDates.contains(formattedDateString) {
                 dataContainer.selectedDates.append(formattedDateString)
@@ -217,7 +217,7 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
                 let timeStamp = Int((cellState.date.timeIntervalSince1970 * 1000).rounded())
                 let userId = self.delegate.user!.uid
                 let tripDayId = "TRIP_DAY_\(userId)_\(timeStamp)"
-                let tripDay = TripDay(dayId: tripDayId, date: formattedDateString, context: delegate.stack.context)
+                let tripDay = TripDay(dayId: tripDayId, date: date, context: delegate.stack.context)
                 tripDay.trip = dataContainer.trip!
                 delegate.stack.save()
                 dataContainer.tripDays.append(tripDay)

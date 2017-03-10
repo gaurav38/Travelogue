@@ -36,15 +36,23 @@ class FirebaseService {
     }
     
     fileprivate func save(trip: Trip) {
-        let startDateMillis = Int(((dateFormatter.date(from: trip.startDate!)?.timeIntervalSince1970)! * 1000).rounded())
         var mdata = [String: AnyObject]()
         mdata["id"] = trip.id! as AnyObject
         mdata["name"] = trip.name! as AnyObject
-        mdata["startDate"] = trip.startDate! as AnyObject
-        mdata["endDate"] = trip.endDate! as AnyObject
+        if let startDate = trip.startDate {
+            mdata["startDate"] = dateFormatter.string(from: startDate as Date) as AnyObject
+            let startDateMillis = Int((trip.startDate!.timeIntervalSince1970 * 1000).rounded())
+            mdata["startDateMillis"] = startDateMillis as AnyObject
+        } else {
+            mdata["startDate"] = "" as AnyObject
+        }
+        if let endDate = trip.endDate {
+            mdata["endDate"] = dateFormatter.string(from: endDate as Date) as AnyObject
+        } else {
+            mdata["endDate"] = "" as AnyObject
+        }
         mdata["createdByUsername"] = trip.createdByUsername! as AnyObject
         mdata["createdByUseremail"] = trip.createByUseremail! as AnyObject
-        mdata["startDateMillis"] = startDateMillis as AnyObject
         
         var dataForFirebase = [String: AnyObject]()
         dataForFirebase[trip.id!] = mdata as AnyObject?
@@ -57,7 +65,7 @@ class FirebaseService {
             let tripId = tripDay.trip?.id!
             var mdata = [String: String]()
             mdata["id"] = tripDay.id!
-            mdata["date"] = tripDay.date!
+            mdata["date"] = dateFormatter.string(from: tripDay.date! as Date)
             ref.child("trip_days").child(tripId!).child(tripDay.id!).setValue(mdata)
         }
     }
