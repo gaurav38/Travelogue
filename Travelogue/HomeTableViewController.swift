@@ -132,12 +132,16 @@ extension HomeTableViewController {
                 fr.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
                 
                 let indexPath = tableView.indexPathForSelectedRow!
-                let trip = fetchedResultsController?.object(at: indexPath) as! Trip
+                let selectedTrip = fetchedResultsController?.object(at: indexPath) as! Trip
                 
-                print(trip.name!)
-                
-                let predicate = NSPredicate(format: "trip = %@", [trip])
+                let predicate = NSPredicate(format: "trip = %@", [selectedTrip])
                 fr.predicate = predicate
+                
+                for tripDay in selectedTrip.tripDay! {
+                    let tripD = tripDay as! TripDay
+                    print(tripD.date!)
+                    print(tripD.location!)
+                }
                 
                 // Create FetchResultsController
                 let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: fetchedResultsController!.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -145,7 +149,7 @@ extension HomeTableViewController {
                 // Inject it into the notesVC
                 tripDetailsVC.fetchedResultsController = fc
                 
-                tripDetailsVC.trip = trip
+                tripDetailsVC.trip = selectedTrip
             }
         }
     }

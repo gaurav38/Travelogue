@@ -56,7 +56,6 @@ class FirebaseService {
         
         var dataForFirebase = [String: AnyObject]()
         dataForFirebase[trip.id!] = mdata as AnyObject?
-        print(dataForFirebase)
         ref.child("trips").childByAutoId().setValue(dataForFirebase)
     }
     
