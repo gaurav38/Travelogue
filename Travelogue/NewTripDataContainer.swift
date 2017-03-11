@@ -14,6 +14,8 @@ class NewTripDataContainer {
     // These will be used to do some fancy UI work
     var selectedDates = [String]()
     var selectedLocations = [String]()
+    var tripId: String!
+    var tripName: String!
     
     // These will hold references to all the models created and will be used to sync new trip to Firebase at the end
     var trip: Trip?

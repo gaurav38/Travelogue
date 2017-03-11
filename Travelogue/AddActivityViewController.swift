@@ -18,25 +18,8 @@ class AddActivityViewController: UIViewController {
     @IBOutlet weak var endTimeTextField: UITextField!
     @IBOutlet weak var selectTimeButton: UIButton!
     
-    var startTime: String {
-        get {
-            if startTimeTextField.text == nil || startTimeTextField.text == "" {
-                return ""
-            } else {
-                return startTimeTextField.text!
-            }
-        }
-    }
-    
-    var endTime: String {
-        get {
-            if endTimeTextField.text == nil || endTimeTextField.text == "" {
-                return ""
-            } else {
-                return endTimeTextField.text!
-            }
-        }
-    }
+    var startTime: Date?
+    var endTime: Date?
     
     var activityDescription: String {
         get {
@@ -69,10 +52,12 @@ class AddActivityViewController: UIViewController {
     @IBAction func selectTime(_ sender: Any) {
         if selectingStartTime {
             startTimeTextField.text = timeFormatter.string(from: datePicker.date)
+            startTime = datePicker.date
             selectingStartTime = false
             selectTimeButton.setTitle("Select end time", for: UIControlState.normal)
         } else {
             endTimeTextField.text = timeFormatter.string(from: datePicker.date)
+            endTime = datePicker.date
             selectingStartTime = true
             selectTimeButton.setTitle("Select start time", for: UIControlState.normal)
         }

@@ -15,6 +15,7 @@ class NewTripStartViewController: UIViewController {
     
     let delegate = UIApplication.shared.delegate as! AppDelegate
     let dataContainer = NewTripDataContainer.instance
+    let firebaseService = FirebaseService.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,15 +32,15 @@ class NewTripStartViewController: UIViewController {
         if segue.identifier == "CreateTripDetails" {
             // Create a Trip model here
             let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
-            let userName = self.delegate.user!.displayName ?? ""
             let userId = self.delegate.user!.uid
             let tripId = "TRIP_\(userId)_\(timeStamp)"
-            let trip = Trip(tripId: tripId, tripName: tripNameTextField.text!, userId: userName, userEmail: delegate.user!.email!, context: delegate.stack.context)
-            delegate.stack.save()
-            dataContainer.trip = trip
+            firebaseService.createTrip(id: tripId, name: tripNameTextField.text!)
+            dataContainer.tripId = tripId
+            dataContainer.tripName = tripNameTextField.text!
             
             let vc = segue.destination as! NewTripDetailsViewController
             vc.dataContainer = dataContainer
+            vc.firebaseService = firebaseService
         }
     }
 }

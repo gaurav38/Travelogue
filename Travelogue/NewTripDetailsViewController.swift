@@ -25,14 +25,15 @@ class NewTripDetailsViewController: UIViewController {
     let delegate = UIApplication.shared.delegate as! AppDelegate
     var startDate: Date? = nil
     var endDate: Date? = nil
-    var dataContainer: NewTripDataContainer!
     var selectedDate: Date?
+    var selectedTripDayId: String?
     var selectedDateModelInstance: TripDay!
-    fileprivate let firebaseService = FirebaseService.instance
+    var dataContainer: NewTripDataContainer!
+    var firebaseService: FirebaseService!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tripNameLabel.text = dataContainer.trip!.name!
+        tripNameLabel.text = dataContainer.tripName
         formatter.dateFormat = "MMM d, yyyy"
         headerFormatter.dateFormat = "MMMM yyyy"
         calendarView.dataSource = self
@@ -72,7 +73,6 @@ class NewTripDetailsViewController: UIViewController {
     }
     
     @IBAction func onDone(_ sender: Any) {
-        firebaseService.save(dataContainer: dataContainer)
         dismiss(animated: true, completion: nil)
     }
     
@@ -83,7 +83,9 @@ class NewTripDetailsViewController: UIViewController {
             let vc = segue.destination as! CreateDayPlanViewController
             
             vc.dataContainer = dataContainer
-            vc.tripDayModel = selectedDateModelInstance
+            vc.tripDay = selectedTripDayId!
+            vc.date = selectedDate!
+            vc.firebaseService = firebaseService
         }
      }
 }
@@ -207,9 +209,15 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
                     startDateLabel.text = formattedDateString
                 }
             }
-            dataContainer.trip!.startDate = startDate as NSDate?
-            dataContainer.trip!.endDate = endDate as NSDate?
-            self.delegate.stack.save()
+            
+            if let startDate = startDate {
+                firebaseService.updateTripStartDate(for: dataContainer.tripId, startDate: startDate)
+            }
+            if let endDate = endDate {
+                firebaseService.updateTripEndDate(for: dataContainer.tripId, endDate: endDate)
+            }
+            
+            
             if !dataContainer.selectedDates.contains(formattedDateString) {
                 dataContainer.selectedDates.append(formattedDateString)
                 selectedDate = cellState.date
@@ -217,11 +225,8 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
                 let timeStamp = Int((cellState.date.timeIntervalSince1970 * 1000).rounded())
                 let userId = self.delegate.user!.uid
                 let tripDayId = "TRIP_DAY_\(userId)_\(timeStamp)"
-                let tripDay = TripDay(dayId: tripDayId, date: date, context: delegate.stack.context)
-                tripDay.trip = dataContainer.trip!
-                delegate.stack.save()
-                dataContainer.tripDays.append(tripDay)
-                selectedDateModelInstance = tripDay
+                firebaseService.createTripDay(for: dataContainer.tripId, id: tripDayId, location: "", date: selectedDate!)
+                selectedTripDayId = tripDayId
                 performSegue(withIdentifier: "AddPlanForDay", sender: self)
             }
 

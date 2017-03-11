@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class TripDetailsViewController: CoreDataTableViewController {
+class TripDetailsViewController: UITableViewController {
     
     var trip: Trip?
     var tripDays = [TripDay]()
@@ -19,13 +19,6 @@ class TripDetailsViewController: CoreDataTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dateFormatter.dateFormat = "MMM dd, yyyy"
-        
-//        if let trip = trip {
-//            for day in trip.tripDay! {
-//                let tripDay = day as! TripDay
-//                tripDays.append(tripDay)
-//            }
-//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -41,8 +34,8 @@ class TripDetailsViewController: CoreDataTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Find the notebook
-        let tripDay = fetchedResultsController!.object(at: indexPath) as! TripDay
-        //let tripDay = tripDays[indexPath.row]
+        //let tripDay = fetchedResultsController!.object(at: indexPath) as! TripDay
+        let tripDay = tripDays[indexPath.row]
         
         // Create the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "TripDayCell", for: indexPath)

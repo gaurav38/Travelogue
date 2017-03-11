@@ -20,10 +20,13 @@ class CreateDayPlanViewController: UIViewController {
     @IBOutlet weak var addItineraryButton: UIButton!
     
     var dataContainer: NewTripDataContainer!
-    var tripDayModel: TripDay!
+    var tripDay: String!
+    var date: Date!
+    var firebaseService: FirebaseService!
     let delegate = UIApplication.shared.delegate as! AppDelegate
+    var tripDayLocation: String?
     
-    fileprivate var location: String!
+    fileprivate var location: String?
     fileprivate var suggestedPlaces = [FoursquarePhoto]()
     fileprivate let dateFormatter = DateFormatter()
     fileprivate let timeFormatter = DateFormatter()
@@ -41,7 +44,7 @@ class CreateDayPlanViewController: UIViewController {
         dateView.layer.cornerRadius = 37
         dateFormatter.dateFormat = "MMM d, yyyy"
         timeFormatter.dateFormat = "h:mm a"
-        let dateString = dateFormatter.string(from: tripDayModel.date! as Date)
+        let dateString = dateFormatter.string(from: date as Date)
         let dateComponents = dateString.components(separatedBy: ", ")
         dateLabel.text = dateComponents[0]
         yearLabel.text = dateComponents[1]
@@ -76,20 +79,17 @@ class CreateDayPlanViewController: UIViewController {
         let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
         let userId = self.delegate.user!.uid
         let tripVisitId = "TRIP_VISIT_\(userId)_\(timeStamp)"
-        let tripVisitModel = TripVisit(id: tripVisitId, place: vc.activityDescription, startTime: vc.startTime, endTime: vc.endTime, context: delegate.stack.context)
-        tripVisitModel.tripDay = tripDayModel
-        delegate.stack.save()
-        dataContainer.tripVisits.append(tripVisitModel)
+        firebaseService.createTripDayVisit(for: tripDay, id: tripVisitId, location: location ?? "", place: vc.activityDescription, startTime: vc.startTime!, endTime: vc.endTime!)
+    
         
         // Caching these models to prevent more db calls
-        tripDayVisits.append(tripVisitModel)
         activitiesTableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddActivity" {
             let vc = segue.destination as! AddActivityViewController
-            vc.date = tripDayModel.date! as Date!
+            vc.date = date
             if selectedSuggestedPhoto != nil {
                 vc.preSelectedPlace = selectedSuggestedPhoto?.photoDescription
             }
@@ -126,7 +126,7 @@ extension CreateDayPlanViewController: UITextFieldDelegate {
             addItineraryButton.isEnabled = true
             dataContainer.selectedLocations.append(textField.text!)
             location = textField.text!
-            tripDayModel.location = location
+            firebaseService.updateTripDayLocation(for: dataContainer.tripId, tripDayId: tripDay, location: location!)
             delegate.stack.save()
             fetchSuggestedLocationPhotos()
         }
@@ -135,7 +135,7 @@ extension CreateDayPlanViewController: UITextFieldDelegate {
 
 extension CreateDayPlanViewController {
     func fetchSuggestedLocationPhotos() {
-        fourSquareApiHelper.getPhotosNear(location: location) { (success, photos) in
+        fourSquareApiHelper.getPhotosNear(location: location!) { (success, photos) in
             if let photos = photos {
                 self.suggestedPlaces = photos
                 DispatchQueue.main.async {
