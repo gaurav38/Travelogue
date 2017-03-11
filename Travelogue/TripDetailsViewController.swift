@@ -9,42 +9,57 @@
 import Foundation
 import UIKit
 import CoreData
+import Firebase
 
 class TripDetailsViewController: UITableViewController {
     
-    var trip: Trip?
-    var tripDays = [TripDay]()
-    var dateFormatter = DateFormatter()
+    var tripId: String!
+    var tripDays: [FIRDataSnapshot]! = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dateFormatter.dateFormat = "MMM dd, yyyy"
+        configureDatabase()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        navigationItem.title = trip?.name ?? ""
+    func configureDatabase() {
+        let ref = FIRDatabase.database().reference()
+        print(tripId)
+        ref.child("trip_days").child(tripId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            self.tripDays.append(snapshot)
+            self.tableView.insertRows(at: [IndexPath(row: self.tripDays.count - 1, section: 0)], with: .automatic)
+        }
     }
     
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        print(tripDays.count)
-//        return tripDays.count
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowTripDayDetails" {
+            let vc = segue.destination as! TripDayDetailsViewController
+            
+            let selectedIndex = tableView.indexPathForSelectedRow!
+            let selectedTripDay = tripDays[selectedIndex.row].value as! [String: String]
+            vc.tripDayId = selectedTripDay["id"]
+            vc.tripDayDate = selectedTripDay["date"]
+            vc.tripDayLocation = selectedTripDay["location"]
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(tripDays.count)
+        return tripDays.count
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        // Find the notebook
-        //let tripDay = fetchedResultsController!.object(at: indexPath) as! TripDay
-        let tripDay = tripDays[indexPath.row]
-        
         // Create the cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "TripDayCell", for: indexPath)
         
         // Sync tripDay -> cell
-        print(tripDay.location!)
-        print(tripDay.date!)
-        cell.textLabel?.text = tripDay.location!
-        cell.detailTextLabel?.text = dateFormatter.string(from: tripDay.date! as Date)
+        let tripDay = tripDays[indexPath.row].value as! [String: String]
+        print(tripDay)
+        if let location = tripDay["location"] {
+            cell.textLabel?.text = location
+            cell.detailTextLabel?.text = tripDay["date"]
+        } else {
+            cell.textLabel?.text = tripDay["date"]
+        }
         
         return cell
     }

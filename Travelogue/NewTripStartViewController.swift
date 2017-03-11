@@ -28,6 +28,10 @@ class NewTripStartViewController: UIViewController {
         view.endEditing(true)
     }
     
+    @IBAction func onCancel(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "CreateTripDetails" {
             // Create a Trip model here

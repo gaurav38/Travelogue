@@ -26,6 +26,8 @@
 		C67F06D81E723C230079AFC8 /* TripDay+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67F06D21E723C230079AFC8 /* TripDay+CoreDataProperties.swift */; };
 		C67F06D91E723C230079AFC8 /* TripVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67F06D31E723C230079AFC8 /* TripVisit.swift */; };
 		C67F06DA1E723C230079AFC8 /* TripVisit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67F06D41E723C230079AFC8 /* TripVisit+CoreDataProperties.swift */; };
+		C67F06DC1E74886C0079AFC8 /* TripDayDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67F06DB1E74886C0079AFC8 /* TripDayDetailsViewController.swift */; };
+		C67F06DE1E749BF50079AFC8 /* TripDayDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67F06DD1E749BF50079AFC8 /* TripDayDetailsTableViewCell.swift */; };
 		C68002AD1E6B4F2B00362353 /* AddActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002AC1E6B4F2B00362353 /* AddActivityViewController.swift */; };
 		C68002AF1E6B7E1800362353 /* TripActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002AE1E6B7E1800362353 /* TripActivity.swift */; };
 		C68002B61E6C686600362353 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C68002B41E6C686600362353 /* Model.xcdatamodeld */; };
@@ -70,6 +72,8 @@
 		C67F06D21E723C230079AFC8 /* TripDay+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TripDay+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C67F06D31E723C230079AFC8 /* TripVisit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripVisit.swift; sourceTree = "<group>"; };
 		C67F06D41E723C230079AFC8 /* TripVisit+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TripVisit+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C67F06DB1E74886C0079AFC8 /* TripDayDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDayDetailsViewController.swift; sourceTree = "<group>"; };
+		C67F06DD1E749BF50079AFC8 /* TripDayDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDayDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		C68002AC1E6B4F2B00362353 /* AddActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityViewController.swift; sourceTree = "<group>"; };
 		C68002AE1E6B7E1800362353 /* TripActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripActivity.swift; sourceTree = "<group>"; };
 		C68002B51E6C686600362353 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -136,6 +140,7 @@
 				C61761AF1E5E88CA0041F23F /* CalendarCellView.swift */,
 				C6E42A1D1E6B33B0001B183C /* AddActivityView.xib */,
 				C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */,
+				C67F06DD1E749BF50079AFC8 /* TripDayDetailsTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -231,6 +236,7 @@
 				C68002C51E6C8D4000362353 /* NewTripStartViewController.swift */,
 				C68002C71E6CA6EF00362353 /* CoreDataTableViewController.swift */,
 				C68002E11E6E55A000362353 /* TripDetailsViewController.swift */,
+				C67F06DB1E74886C0079AFC8 /* TripDayDetailsViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -366,6 +372,7 @@
 				C6E9F0031E57DF4100DE2C21 /* HomeTableViewController.swift in Sources */,
 				C67F06CA1E6F9F3B0079AFC8 /* FirebaseService.swift in Sources */,
 				C68002AD1E6B4F2B00362353 /* AddActivityViewController.swift in Sources */,
+				C67F06DE1E749BF50079AFC8 /* TripDayDetailsTableViewCell.swift in Sources */,
 				C6D4AFCF1E665E4400F2B092 /* BetterLabel.swift in Sources */,
 				C6D4AFD41E67B62F00F2B092 /* ColorResources.swift in Sources */,
 				C68002C61E6C8D4000362353 /* NewTripStartViewController.swift in Sources */,
@@ -389,6 +396,7 @@
 				C61761B51E6354AF0041F23F /* BetterTextField.swift in Sources */,
 				C6C1B9CF1E6B401500D265B6 /* AddActivityView.swift in Sources */,
 				C68002B61E6C686600362353 /* Model.xcdatamodeld in Sources */,
+				C67F06DC1E74886C0079AFC8 /* TripDayDetailsViewController.swift in Sources */,
 				C67F06D81E723C230079AFC8 /* TripDay+CoreDataProperties.swift in Sources */,
 				C68002AF1E6B7E1800362353 /* TripActivity.swift in Sources */,
 				C61761B21E5E919D0041F23F /* ColorExtensions.swift in Sources */,

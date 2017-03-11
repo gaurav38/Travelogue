@@ -16,8 +16,7 @@ class FirebaseService {
     static let TRIPDAYS_NODE = "trip_days"
     static let TRIPVISITS_NODE = "trip_visits"
     
-    var ref: FIRDatabaseReference!
-    
+    fileprivate var ref: FIRDatabaseReference!
     fileprivate let dateFormatter = DateFormatter()
     fileprivate let timeFormatter = DateFormatter()
     
@@ -62,10 +61,11 @@ class FirebaseService {
         ref.child(FirebaseService.TRIPDAYS_NODE).child(trip).child(tripDayId).child("location").setValue(location)
     }
     
-    func createTripDayVisit(for tripDay: String, id: String, location: String, place: String, startTime: Date, endTime: Date) {
+    func createTripDayVisit(for tripDay: String, id: String, location: String, place: String, photoUrl: String, startTime: Date, endTime: Date) {
         let mdata = ["id" : id,
                      "location" : location,
                      "place" : place,
+                     "photoUrl" : photoUrl,
                      "startTime" : timeFormatter.string(from: startTime),
                      "endTime" : timeFormatter.string(from: endTime)]
         ref.child(FirebaseService.TRIPVISITS_NODE).child(tripDay).child(id).setValue(mdata)

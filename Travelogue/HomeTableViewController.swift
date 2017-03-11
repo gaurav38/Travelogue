@@ -27,10 +27,6 @@ class HomeTableViewController: UITableViewController, FUIAuthDelegate {
         super.viewDidLoad()
         configureAuth()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     
     // MARK: Config
     
@@ -106,7 +102,6 @@ extension HomeTableViewController {
         let tripSnapshot: FIRDataSnapshot = trips[indexPath.row]
         let trip = tripSnapshot.value as! [String: AnyObject]
         
-        print(trip)
         cell.textLabel?.text = trip["name"] as? String ?? ""
         
         let startDate = trip["startDate"] as! String
@@ -121,6 +116,18 @@ extension HomeTableViewController {
         }
         
         return cell!
+    }
+}
+
+extension HomeTableViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowTripDetails" {
+            let vc = segue.destination as! TripDetailsViewController
+            
+            let indexPath = tableView.indexPathForSelectedRow!
+            let trip = trips[indexPath.row].value as! [String: AnyObject]
+            vc.tripId = trip["id"] as! String
+        }
     }
 }
 

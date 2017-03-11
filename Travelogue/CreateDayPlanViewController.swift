@@ -32,7 +32,7 @@ class CreateDayPlanViewController: UIViewController {
     fileprivate let dateFormatter = DateFormatter()
     fileprivate let timeFormatter = DateFormatter()
     fileprivate var tripDayVisits: [FIRDataSnapshot]! = []
-    fileprivate var selectedSuggestedPhoto: FoursquarePhoto?
+    fileprivate var selectedSuggestedPlace: FoursquarePhoto?
     fileprivate let fourSquareApiHelper = FourSquareApiHelper.instance
     
     override func viewDidLoad() {
@@ -78,7 +78,7 @@ class CreateDayPlanViewController: UIViewController {
     
     func configureTripDayVisitsObserver() {
         print("Adding observer for \(tripDay)")
-        firebaseService.ref.child("trip_visits").child(tripDay).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+        FIRDatabase.database().reference().child("trip_visits").child(tripDay).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.tripDayVisits.append(snapshot)
             self.activitiesTableView.reloadData()
         }
@@ -89,15 +89,15 @@ class CreateDayPlanViewController: UIViewController {
         let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
         let userId = self.delegate.user!.uid
         let tripVisitId = "TRIP_VISIT_\(userId)_\(timeStamp)"
-        firebaseService.createTripDayVisit(for: tripDay, id: tripVisitId, location: location ?? "", place: vc.activityDescription, startTime: vc.startTime!, endTime: vc.endTime!)
+        firebaseService.createTripDayVisit(for: tripDay, id: tripVisitId, location: location ?? "", place: vc.activityDescription, photoUrl: vc.selectedPlaceUrl, startTime: vc.startTime!, endTime: vc.endTime!)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddActivity" {
             let vc = segue.destination as! AddActivityViewController
             vc.date = date
-            if selectedSuggestedPhoto != nil {
-                vc.preSelectedPlace = selectedSuggestedPhoto?.photoDescription
+            if selectedSuggestedPlace != nil {
+                vc.preSelectedPlace = selectedSuggestedPlace
             }
         }
     }
@@ -193,18 +193,18 @@ extension CreateDayPlanViewController: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedSuggestedPhoto = suggestedPlaces[indexPath.row]
-        if selectedSuggestedPhoto!.isLoaded {
+        selectedSuggestedPlace = suggestedPlaces[indexPath.row]
+        if selectedSuggestedPlace!.isLoaded {
             let newView = UIView()
             newView.frame = self.view.frame
             newView.backgroundColor = .black
             
             let newImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
-            newImageView.image = selectedSuggestedPhoto!.photo
+            newImageView.image = selectedSuggestedPlace!.photo
             newImageView.contentMode = .scaleAspectFit
             
             let label = BetterLabel(frame: CGRect(x: 0, y: -(self.view.frame.height/2) + 40, width: self.view.frame.width, height: self.view.frame.height))
-            label.text = selectedSuggestedPhoto!.photoDescription
+            label.text = selectedSuggestedPlace!.photoDescription
             label.textAlignment = NSTextAlignment.center
             label.textColor = .white
             label.font.withSize(16)
@@ -232,7 +232,7 @@ extension CreateDayPlanViewController {
     func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
         sender.view?.removeFromSuperview()
         self.navigationController?.isNavigationBarHidden = false
-        selectedSuggestedPhoto = nil
+        selectedSuggestedPlace = nil
     }
     
     func addActivityForSelectedPlace() {

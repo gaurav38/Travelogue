@@ -17,6 +17,7 @@ class AddActivityViewController: UIViewController {
     @IBOutlet weak var startTimeTextField: UITextField!
     @IBOutlet weak var endTimeTextField: UITextField!
     @IBOutlet weak var selectTimeButton: UIButton!
+    @IBOutlet weak var selectedPlaceImageView: UIImageView!
     
     var startTime: Date?
     var endTime: Date?
@@ -27,11 +28,21 @@ class AddActivityViewController: UIViewController {
         }
     }
     
+    var selectedPlaceUrl: String {
+        get {
+            if let preSelectedPlace = preSelectedPlace {
+                return preSelectedPlace.photoUrl
+            } else {
+                return ""
+            }
+        }
+    }
+    
     var date: Date!
     let dateFormatter = DateFormatter()
     let timeFormatter = DateFormatter()
     var screenScrolledUp = false
-    var preSelectedPlace: String?
+    var preSelectedPlace: FoursquarePhoto?
     var selectingStartTime = true
     
     override func viewDidLoad() {
@@ -44,8 +55,9 @@ class AddActivityViewController: UIViewController {
         let dateComponents = dateFormatter.string(from: date).components(separatedBy: ", ")
         dateLabel.text = dateComponents[0]
         yearLabel.text = dateComponents[1]
-        if preSelectedPlace != nil {
-            activityTextField.text = preSelectedPlace
+        if let preSelectedPlace = preSelectedPlace {
+            activityTextField.text = preSelectedPlace.photoDescription
+            selectedPlaceImageView.image = preSelectedPlace.photo
         }
     }
     
