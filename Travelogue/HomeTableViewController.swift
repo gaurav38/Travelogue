@@ -66,7 +66,7 @@ class HomeTableViewController: UITableViewController, FUIAuthDelegate {
     func configureDatabase() {
         ref = FIRDatabase.database().reference()
         self.firebaseService.configure(ref: ref)
-        _refHandle = ref.child("trips").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+        _refHandle = ref.child("trips").child((delegate.user?.uid)!).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.trips.append(snapshot)
             self.tableView.insertRows(at: [IndexPath(row: self.trips.count - 1, section: 0)], with: .automatic)
         }
@@ -103,9 +103,8 @@ extension HomeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: "TripCell", for: indexPath)
-        let messageSnapshot: FIRDataSnapshot = trips[indexPath.row]
-        let tripDict = messageSnapshot.value as! [String: AnyObject]
-        let trip = tripDict.values.first as! [String: AnyObject]
+        let tripSnapshot: FIRDataSnapshot = trips[indexPath.row]
+        let trip = tripSnapshot.value as! [String: AnyObject]
         
         print(trip)
         cell.textLabel?.text = trip["name"] as? String ?? ""
