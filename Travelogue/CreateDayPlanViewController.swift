@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class CreateDayPlanViewController: UIViewController {
 
@@ -30,7 +31,7 @@ class CreateDayPlanViewController: UIViewController {
     fileprivate var suggestedPlaces = [FoursquarePhoto]()
     fileprivate let dateFormatter = DateFormatter()
     fileprivate let timeFormatter = DateFormatter()
-    fileprivate var tripDayVisits = [TripVisit]()
+    fileprivate var tripDayVisits: [FIRDataSnapshot]! = []
     fileprivate var selectedSuggestedPhoto: FoursquarePhoto?
     fileprivate let fourSquareApiHelper = FourSquareApiHelper.instance
     
@@ -51,6 +52,7 @@ class CreateDayPlanViewController: UIViewController {
         updateItemSizeBasedOnOrientation()
         activitiesTableView.delegate = self
         activitiesTableView.dataSource = self
+        configureTripDayVisitsObserver()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -74,16 +76,20 @@ class CreateDayPlanViewController: UIViewController {
         }
     }
     
+    func configureTripDayVisitsObserver() {
+        print("Adding observer for \(tripDay)")
+        firebaseService.ref.child("trip_visits").child(tripDay).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            self.tripDayVisits.append(snapshot)
+            self.activitiesTableView.reloadData()
+        }
+    }
+    
     @IBAction func unWindToHere(_ segue: UIStoryboardSegue) {
         let vc = segue.source as! AddActivityViewController
         let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
         let userId = self.delegate.user!.uid
         let tripVisitId = "TRIP_VISIT_\(userId)_\(timeStamp)"
         firebaseService.createTripDayVisit(for: tripDay, id: tripVisitId, location: location ?? "", place: vc.activityDescription, startTime: vc.startTime!, endTime: vc.endTime!)
-    
-        
-        // Caching these models to prevent more db calls
-        activitiesTableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -104,12 +110,20 @@ extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCell")! as UITableViewCell
-        cell.textLabel?.text = ""
-        cell.detailTextLabel?.text = ""
+        let tripDayVisitSnapshot: FIRDataSnapshot = tripDayVisits[indexPath.row]
+        let tripDayVisit = tripDayVisitSnapshot.value as! [String: String]
         
-        let activity = tripDayVisits[indexPath.row]
-        cell.textLabel?.text = "\(activity.startTime!) - \(activity.endTime!)"
-        cell.detailTextLabel?.text = activity.place!
+        print(tripDayVisit)
+        
+        cell.textLabel?.text = tripDayVisit["place"]
+        if let startTime = tripDayVisit["startTime"] {
+            if let endTime = tripDayVisit["endTime"] {
+                cell.detailTextLabel?.text = "\(startTime) - \(endTime)"
+            } else {
+                cell.detailTextLabel?.text = "\(startTime) -"
+            }
+        }
+        
         return cell
         
     }

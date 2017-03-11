@@ -16,7 +16,8 @@ class FirebaseService {
     static let TRIPDAYS_NODE = "trip_days"
     static let TRIPVISITS_NODE = "trip_visits"
     
-    fileprivate var ref: FIRDatabaseReference!
+    var ref: FIRDatabaseReference!
+    
     fileprivate let dateFormatter = DateFormatter()
     fileprivate let timeFormatter = DateFormatter()
     

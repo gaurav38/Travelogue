@@ -222,7 +222,7 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
                 dataContainer.selectedDates.append(formattedDateString)
                 selectedDate = cellState.date
                 
-                let timeStamp = Int((cellState.date.timeIntervalSince1970 * 1000).rounded())
+                let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
                 let userId = self.delegate.user!.uid
                 let tripDayId = "TRIP_DAY_\(userId)_\(timeStamp)"
                 firebaseService.createTripDay(for: dataContainer.tripId, id: tripDayId, location: "", date: selectedDate!)
