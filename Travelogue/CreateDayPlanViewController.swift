@@ -195,6 +195,7 @@ extension CreateDayPlanViewController: UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedSuggestedPlace = suggestedPlaces[indexPath.row]
         if selectedSuggestedPlace!.isLoaded {
+            self.navigationController?.isNavigationBarHidden = true
             let newView = UIView()
             newView.frame = self.view.frame
             newView.backgroundColor = .black
@@ -223,7 +224,6 @@ extension CreateDayPlanViewController: UICollectionViewDelegate, UICollectionVie
             newView.addSubview(button)
             
             self.view.addSubview(newView)
-            self.navigationController?.isNavigationBarHidden = true
         }
     }
 }
