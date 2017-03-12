@@ -885,12 +885,38 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ALL-rd-WTh" userLabel="LoadingIndicatorView">
+                                <rect key="frame" x="112.5" y="311.5" width="150" height="80"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="GFa-Pa-twp" userLabel="LoadingIndicator">
+                                        <rect key="frame" x="57" y="10" width="37" height="37"/>
+                                        <color key="color" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </activityIndicatorView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading trip!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rUM-Fe-bGR" userLabel="LoadingLabel">
+                                        <rect key="frame" x="27" y="49" width="96" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="GFa-Pa-twp" firstAttribute="centerX" secondItem="ALL-rd-WTh" secondAttribute="centerX" id="EYE-ho-udX"/>
+                                    <constraint firstAttribute="bottom" secondItem="rUM-Fe-bGR" secondAttribute="bottom" constant="10" id="FrO-Sc-fMl"/>
+                                    <constraint firstItem="rUM-Fe-bGR" firstAttribute="centerX" secondItem="ALL-rd-WTh" secondAttribute="centerX" id="Uen-6T-o2a"/>
+                                    <constraint firstItem="GFa-Pa-twp" firstAttribute="top" secondItem="ALL-rd-WTh" secondAttribute="top" constant="10" id="dlz-Mu-fM3"/>
+                                    <constraint firstAttribute="width" constant="150" id="htf-3j-PaQ"/>
+                                    <constraint firstAttribute="height" constant="80" id="kge-wm-DFI"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="eK4-lS-jpm" firstAttribute="top" secondItem="5BS-sh-Wvp" secondAttribute="bottom" id="KCZ-9M-unh"/>
                             <constraint firstItem="5BS-sh-Wvp" firstAttribute="leading" secondItem="WAP-Fd-eO8" secondAttribute="leading" id="PMx-TB-hnY"/>
                             <constraint firstItem="5BS-sh-Wvp" firstAttribute="top" secondItem="Caq-ee-ElZ" secondAttribute="bottom" id="ULy-nO-5HY"/>
+                            <constraint firstItem="ALL-rd-WTh" firstAttribute="centerX" secondItem="5BS-sh-Wvp" secondAttribute="centerX" id="XJM-yQ-G9S"/>
+                            <constraint firstItem="ALL-rd-WTh" firstAttribute="centerY" secondItem="5BS-sh-Wvp" secondAttribute="centerY" id="YS3-Iu-qO6"/>
                             <constraint firstAttribute="trailing" secondItem="Caq-ee-ElZ" secondAttribute="trailing" id="fvW-T9-PXp"/>
                             <constraint firstItem="Caq-ee-ElZ" firstAttribute="leading" secondItem="WAP-Fd-eO8" secondAttribute="leading" id="gUN-Z9-ih3"/>
                             <constraint firstAttribute="trailing" secondItem="5BS-sh-Wvp" secondAttribute="trailing" id="qnw-qs-Pyr"/>
@@ -898,6 +924,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="loadingIndicator" destination="GFa-Pa-twp" id="kSW-Rz-lRQ"/>
+                        <outlet property="loadingIndicatorView" destination="ALL-rd-WTh" id="Ouh-G9-RK4"/>
                         <outlet property="tripDaysTableView" destination="5BS-sh-Wvp" id="xmg-06-2ku"/>
                         <outlet property="tripNameLabel" destination="vgk-fn-2cI" id="ugZ-hE-Azn"/>
                     </connections>
@@ -1021,20 +1049,48 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3JN-MF-Lpv" userLabel="LoadingIndicatorView">
+                                <rect key="frame" x="112.5" y="311.5" width="150" height="80"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gCy-mH-4xk" userLabel="LoadingIndicator">
+                                        <rect key="frame" x="57" y="10" width="37" height="37"/>
+                                        <color key="color" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </activityIndicatorView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading visits!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fej-YL-InW" userLabel="LoadingLabel">
+                                        <rect key="frame" x="20.5" y="49.5" width="109.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="2BA-E4-xRd"/>
+                                    <constraint firstAttribute="height" constant="80" id="2sz-7e-Uf7"/>
+                                    <constraint firstItem="gCy-mH-4xk" firstAttribute="centerX" secondItem="3JN-MF-Lpv" secondAttribute="centerX" id="7R6-Oh-th3"/>
+                                    <constraint firstItem="gCy-mH-4xk" firstAttribute="top" secondItem="3JN-MF-Lpv" secondAttribute="top" constant="10" id="D44-9a-1B2"/>
+                                    <constraint firstAttribute="bottom" secondItem="Fej-YL-InW" secondAttribute="bottom" constant="10" id="hjM-00-4eJ"/>
+                                    <constraint firstItem="Fej-YL-InW" firstAttribute="centerX" secondItem="3JN-MF-Lpv" secondAttribute="centerX" id="jEr-qJ-hMd"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ffs-2T-Xys" firstAttribute="top" secondItem="Qem-Z0-Rzb" secondAttribute="bottom" id="HGK-ct-5N2"/>
                             <constraint firstItem="ffs-2T-Xys" firstAttribute="leading" secondItem="tlR-xd-WVW" secondAttribute="leading" id="I62-0R-xCT"/>
+                            <constraint firstItem="3JN-MF-Lpv" firstAttribute="centerX" secondItem="i0p-gU-qFI" secondAttribute="centerX" id="KIG-Vz-GEh"/>
                             <constraint firstItem="u8n-g2-XW2" firstAttribute="top" secondItem="i0p-gU-qFI" secondAttribute="bottom" id="P3b-5u-QvN"/>
                             <constraint firstItem="i0p-gU-qFI" firstAttribute="top" secondItem="ffs-2T-Xys" secondAttribute="bottom" id="YE2-hv-Dw9"/>
                             <constraint firstItem="i0p-gU-qFI" firstAttribute="leading" secondItem="tlR-xd-WVW" secondAttribute="leading" id="gDF-H7-OLY"/>
                             <constraint firstAttribute="trailing" secondItem="ffs-2T-Xys" secondAttribute="trailing" id="k7V-pJ-eTB"/>
+                            <constraint firstItem="3JN-MF-Lpv" firstAttribute="centerY" secondItem="i0p-gU-qFI" secondAttribute="centerY" id="tTa-2G-GaO"/>
                             <constraint firstAttribute="trailing" secondItem="i0p-gU-qFI" secondAttribute="trailing" id="wsA-nI-ehn"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="dateLabel" destination="QhE-NC-aWO" id="Zq8-Sp-ZgF"/>
+                        <outlet property="loadingIndicator" destination="gCy-mH-4xk" id="H6d-JB-4xp"/>
+                        <outlet property="loadingIndicatorView" destination="3JN-MF-Lpv" id="PHs-FX-xgs"/>
                         <outlet property="locationLabel" destination="X7E-bU-cts" id="mCs-gS-l1k"/>
                         <outlet property="tripDayVisitsTableView" destination="i0p-gU-qFI" id="wWD-P5-sL9"/>
                         <outlet property="yearLabel" destination="uO3-UA-fiU" id="ORM-88-k9j"/>

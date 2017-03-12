@@ -15,6 +15,8 @@ class TripDetailsViewController: UIViewController {
     
     @IBOutlet weak var tripNameLabel: UILabel!
     @IBOutlet weak var tripDaysTableView: UITableView!
+    @IBOutlet weak var loadingIndicatorView: UIView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     var tripId: String!
     var tripName: String!
@@ -22,6 +24,8 @@ class TripDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadingIndicatorView.isHidden = false
+        loadingIndicator.startAnimating()
         tripDaysTableView.delegate = self
         tripDaysTableView.dataSource = self
         tripNameLabel.text = tripName
@@ -56,6 +60,7 @@ extension TripDetailsViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        loadingIndicatorView.isHidden = true
         // Create the cell
         let cell = tripDaysTableView.dequeueReusableCell(withIdentifier: "TripDayCell", for: indexPath)
         
