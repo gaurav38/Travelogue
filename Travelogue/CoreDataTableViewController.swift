@@ -11,8 +11,9 @@ import CoreData
 
 // MARK: - CoreDataTableViewController: UITableViewController
 
-class CoreDataTableViewController: UITableViewController {
+class CoreDataTableViewController: UIViewController, UITableViewDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
     // MARK: Properties
     
     var fetchedResultsController : NSFetchedResultsController<NSFetchRequestResult>? {
@@ -26,42 +27,15 @@ class CoreDataTableViewController: UITableViewController {
     }
     
     // MARK: Initializers
-    
-    init(fetchedResultsController fc : NSFetchedResultsController<NSFetchRequestResult>, style : UITableViewStyle = .plain) {
-        fetchedResultsController = fc
-        super.init(style: style)
-    }
-    
-    // Do not worry about this initializer. It has to be implemented
-    // because of the way Swift interfaces with an Objective C
-    // protocol called NSArchiving. It's not relevant.
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-}
-
-// MARK: - CoreDataTableViewController (Subclass Must Implement)
-
-extension CoreDataTableViewController {
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        fatalError("This method MUST be implemented by a subclass of CoreDataTableViewController")
     }
 }
 
 // MARK: - CoreDataTableViewController (Table Data Source)
 
 extension CoreDataTableViewController {
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        if let fc = fetchedResultsController {
-            return (fc.sections?.count)!
-        } else {
-            return 0
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let fc = fetchedResultsController {
             return fc.sections![section].numberOfObjects
         } else {
@@ -69,25 +43,9 @@ extension CoreDataTableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if let fc = fetchedResultsController {
             return fc.sections![section].name
-        } else {
-            return nil
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        if let fc = fetchedResultsController {
-            return fc.section(forSectionIndexTitle: title, at: index)
-        } else {
-            return 0
-        }
-    }
-    
-    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if let fc = fetchedResultsController {
-            return fc.sectionIndexTitles
         } else {
             return nil
         }
@@ -115,7 +73,7 @@ extension CoreDataTableViewController {
 extension CoreDataTableViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        //tableView.beginUpdates()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
@@ -149,6 +107,6 @@ extension CoreDataTableViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        //tableView.endUpdates()
     }
 }

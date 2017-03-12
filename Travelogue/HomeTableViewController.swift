@@ -25,6 +25,9 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     fileprivate var _refHandle: FIRDatabaseHandle!
     fileprivate var _authHandle: FIRAuthStateDidChangeListenerHandle!
     fileprivate var firebaseService = FirebaseService.instance
+    fileprivate let fourSquareApiHelper = FourSquareApiHelper.instance
+    var dateFormatter = DateFormatter()
+    var timeFormatter = DateFormatter()
     var displayName = "Anonymous"
     
     override func viewDidLoad() {
@@ -33,6 +36,8 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
         tripTableView.dataSource = self
         loadingIndicator.startAnimating()
         loadingIndicatorView.isHidden = false
+        dateFormatter.dateFormat = "MMM dd, yyyy"
+        timeFormatter.dateFormat = "h:mm a"
         configureAuth()
     }
     
@@ -126,6 +131,26 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell!
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let favorite = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Favorite", handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
+            
+            let tripSnapshot: FIRDataSnapshot = self.trips[indexPath.row]
+            let trip = tripSnapshot.value as! [String: AnyObject]
+            self.makeTripOffline(trip: trip)
+            
+        });
+        favorite.backgroundColor = UIColor(red: 1.0, green: CGFloat(102)/255.0, blue: CGFloat(102)/255.0, alpha: 1.0)
+        
+        return [favorite]
+    }
 }
 
 extension HomeTableViewController {
@@ -138,6 +163,73 @@ extension HomeTableViewController {
             vc.tripId = trip["id"] as! String
             vc.tripName = trip["name"] as! String
         }
+    }
+}
+
+extension HomeTableViewController {
+    func makeTripOffline(trip: [String: AnyObject]) {
+        
+        var tripDayIdToModelMap = [String: TripDay]()
+        // Create Trip model
+        print(trip)
+        let tripModel = Trip(tripId: trip["id"] as! String,
+                        tripName: trip["name"] as! String,
+                        userName: trip["createdByUsername"] as! String,
+                        userEmail: trip["createdByUseremail"] as! String,
+                        context: delegate.stack.context)
+        let startDate = trip["startDate"] as! String
+        if !startDate.isEmpty {
+            tripModel.startDate = dateFormatter.date(from: startDate) as NSDate?
+        }
+        let endDate = trip["endDate"] as! String
+        if !endDate.isEmpty {
+            tripModel.endDate = dateFormatter.date(from: endDate) as NSDate?
+        }
+        delegate.stack.save()
+        
+        // Create TripDay models for Trip
+        ref.child("trip_days").child(tripModel.id!).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            
+            // Create TripDay model and then create all TripVisit models for a TripDay
+            let tripDay = snapshot.value as! [String: String]
+            let tripDayDate = tripDay["date"]!
+            let tripDayModel = TripDay(dayId: tripDay["id"]!,
+                                       date: self.dateFormatter.date(from: tripDayDate)!,
+                                       context: self.delegate.stack.context)
+            tripDayModel.trip = tripModel
+            tripDayIdToModelMap[tripDayModel.id!] = tripDayModel
+            self.delegate.stack.save()
+            
+            self.ref.child("trip_visits").child(tripDayModel.id!).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+                
+                let tripDayVisit = snapshot.value as! [String: String]
+                let tripDayVisitModel = TripVisit(id: tripDayVisit["id"]!,
+                                                  place: tripDayVisit["place"]!,
+                                                  startTime: tripDayVisit["startTime"]!,
+                                                  endTime: tripDayVisit["endTime"]!,
+                                                  context: self.delegate.stack.context)
+                tripDayVisitModel.location = tripDayVisit["location"]!
+                tripDayVisitModel.photoUrl = tripDayVisit["photoUrl"]!
+                //tripDayVisitModel.tripDay = tripDayIdToModelMap[tripDayModel.id!]
+                tripDayVisitModel.tripDay = tripDayModel
+                self.delegate.stack.save()
+                
+                if !(tripDayVisitModel.photoUrl!.isEmpty) {
+                    self.fourSquareApiHelper.downloadFoursquarePhoto(imagePath: tripDayVisitModel.photoUrl!) { (photo, error) in
+                        if let error = error {
+                            print("Error: \(error)")
+                        } else {
+                            DispatchQueue.main.async {
+                                tripDayVisitModel.photo = photo! as NSData?
+                                self.delegate.stack.save()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        firebaseService.updateTripFavorite(for: trip["id"] as! String, isFavorite: true)
     }
 }
 

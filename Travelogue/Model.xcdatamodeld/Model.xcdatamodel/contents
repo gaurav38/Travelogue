@@ -20,6 +20,9 @@
     <entity name="TripVisit" representedClassName=".TripVisit" syncable="YES">
         <attribute name="endTime" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="photo" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="photoUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="place" attributeType="String" syncable="YES"/>
         <attribute name="startTime" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tripDay" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TripDay" inverseName="tripVisits" inverseEntity="TripDay" syncable="YES"/>
@@ -27,6 +30,6 @@
     <elements>
         <element name="Trip" positionX="-63" positionY="-18" width="128" height="165"/>
         <element name="TripDay" positionX="-54" positionY="45" width="128" height="120"/>
-        <element name="TripVisit" positionX="-36" positionY="54" width="128" height="120"/>
+        <element name="TripVisit" positionX="-36" positionY="54" width="128" height="165"/>
     </elements>
 </model>

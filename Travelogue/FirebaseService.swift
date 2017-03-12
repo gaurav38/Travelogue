@@ -50,6 +50,14 @@ class FirebaseService {
         ref.child("trips").child((delegate.user?.uid)!).child(tripId).child("endDate").setValue(dateFormatter.string(from: endDate))
     }
     
+    func updateTripFavorite(for tripId: String, isFavorite: Bool) {
+        ref.child("trips").child((delegate.user?.uid)!).child(tripId).child("favorite").setValue(isFavorite)
+    }
+    
+    func getIsTripFavorite(for tripId: String) -> Bool {
+        return ref.child("trips").child((delegate.user?.uid)!).child(tripId).value(forKey: "favorites") as! Bool
+    }
+    
     func createTripDay(for trip: String, id: String, location: String, date: Date) {
         let mdata = ["id" : id,
                      "date" : dateFormatter.string(from: date),

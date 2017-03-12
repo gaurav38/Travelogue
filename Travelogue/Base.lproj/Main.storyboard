@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="A7W-iE-Ml9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="h2n-8y-knM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -31,7 +31,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PKP-Hj-IE9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-860" y="1017"/>
+            <point key="canvasLocation" x="-628" y="1290"/>
         </scene>
         <!--NewTripDetailsViewController-->
         <scene sceneID="RRM-1J-Ks7">
@@ -240,7 +240,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iug-83-p9x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="886" y="1017"/>
+            <point key="canvasLocation" x="1198" y="1290"/>
         </scene>
         <!--NewTripNameViewController-->
         <scene sceneID="1aG-or-Oeh">
@@ -308,7 +308,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MCr-NF-Lz1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="70" y="1017"/>
+            <point key="canvasLocation" x="257" y="1290"/>
         </scene>
         <!--Create Day Plan View Controller-->
         <scene sceneID="NAA-gb-68u">
@@ -506,7 +506,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3xC-nv-eXW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1714" y="1017"/>
+            <point key="canvasLocation" x="2017" y="1290"/>
         </scene>
         <!--Add Activity View Controller-->
         <scene sceneID="Soe-le-iiu">
@@ -681,12 +681,135 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ytc-42-Ipi" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="4Jg-iM-8tN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2596" y="1017"/>
+            <point key="canvasLocation" x="2810" y="1290"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="GZK-rW-moi">
+            <objects>
+                <tabBarController id="h2n-8y-knM" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="Tby-vX-mut">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="A7W-iE-Ml9" kind="relationship" relationship="viewControllers" id="GO2-Tr-NKC"/>
+                        <segue destination="uMk-P5-E3a" kind="relationship" relationship="viewControllers" id="NHo-6Q-Ial"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Jf-cR-HXU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2455" y="261"/>
+        </scene>
+        <!--FavoriteTripsNav-->
+        <scene sceneID="IFN-Md-PQw">
+            <objects>
+                <navigationController title="FavoriteTripsNav" id="uMk-P5-E3a" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="gyl-Gh-5ES"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="p7b-GH-J2I">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="9DR-Qp-pKh" kind="relationship" relationship="rootViewController" id="bgP-7b-Oqx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wf1-IS-rmH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1503" y="619"/>
+        </scene>
+        <!--FavoriteTripsViewController-->
+        <scene sceneID="NKO-Qc-aVE">
+            <objects>
+                <viewController title="FavoriteTripsViewController" id="9DR-Qp-pKh" customClass="FavoriteTripsViewController" customModule="Travelogue" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="grY-tk-NyU"/>
+                        <viewControllerLayoutGuide type="bottom" id="UF7-t2-lVR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="clR-wk-NF2">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jKS-Ed-oO9" userLabel="HeaderView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your favorite trips" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UTY-rv-tc7">
+                                        <rect key="frame" x="78" y="33" width="219.5" height="33"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="UTY-rv-tc7" firstAttribute="centerX" secondItem="jKS-Ed-oO9" secondAttribute="centerX" id="AVy-oi-peV"/>
+                                    <constraint firstAttribute="height" constant="100" id="Vay-8C-GSV"/>
+                                    <constraint firstItem="UTY-rv-tc7" firstAttribute="centerY" secondItem="jKS-Ed-oO9" secondAttribute="centerY" id="un1-eH-UJr"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="y5R-cl-OSb" userLabel="TripsTableView">
+                                <rect key="frame" x="0.0" y="100" width="375" height="454"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FavoriteTripCell" textLabel="XNv-Y6-set" detailTextLabel="bxT-0e-wol" style="IBUITableViewCellStyleSubtitle" id="XK6-6B-0q4">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XK6-6B-0q4" id="YS5-dE-Ert">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XNv-Y6-set">
+                                                    <rect key="frame" x="15" y="23" width="45" height="28"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bxT-0e-wol">
+                                                    <rect key="frame" x="15" y="51" width="71" height="26"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="22"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.67231287230000003" green="0.83504231770000004" blue="0.91263247199999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jKS-Ed-oO9" firstAttribute="top" secondItem="clR-wk-NF2" secondAttribute="top" id="CQ9-mn-oPh"/>
+                            <constraint firstItem="y5R-cl-OSb" firstAttribute="leading" secondItem="clR-wk-NF2" secondAttribute="leading" id="IDa-Dd-KRd"/>
+                            <constraint firstItem="jKS-Ed-oO9" firstAttribute="leading" secondItem="clR-wk-NF2" secondAttribute="leading" id="NN1-9B-MXK"/>
+                            <constraint firstItem="UF7-t2-lVR" firstAttribute="top" secondItem="y5R-cl-OSb" secondAttribute="bottom" id="fYf-Ht-TdK"/>
+                            <constraint firstAttribute="trailing" secondItem="y5R-cl-OSb" secondAttribute="trailing" id="hxA-Zs-C4V"/>
+                            <constraint firstAttribute="trailing" secondItem="jKS-Ed-oO9" secondAttribute="trailing" id="oFr-FD-pyY"/>
+                            <constraint firstItem="y5R-cl-OSb" firstAttribute="top" secondItem="jKS-Ed-oO9" secondAttribute="bottom" id="rsG-Pq-Ar1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Travelogue" id="KG3-9P-sNz"/>
+                    <connections>
+                        <outlet property="tableView" destination="y5R-cl-OSb" id="0xk-4i-bxs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NtF-bf-Twc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-20" y="618"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="B2G-ZR-1Ri">
             <objects>
                 <navigationController id="A7W-iE-Ml9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="bookmarks" id="bEW-Iq-AcI"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="Gj3-Cc-WoC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -704,7 +827,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JoH-js-O8B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-856" y="286"/>
+            <point key="canvasLocation" x="-1503" y="-65"/>
         </scene>
         <!--HomeTableViewController-->
         <scene sceneID="Dab-Q7-SFs">
@@ -735,7 +858,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SqZ-dW-PbM" userLabel="TripsTableView">
-                                <rect key="frame" x="0.0" y="100" width="375" height="503"/>
+                                <rect key="frame" x="0.0" y="100" width="375" height="454"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TripCell" textLabel="HiR-Cr-emG" detailTextLabel="T0O-FE-XTi" style="IBUITableViewCellStyleSubtitle" id="DaI-bv-r1m">
@@ -768,7 +891,7 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wy9-tp-OSS" userLabel="LoadingIndicatorView">
-                                <rect key="frame" x="112" y="311.5" width="150" height="80"/>
+                                <rect key="frame" x="112" y="287" width="150" height="80"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="WRY-7z-ayE" userLabel="LoadingIndicator">
                                         <rect key="frame" x="57" y="10" width="37" height="37"/>
@@ -820,7 +943,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KH3-lq-mcp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4" y="287"/>
+            <point key="canvasLocation" x="-628" y="-65"/>
         </scene>
         <!--Trip Details View Controller-->
         <scene sceneID="VhW-s0-9Y0">
@@ -852,7 +975,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5BS-sh-Wvp">
-                                <rect key="frame" x="0.0" y="100" width="375" height="503"/>
+                                <rect key="frame" x="0.0" y="100" width="375" height="454"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TripDayCell" textLabel="1Sv-gm-f43" detailTextLabel="02x-NJ-2B9" style="IBUITableViewCellStyleSubtitle" id="G1V-9t-zfh">
@@ -886,7 +1009,7 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ALL-rd-WTh" userLabel="LoadingIndicatorView">
-                                <rect key="frame" x="112.5" y="311.5" width="150" height="80"/>
+                                <rect key="frame" x="112.5" y="287" width="150" height="80"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="GFa-Pa-twp" userLabel="LoadingIndicator">
                                         <rect key="frame" x="57" y="10" width="37" height="37"/>
@@ -932,7 +1055,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fb-HS-Ous" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="934" y="287"/>
+            <point key="canvasLocation" x="257" y="-65"/>
         </scene>
         <!--Trip Day Details View Controller-->
         <scene sceneID="KOP-Cb-aYJ">
@@ -1000,7 +1123,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="140" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="i0p-gU-qFI" userLabel="TripDayVisitsTableView">
-                                <rect key="frame" x="0.0" y="100" width="375" height="503"/>
+                                <rect key="frame" x="0.0" y="100" width="375" height="454"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TripDayDetailsCell" id="Can-Vm-UJZ" customClass="TripDayDetailsTableViewCell" customModule="Travelogue" customModuleProvider="target">
@@ -1050,7 +1173,7 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3JN-MF-Lpv" userLabel="LoadingIndicatorView">
-                                <rect key="frame" x="112.5" y="311.5" width="150" height="80"/>
+                                <rect key="frame" x="112.5" y="287" width="150" height="80"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gCy-mH-4xk" userLabel="LoadingIndicator">
                                         <rect key="frame" x="57" y="10" width="37" height="37"/>
@@ -1098,7 +1221,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jVL-SE-KWO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1831" y="287"/>
+            <point key="canvasLocation" x="1199" y="-65"/>
         </scene>
     </scenes>
     <resources>
