@@ -13,8 +13,12 @@ import FirebaseGoogleAuthUI
 import FirebaseFacebookAuthUI
 import CoreData
 
-class HomeTableViewController: UITableViewController, FUIAuthDelegate {
+class HomeTableViewController: UIViewController, FUIAuthDelegate {
 
+    @IBOutlet weak var tripTableView: UITableView!
+    @IBOutlet weak var loadingIndicatorView: UIView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
     var ref: FIRDatabaseReference!
     var trips: [FIRDataSnapshot]! = []
     let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -25,6 +29,10 @@ class HomeTableViewController: UITableViewController, FUIAuthDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tripTableView.delegate = self
+        tripTableView.dataSource = self
+        loadingIndicator.startAnimating()
+        loadingIndicatorView.isHidden = false
         configureAuth()
     }
     
@@ -38,7 +46,7 @@ class HomeTableViewController: UITableViewController, FUIAuthDelegate {
         _authHandle = FIRAuth.auth()?.addStateDidChangeListener { (auth: FIRAuth, user: FIRUser?) in
             // refresh table state
             self.trips.removeAll(keepingCapacity: false)
-            self.tableView.reloadData()
+            self.tripTableView.reloadData()
             
             // check if there is a current user
             if let activeUser = user {
@@ -64,7 +72,7 @@ class HomeTableViewController: UITableViewController, FUIAuthDelegate {
         self.firebaseService.configure(ref: ref)
         _refHandle = ref.child("trips").child((delegate.user?.uid)!).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.trips.append(snapshot)
-            self.tableView.insertRows(at: [IndexPath(row: self.trips.count - 1, section: 0)], with: .automatic)
+            self.tripTableView.insertRows(at: [IndexPath(row: self.trips.count - 1, section: 0)], with: .automatic)
         }
     }
     
@@ -92,12 +100,13 @@ class HomeTableViewController: UITableViewController, FUIAuthDelegate {
     }
 }
 
-extension HomeTableViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return trips.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        loadingIndicatorView.isHidden = true
         let cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: "TripCell", for: indexPath)
         let tripSnapshot: FIRDataSnapshot = trips[indexPath.row]
         let trip = tripSnapshot.value as! [String: AnyObject]
@@ -124,9 +133,10 @@ extension HomeTableViewController {
         if segue.identifier == "ShowTripDetails" {
             let vc = segue.destination as! TripDetailsViewController
             
-            let indexPath = tableView.indexPathForSelectedRow!
+            let indexPath = tripTableView.indexPathForSelectedRow!
             let trip = trips[indexPath.row].value as! [String: AnyObject]
             vc.tripId = trip["id"] as! String
+            vc.tripName = trip["name"] as! String
         }
     }
 }

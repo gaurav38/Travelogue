@@ -11,13 +11,20 @@ import UIKit
 import CoreData
 import Firebase
 
-class TripDetailsViewController: UITableViewController {
+class TripDetailsViewController: UIViewController {
+    
+    @IBOutlet weak var tripNameLabel: UILabel!
+    @IBOutlet weak var tripDaysTableView: UITableView!
     
     var tripId: String!
+    var tripName: String!
     var tripDays: [FIRDataSnapshot]! = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tripDaysTableView.delegate = self
+        tripDaysTableView.dataSource = self
+        tripNameLabel.text = tripName
         configureDatabase()
     }
     
@@ -26,7 +33,7 @@ class TripDetailsViewController: UITableViewController {
         print(tripId)
         ref.child("trip_days").child(tripId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.tripDays.append(snapshot)
-            self.tableView.insertRows(at: [IndexPath(row: self.tripDays.count - 1, section: 0)], with: .automatic)
+            self.tripDaysTableView.insertRows(at: [IndexPath(row: self.tripDays.count - 1, section: 0)], with: .automatic)
         }
     }
     
@@ -34,22 +41,23 @@ class TripDetailsViewController: UITableViewController {
         if segue.identifier == "ShowTripDayDetails" {
             let vc = segue.destination as! TripDayDetailsViewController
             
-            let selectedIndex = tableView.indexPathForSelectedRow!
+            let selectedIndex = tripDaysTableView.indexPathForSelectedRow!
             let selectedTripDay = tripDays[selectedIndex.row].value as! [String: String]
             vc.tripDayId = selectedTripDay["id"]
             vc.tripDayDate = selectedTripDay["date"]
             vc.tripDayLocation = selectedTripDay["location"]
         }
     }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(tripDays.count)
+}
+
+extension TripDetailsViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tripDays.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create the cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TripDayCell", for: indexPath)
+        let cell = tripDaysTableView.dequeueReusableCell(withIdentifier: "TripDayCell", for: indexPath)
         
         // Sync tripDay -> cell
         let tripDay = tripDays[indexPath.row].value as! [String: String]
