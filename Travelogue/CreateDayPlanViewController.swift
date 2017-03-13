@@ -149,8 +149,15 @@ extension CreateDayPlanViewController: UITextFieldDelegate {
 
 extension CreateDayPlanViewController {
     func fetchSuggestedLocationPhotos() {
-        fourSquareApiHelper.getPhotosNear(location: location!) { (success, photos) in
-            if let photos = photos {
+        fourSquareApiHelper.getPhotosNear(location: location!) { (error, photos) in
+            if let error = error {
+                if error == "The Internet connection appears to be offline." {
+                    let alert = UIAlertController(title: "No internet!", message: "We could not fetch suggested places.", preferredStyle: .actionSheet)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+            else if let photos = photos {
                 self.suggestedPlaces = photos
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()

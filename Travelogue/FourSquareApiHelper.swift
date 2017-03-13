@@ -13,7 +13,7 @@ class FourSquareApiHelper {
     
     let travelogueClient = TravelogueClient.instance
     
-    func getPhotosNear(location: String, callback: @escaping (Bool, [FoursquarePhoto]?) -> Void) {
+    func getPhotosNear(location: String, callback: @escaping (String?, [FoursquarePhoto]?) -> Void) {
         var parameters = [String: String]()
         parameters[Constants.FourSquare.RequestParamsKeys.CLIENT_ID] = Constants.FourSquare.RequestParamsValues.CLIENT_ID
         parameters[Constants.FourSquare.RequestParamsKeys.CLIENT_SECRET] = Constants.FourSquare.RequestParamsValues.CLIENT_SECRET
@@ -32,17 +32,17 @@ class FourSquareApiHelper {
                     //print(response)
                     let photos = self.parsePhotosFrom(response: response[Constants.FourSquare.ResponseKeys.RESPONSE] as! [String: AnyObject])
                     if let photos = photos {
-                        callback(true, photos)
+                        callback(nil, photos)
                     } else {
-                        callback(false, nil)
+                        callback("Empty response", nil)
                     }
                 } else {
                     print("Invalid response format!")
-                    callback(false, nil)
+                    callback("Invalid response format!", nil)
                 }
             } else {
                 print(error!)
-                callback(false, nil)
+                callback(error!, nil)
             }
         }
     }

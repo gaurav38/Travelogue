@@ -24,8 +24,12 @@ class TravelogueClient {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                print("[taskForGETMethod]: \(error.debugDescription)")
-                sendError("There was an error with your request")
+                print("[taskForGETMethod]: \(error!.localizedDescription)")
+                if error!.localizedDescription == "The Internet connection appears to be offline." {
+                    sendError(error!.localizedDescription)
+                } else {
+                    sendError("There was an error with your request \(error)")
+                }
                 return
             }
             

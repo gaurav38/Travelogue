@@ -234,41 +234,6 @@ extension HomeTableViewController {
 }
 
 //extension HomeTableViewController {
-//    func fetchSavedTrips() {
-//        
-//        // Get the Stack
-//        let stack = delegate.stack
-//        
-//        // Create the fetch request
-//        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Trip")
-//        fr.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: true)]
-//        
-//        // Create the FetchResultsController
-//        fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
-//    }
-//    
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        
-//        // Find the notebook
-//        let trip = fetchedResultsController!.object(at: indexPath) as! Trip
-//        
-//        // Create the cell
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "TripCell", for: indexPath)
-//        
-//        // Sync trip -> cell
-//        cell.textLabel?.text = trip.name!
-//        if trip.startDate == nil && trip.endDate == nil {
-//            cell.detailTextLabel?.text = ""
-//        } else if trip.endDate == nil {
-//            cell.detailTextLabel?.text = "\(trip.startDate!) -"
-//        } else {
-//            cell.detailTextLabel?.text = "\(trip.startDate!) - \(trip.endDate!)"
-//        }
-//        
-//        print(trip.tripDay?.count ?? 0)
-//        
-//        return cell
-//    }
 //    
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        if segue.identifier == "ShowTripDetails" {

@@ -18,9 +18,17 @@ class TripDetailsViewController: UIViewController {
     @IBOutlet weak var loadingIndicatorView: UIView!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
+    // These properties will be injected by the parent VC
     var tripId: String!
     var tripName: String!
     var tripDays: [FIRDataSnapshot]! = []
+    
+    // These properties will be used to reuse this VC for offline trips.
+    var isOfflineTrip: Bool?
+    var tripModel: Trip?
+    var tripDaysModels = [TripDay]()
+    
+    fileprivate let dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +36,22 @@ class TripDetailsViewController: UIViewController {
         loadingIndicator.startAnimating()
         tripDaysTableView.delegate = self
         tripDaysTableView.dataSource = self
-        tripNameLabel.text = tripName
-        configureDatabase()
+        dateFormatter.dateFormat = "MMM dd, yyyy"
+        
+        if isOfflineTrip == nil {
+            tripNameLabel.text = tripName
+            configureDatabase()
+        } else {
+            tripNameLabel.text = (tripModel?.name)!
+            print(tripModel!.tripDay!.count)
+            if let tripM = tripModel {
+                tripDaysModels = [TripDay]()
+                for day in tripM.tripDay! {
+                    let tripDay = day as! TripDay
+                    tripDaysModels.append(tripDay)
+                }
+            }
+        }
     }
     
     func configureDatabase() {
@@ -56,7 +78,11 @@ class TripDetailsViewController: UIViewController {
 
 extension TripDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tripDays.count
+        if isOfflineTrip == nil {
+            return tripDays.count
+        } else {
+            return tripDaysModels.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -65,13 +91,24 @@ extension TripDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         let cell = tripDaysTableView.dequeueReusableCell(withIdentifier: "TripDayCell", for: indexPath)
         
         // Sync tripDay -> cell
-        let tripDay = tripDays[indexPath.row].value as! [String: String]
-        print(tripDay)
-        if let location = tripDay["location"] {
-            cell.textLabel?.text = location
-            cell.detailTextLabel?.text = tripDay["date"]
+        if isOfflineTrip == nil {
+            let tripDay = tripDays[indexPath.row].value as! [String: String]
+            print(tripDay)
+            if let location = tripDay["location"] {
+                cell.textLabel?.text = location
+                cell.detailTextLabel?.text = tripDay["date"]
+            } else {
+                cell.textLabel?.text = tripDay["date"]
+            }
         } else {
-            cell.textLabel?.text = tripDay["date"]
+            let tripDay = tripDaysModels[indexPath.row]
+            print(tripDay.location!)
+            if let location = tripDay.location {
+                cell.textLabel?.text = location
+                cell.detailTextLabel?.text = dateFormatter.string(from: tripDay.date as! Date)
+            } else {
+                cell.detailTextLabel?.text = dateFormatter.string(from: tripDay.date as! Date)
+            }
         }
         
         return cell

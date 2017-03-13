@@ -12,6 +12,7 @@ import CoreData
 class FavoriteTripsViewController: CoreDataTableViewController {
 
     fileprivate let dateFormatter = DateFormatter()
+    let delegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +21,6 @@ class FavoriteTripsViewController: CoreDataTableViewController {
         tableView.dataSource = self
         
         // Get the Stack
-        let delegate = UIApplication.shared.delegate as! AppDelegate
         let stack = delegate.stack
 
         let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Trip")
@@ -29,10 +29,34 @@ class FavoriteTripsViewController: CoreDataTableViewController {
         // Create the FetchResultsController
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowFavoriteTripDetails" {
+            let vc = segue.destination as! TripDetailsViewController
+            
+            let indexPath = tableView.indexPathForSelectedRow!
+            let trip = fetchedResultsController?.object(at: indexPath) as! Trip
+            
+            let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TripDay")
+            fr.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+            
+            let predicate = NSPredicate(format: "trip = %@", [trip])
+            fr.predicate = predicate
+            
+            // Create the FetchResultsController
+            let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
+            do {
+                print(fc.fetchRequest.entityName ?? "")
+                try fc.performFetch()
+                let tripDay = fc.fetchedObjects?[0] as! TripDay
+                print(tripDay.location!)
+            } catch let e as NSError {
+                print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")
+            }
+            
+            vc.isOfflineTrip = true
+            vc.tripModel = trip
+        }
     }
 }
 
