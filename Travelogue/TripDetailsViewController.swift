@@ -25,38 +25,36 @@ class TripDetailsViewController: UIViewController {
     
     // These properties will be used to reuse this VC for offline trips.
     var isOfflineTrip: Bool?
-    var tripModel: Trip?
-    var tripDaysModels = [TripDay]()
+    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     fileprivate let dateFormatter = DateFormatter()
     
+    var delegate = UIApplication.shared.delegate as! AppDelegate
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadingIndicatorView.isHidden = false
-        loadingIndicator.startAnimating()
+        
+        tripNameLabel.text = tripName
         tripDaysTableView.delegate = self
         tripDaysTableView.dataSource = self
         dateFormatter.dateFormat = "MMM dd, yyyy"
         
         if isOfflineTrip == nil {
-            tripNameLabel.text = tripName
+            loadingIndicatorView.isHidden = false
+            loadingIndicator.startAnimating()
             configureDatabase()
-        } else {
-            tripNameLabel.text = (tripModel?.name)!
-            print(tripModel!.tripDay!.count)
-            if let tripM = tripModel {
-                tripDaysModels = [TripDay]()
-                for day in tripM.tripDay! {
-                    let tripDay = day as! TripDay
-                    tripDaysModels.append(tripDay)
-                }
+        } else if let fc = fetchedResultsController {
+            loadingIndicatorView.isHidden = true
+            do {
+                try fc.performFetch()
+            } catch let e as NSError {
+                print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")
             }
         }
     }
     
     func configureDatabase() {
         let ref = FIRDatabase.database().reference()
-        print(tripId)
         ref.child("trip_days").child(tripId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.tripDays.append(snapshot)
             self.tripDaysTableView.insertRows(at: [IndexPath(row: self.tripDays.count - 1, section: 0)], with: .automatic)
@@ -66,12 +64,28 @@ class TripDetailsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowTripDayDetails" {
             let vc = segue.destination as! TripDayDetailsViewController
+            let indexPath = tripDaysTableView.indexPathForSelectedRow!
             
-            let selectedIndex = tripDaysTableView.indexPathForSelectedRow!
-            let selectedTripDay = tripDays[selectedIndex.row].value as! [String: String]
-            vc.tripDayId = selectedTripDay["id"]
-            vc.tripDayDate = selectedTripDay["date"]
-            vc.tripDayLocation = selectedTripDay["location"]
+            if isOfflineTrip == nil {
+                let selectedTripDay = tripDays[indexPath.row].value as! [String: String]
+                vc.tripDayId = selectedTripDay["id"]
+                vc.tripDayDate = selectedTripDay["date"]
+                vc.tripDayLocation = selectedTripDay["location"]
+            } else if let fc = fetchedResultsController {
+                let tripDay = fc.object(at: indexPath) as! TripDay
+                
+                let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TripVisit")
+                fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
+                
+                let predicate = NSPredicate(format: "tripDay = %@", tripDay)
+                fr.predicate = predicate
+                
+                let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
+                vc.tripDayDate = dateFormatter.string(from: tripDay.date! as Date)
+                vc.tripDayLocation = tripDay.location ?? ""
+                vc.isOfflineTrip = true
+                vc.fetchedResultsController = fc
+            }
         }
     }
 }
@@ -80,29 +94,29 @@ extension TripDetailsViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isOfflineTrip == nil {
             return tripDays.count
+        } else if let fc = fetchedResultsController {
+            return fc.sections![section].numberOfObjects
         } else {
-            return tripDaysModels.count
+            return 0
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        loadingIndicatorView.isHidden = true
-        // Create the cell
         let cell = tripDaysTableView.dequeueReusableCell(withIdentifier: "TripDayCell", for: indexPath)
         
-        // Sync tripDay -> cell
         if isOfflineTrip == nil {
+            loadingIndicatorView.isHidden = true
             let tripDay = tripDays[indexPath.row].value as! [String: String]
-            print(tripDay)
+            
             if let location = tripDay["location"] {
                 cell.textLabel?.text = location
                 cell.detailTextLabel?.text = tripDay["date"]
             } else {
                 cell.textLabel?.text = tripDay["date"]
             }
-        } else {
-            let tripDay = tripDaysModels[indexPath.row]
-            print(tripDay.location!)
+        } else if let fc = fetchedResultsController {
+            let tripDay = fc.object(at: indexPath) as! TripDay
+            
             if let location = tripDay.location {
                 cell.textLabel?.text = location
                 cell.detailTextLabel?.text = dateFormatter.string(from: tripDay.date as! Date)

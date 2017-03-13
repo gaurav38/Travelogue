@@ -169,7 +169,6 @@ extension HomeTableViewController {
 extension HomeTableViewController {
     func makeTripOffline(trip: [String: AnyObject]) {
         
-        var tripDayIdToModelMap = [String: TripDay]()
         // Create Trip model
         print(trip)
         let tripModel = Trip(tripId: trip["id"] as! String,
@@ -196,8 +195,10 @@ extension HomeTableViewController {
             let tripDayModel = TripDay(dayId: tripDay["id"]!,
                                        date: self.dateFormatter.date(from: tripDayDate)!,
                                        context: self.delegate.stack.context)
+            if !(tripDay["location"]!.isEmpty) {
+                tripDayModel.location = tripDay["location"]
+            }
             tripDayModel.trip = tripModel
-            tripDayIdToModelMap[tripDayModel.id!] = tripDayModel
             self.delegate.stack.save()
             
             self.ref.child("trip_visits").child(tripDayModel.id!).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
@@ -210,7 +211,6 @@ extension HomeTableViewController {
                                                   context: self.delegate.stack.context)
                 tripDayVisitModel.location = tripDayVisit["location"]!
                 tripDayVisitModel.photoUrl = tripDayVisit["photoUrl"]!
-                //tripDayVisitModel.tripDay = tripDayIdToModelMap[tripDayModel.id!]
                 tripDayVisitModel.tripDay = tripDayModel
                 self.delegate.stack.save()
                 
@@ -232,38 +232,4 @@ extension HomeTableViewController {
         firebaseService.updateTripFavorite(for: trip["id"] as! String, isFavorite: true)
     }
 }
-
-//extension HomeTableViewController {
-//    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "ShowTripDetails" {
-//            if let tripDetailsVC = segue.destination as? TripDetailsViewController {
-//                
-//                // Create Fetch Request
-//                let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TripDay")
-//                fr.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
-//                
-//                let indexPath = tableView.indexPathForSelectedRow!
-//                let selectedTrip = fetchedResultsController?.object(at: indexPath) as! Trip
-//                
-//                let predicate = NSPredicate(format: "trip = %@", [selectedTrip])
-//                fr.predicate = predicate
-//                
-//                for tripDay in selectedTrip.tripDay! {
-//                    let tripD = tripDay as! TripDay
-//                    print(tripD.date!)
-//                    print(tripD.location!)
-//                }
-//                
-//                // Create FetchResultsController
-//                let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: fetchedResultsController!.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-//                
-//                // Inject it into the notesVC
-//                tripDetailsVC.fetchedResultsController = fc
-//                
-//                tripDetailsVC.trip = selectedTrip
-//            }
-//        }
-//    }
-//}
 

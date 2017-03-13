@@ -59,7 +59,6 @@ extension CoreDataTableViewController {
     func executeSearch() {
         if let fc = fetchedResultsController {
             do {
-                print(fc.fetchRequest.entityName ?? "")
                 try fc.performFetch()
             } catch let e as NSError {
                 print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")

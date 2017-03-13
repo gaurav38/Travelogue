@@ -40,22 +40,15 @@ class FavoriteTripsViewController: CoreDataTableViewController {
             let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TripDay")
             fr.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
             
-            let predicate = NSPredicate(format: "trip = %@", [trip])
+            let predicate = NSPredicate(format: "trip = %@", trip)
             fr.predicate = predicate
             
             // Create the FetchResultsController
             let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
-            do {
-                print(fc.fetchRequest.entityName ?? "")
-                try fc.performFetch()
-                let tripDay = fc.fetchedObjects?[0] as! TripDay
-                print(tripDay.location!)
-            } catch let e as NSError {
-                print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")
-            }
             
             vc.isOfflineTrip = true
-            vc.tripModel = trip
+            vc.tripName = trip.name!
+            vc.fetchedResultsController = fc
         }
     }
 }

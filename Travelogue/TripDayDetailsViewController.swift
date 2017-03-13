@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import CoreData
 
 class TripDayDetailsViewController: UIViewController {
 
@@ -25,23 +26,39 @@ class TripDayDetailsViewController: UIViewController {
     var downloadedImages = [String: Data]()
     let fourSquareApiHelper = FourSquareApiHelper.instance
     
+    var isOfflineTrip: Bool?
+    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        loadingIndicatorView.isHidden = false
-        loadingIndicator.startAnimating()
-        configureDatabase()
         tripDayVisitsTableView.delegate = self
         tripDayVisitsTableView.dataSource = self
         locationLabel.text = tripDayLocation
         let splittedDate = tripDayDate.components(separatedBy: ",")
         dateLabel.text = splittedDate[0]
         yearLabel.text = splittedDate[1]
+        
+        if isOfflineTrip == nil {
+            loadingIndicatorView.isHidden = false
+            loadingIndicator.startAnimating()
+            configureDatabase()
+            
+        } else if let fc = fetchedResultsController {
+            loadingIndicatorView.isHidden = true
+            do {
+                try fc.performFetch()
+                if let results = fc.fetchedObjects {
+                    print(results.count)
+                }
+            } catch let e as NSError {
+                print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")
+            }
+        }
     }
     
     func configureDatabase() {
         let ref = FIRDatabase.database().reference()
-        print(tripDayId)
         ref.child("trip_visits").child(tripDayId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.tripDayVisits.append(snapshot)
             self.tripDayVisitsTableView.insertRows(at: [IndexPath(row: self.tripDayVisits.count - 1, section: 0)], with: .automatic)
@@ -51,55 +68,86 @@ class TripDayDetailsViewController: UIViewController {
 
 extension TripDayDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tripDayVisits.count
+        if isOfflineTrip == nil {
+            return tripDayVisits.count
+        } else if let fc = fetchedResultsController {
+            return fc.sections![section].numberOfObjects
+        } else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         loadingIndicatorView.isHidden = true
         let cell = tableView.dequeueReusableCell(withIdentifier: "TripDayDetailsCell") as! TripDayDetailsTableViewCell
         
-        let tripDayVisit = tripDayVisits[indexPath.row].value as! [String: String]
-        
-        let startTime = tripDayVisit["startTime"]!
-        let endTime = tripDayVisit["endTime"]!
-        let photoUrl = tripDayVisit["photoUrl"]!
-        let place = tripDayVisit["place"]
-        var time = ""
-        
-        if !startTime.isEmpty && !endTime.isEmpty {
-            time = "\(startTime) - \(endTime)"
-        }
-        else if !startTime.isEmpty && endTime.isEmpty {
-            time = "\(startTime) - "
-        }
-        else if startTime.isEmpty && endTime.isEmpty {
-            time = ""
-        }
-        
-        if photoUrl.isEmpty {
-            cell.photoView.image = #imageLiteral(resourceName: "PlaceholderImage")
-            cell.placeLabel.text = place
-            cell.timeLabel.text = time
-        } else {
-            if let savedImage = downloadedImages[photoUrl] {
-                cell.photoView.image = UIImage(data: savedImage)
+        if isOfflineTrip == nil {
+            let tripDayVisit = tripDayVisits[indexPath.row].value as! [String: String]
+            
+            let startTime = tripDayVisit["startTime"]!
+            let endTime = tripDayVisit["endTime"]!
+            let photoUrl = tripDayVisit["photoUrl"]!
+            let place = tripDayVisit["place"]
+            var time = ""
+            
+            if !startTime.isEmpty && !endTime.isEmpty {
+                time = "\(startTime) - \(endTime)"
+            }
+            else if !startTime.isEmpty && endTime.isEmpty {
+                time = "\(startTime) - "
+            }
+            else if startTime.isEmpty && endTime.isEmpty {
+                time = ""
+            }
+            
+            if photoUrl.isEmpty {
+                cell.photoView.image = #imageLiteral(resourceName: "PlaceholderImage")
                 cell.placeLabel.text = place
                 cell.timeLabel.text = time
             } else {
-                fourSquareApiHelper.downloadFoursquarePhoto(imagePath: photoUrl) { (photo, error) in
-                    if let error = error {
-                        print("Error: \(error)")
-                    } else {
-                        self.downloadedImages[photoUrl] = photo!
-                        DispatchQueue.main.async {
-                            cell.photoView.image = UIImage(data: photo!)
-                            cell.placeLabel.text = place
-                            cell.timeLabel.text = time
+                if let savedImage = downloadedImages[photoUrl] {
+                    cell.photoView.image = UIImage(data: savedImage)
+                    cell.placeLabel.text = place
+                    cell.timeLabel.text = time
+                } else {
+                    fourSquareApiHelper.downloadFoursquarePhoto(imagePath: photoUrl) { (photo, error) in
+                        if let error = error {
+                            print("Error: \(error)")
+                        } else {
+                            self.downloadedImages[photoUrl] = photo!
+                            DispatchQueue.main.async {
+                                cell.photoView.image = UIImage(data: photo!)
+                                cell.placeLabel.text = place
+                                cell.timeLabel.text = time
+                            }
                         }
                     }
                 }
             }
+        } else if let fc = fetchedResultsController {
+            let tripDayVisit = fc.object(at: indexPath) as! TripVisit
+            var time = ""
+            
+            if !(tripDayVisit.startTime!.isEmpty) && !(tripDayVisit.endTime!.isEmpty) {
+                time = "\(tripDayVisit.startTime!) - \(tripDayVisit.endTime!)"
+            }
+            else if !(tripDayVisit.startTime!.isEmpty) {
+                time = "\(tripDayVisit.startTime!) - "
+            }
+            else {
+                time = ""
+            }
+            
+            cell.timeLabel.text = time
+            if let place = tripDayVisit.place {
+                cell.placeLabel.text = place
+            }
+            
+            if let photo = tripDayVisit.photo {
+                cell.photoView.image = UIImage(data: photo as Data)
+            }
         }
+        
         
         return cell
     }
