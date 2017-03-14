@@ -103,6 +103,12 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     
     func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
     }
+    
+    func showErrorToUser(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
@@ -137,6 +143,16 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if Reachability.isConnectedToNetwork() {
+                let trip = trips[indexPath.row].value as! [String: AnyObject]
+                firebaseService.deleteTrip(id: trip["id"] as! String)
+                trips.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            } else {
+                showErrorToUser(title: "No internet!", message: "Trip can be deleted only when online.")
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -147,9 +163,19 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
             self.makeTripOffline(trip: trip)
             
         });
-        favorite.backgroundColor = UIColor(red: 1.0, green: CGFloat(102)/255.0, blue: CGFloat(102)/255.0, alpha: 1.0)
+        favorite.backgroundColor = ColorResources.FavoritesForegroundColor
+        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete", handler: { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+            if Reachability.isConnectedToNetwork() {
+                let trip = self.trips[indexPath.row].value as! [String: AnyObject]
+                self.firebaseService.deleteTrip(id: trip["id"] as! String)
+                self.trips.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            } else {
+                self.showErrorToUser(title: "No internet!", message: "Trip can be deleted only when online.")
+            }
+        });
         
-        return [favorite]
+        return [favorite, delete]
     }
 }
 
@@ -170,7 +196,6 @@ extension HomeTableViewController {
     func makeTripOffline(trip: [String: AnyObject]) {
         
         // Create Trip model
-        print(trip)
         let tripModel = Trip(tripId: trip["id"] as! String,
                         tripName: trip["name"] as! String,
                         userName: trip["createdByUsername"] as! String,

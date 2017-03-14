@@ -54,6 +54,20 @@ class FirebaseService {
         ref.child("trips").child((delegate.user?.uid)!).child(tripId).child("favorite").setValue(isFavorite)
     }
     
+    func deleteTrip(id: String) {
+        let tripId = id
+        ref.child(FirebaseService.TRIPS_NODE).child((delegate.user?.uid)!).child(tripId).removeValue()
+        ref.child(FirebaseService.TRIPDAYS_NODE).child(tripId).observe(.childAdded) { (snapshot: FIRDataSnapshot) -> Void in
+            let tripDayId = snapshot.key
+            
+            // Delete all TripVisit
+            self.ref.child(FirebaseService.TRIPVISITS_NODE).child(tripDayId).removeValue()
+            
+            // Delete all TripDay
+            self.ref.child(FirebaseService.TRIPDAYS_NODE).child(tripId).removeValue()
+        }
+    }
+    
     func getIsTripFavorite(for tripId: String) -> Bool {
         return ref.child("trips").child((delegate.user?.uid)!).child(tripId).value(forKey: "favorites") as! Bool
     }
@@ -69,6 +83,14 @@ class FirebaseService {
         ref.child(FirebaseService.TRIPDAYS_NODE).child(trip).child(tripDayId).child("location").setValue(location)
     }
     
+    func deleteTripDay(for trip: String, id: String) {
+        // First delete all TripVisit
+        ref.child(FirebaseService.TRIPVISITS_NODE).child(id).removeValue()
+        
+        // Now delete the TripDay
+        ref.child(FirebaseService.TRIPDAYS_NODE).child(trip).child(id).removeValue()
+    }
+    
     func createTripDayVisit(for tripDay: String, id: String, location: String, place: String, photoUrl: String, startTime: Date, endTime: Date) {
         let mdata = ["id" : id,
                      "location" : location,
@@ -77,5 +99,9 @@ class FirebaseService {
                      "startTime" : timeFormatter.string(from: startTime),
                      "endTime" : timeFormatter.string(from: endTime)]
         ref.child(FirebaseService.TRIPVISITS_NODE).child(tripDay).child(id).setValue(mdata)
+    }
+    
+    func deleteTripDayVisit(for tripDay: String, id: String) {
+        ref.child(FirebaseService.TRIPVISITS_NODE).child(tripDay).child(id).removeValue()
     }
 }

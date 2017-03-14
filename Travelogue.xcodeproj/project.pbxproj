@@ -37,6 +37,7 @@
 		C68002C81E6CA6EF00362353 /* CoreDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002C71E6CA6EF00362353 /* CoreDataTableViewController.swift */; };
 		C68002E21E6E55A000362353 /* TripDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68002E11E6E55A000362353 /* TripDetailsViewController.swift */; };
 		C6C1B9CF1E6B401500D265B6 /* AddActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */; };
+		C6CCFD101E776E7B00180D40 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CCFD0F1E776E7B00180D40 /* Reachability.swift */; };
 		C6D4AFCF1E665E4400F2B092 /* BetterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */; };
 		C6D4AFD11E66639000F2B092 /* FoursquarePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */; };
 		C6D4AFD41E67B62F00F2B092 /* ColorResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D4AFD31E67B62F00F2B092 /* ColorResources.swift */; };
@@ -84,6 +85,7 @@
 		C68002C71E6CA6EF00362353 /* CoreDataTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTableViewController.swift; sourceTree = "<group>"; };
 		C68002E11E6E55A000362353 /* TripDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripDetailsViewController.swift; sourceTree = "<group>"; };
 		C6C1B9CE1E6B401500D265B6 /* AddActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddActivityView.swift; sourceTree = "<group>"; };
+		C6CCFD0F1E776E7B00180D40 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		C6D4AFCE1E665E4400F2B092 /* BetterLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetterLabel.swift; sourceTree = "<group>"; };
 		C6D4AFD01E66639000F2B092 /* FoursquarePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquarePhoto.swift; sourceTree = "<group>"; };
 		C6D4AFD31E67B62F00F2B092 /* ColorResources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorResources.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				C67F06C91E6F9F3B0079AFC8 /* FirebaseService.swift */,
+				C6CCFD0F1E776E7B00180D40 /* Reachability.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 				C68002C41E6C8ADC00362353 /* CoreDataStack.swift in Sources */,
 				C6D4AFD11E66639000F2B092 /* FoursquarePhoto.swift in Sources */,
 				C601AB381E6509670089EFE8 /* LocationSuggestionCollectionViewCell.swift in Sources */,
+				C6CCFD101E776E7B00180D40 /* Reachability.swift in Sources */,
 				C61761B01E5E88CA0041F23F /* CalendarCellView.swift in Sources */,
 				C68002E21E6E55A000362353 /* TripDetailsViewController.swift in Sources */,
 				C6E9F01D1E5E7CC000DE2C21 /* NewTripDetailsViewController.swift in Sources */,

@@ -25,6 +25,7 @@ class TripDayDetailsViewController: UIViewController {
     var tripDayVisits: [FIRDataSnapshot] = []
     var downloadedImages = [String: Data]()
     let fourSquareApiHelper = FourSquareApiHelper.instance
+    let firebaseService = FirebaseService.instance
     
     var isOfflineTrip: Bool?
     var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
@@ -64,6 +65,12 @@ class TripDayDetailsViewController: UIViewController {
             self.tripDayVisitsTableView.insertRows(at: [IndexPath(row: self.tripDayVisits.count - 1, section: 0)], with: .automatic)
         }
     }
+    
+    func showErrorToUser(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension TripDayDetailsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -74,6 +81,19 @@ extension TripDayDetailsViewController: UITableViewDelegate, UITableViewDataSour
             return fc.sections![section].numberOfObjects
         } else {
             return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if isOfflineTrip == nil {
+            if Reachability.isConnectedToNetwork() {
+                let tripVisitId = tripDayVisits[indexPath.row].key
+                firebaseService.deleteTripDayVisit(for: tripDayId, id: tripVisitId)
+            } else {
+                showErrorToUser(title: "No internet!", message: "Trips cannot be edited when offline.")
+            }
+        } else {
+            showErrorToUser(title: "Favorite trip!", message: "Editing a favorite trip is not allowed.")
         }
     }
     
@@ -93,22 +113,20 @@ extension TripDayDetailsViewController: UITableViewDelegate, UITableViewDataSour
             if !startTime.isEmpty && !endTime.isEmpty {
                 time = "\(startTime) - \(endTime)"
             }
-            else if !startTime.isEmpty && endTime.isEmpty {
+            else if !startTime.isEmpty {
                 time = "\(startTime) - "
             }
-            else if startTime.isEmpty && endTime.isEmpty {
+            else {
                 time = ""
             }
+            cell.placeLabel.text = place
+            cell.timeLabel.text = time
             
             if photoUrl.isEmpty {
                 cell.photoView.image = #imageLiteral(resourceName: "PlaceholderImage")
-                cell.placeLabel.text = place
-                cell.timeLabel.text = time
             } else {
                 if let savedImage = downloadedImages[photoUrl] {
                     cell.photoView.image = UIImage(data: savedImage)
-                    cell.placeLabel.text = place
-                    cell.timeLabel.text = time
                 } else {
                     fourSquareApiHelper.downloadFoursquarePhoto(imagePath: photoUrl) { (photo, error) in
                         if let error = error {
@@ -117,8 +135,6 @@ extension TripDayDetailsViewController: UITableViewDelegate, UITableViewDataSour
                             self.downloadedImages[photoUrl] = photo!
                             DispatchQueue.main.async {
                                 cell.photoView.image = UIImage(data: photo!)
-                                cell.placeLabel.text = place
-                                cell.timeLabel.text = time
                             }
                         }
                     }

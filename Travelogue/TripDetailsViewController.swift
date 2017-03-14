@@ -30,6 +30,7 @@ class TripDetailsViewController: UIViewController {
     fileprivate let dateFormatter = DateFormatter()
     
     var delegate = UIApplication.shared.delegate as! AppDelegate
+    let firebaseService = FirebaseService.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,6 +89,12 @@ class TripDetailsViewController: UIViewController {
             }
         }
     }
+    
+    func showErrorToUser(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension TripDetailsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -126,5 +133,18 @@ extension TripDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if isOfflineTrip == nil {
+            if Reachability.isConnectedToNetwork() {
+                let tripDay = tripDays[indexPath.row].key
+                firebaseService.deleteTripDay(for: tripId, id: tripDay)
+            } else {
+                showErrorToUser(title: "No internet!", message: "Trips cannot be edited when offline.")
+            }
+        } else {
+            showErrorToUser(title: "Favorite trip!", message: "Editing a favorite trip is not allowed.")
+        }
     }
 }

@@ -101,6 +101,12 @@ class CreateDayPlanViewController: UIViewController {
             }
         }
     }
+    
+    func showErrorToUser(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSource {
@@ -113,8 +119,6 @@ extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSourc
         let tripDayVisitSnapshot: FIRDataSnapshot = tripDayVisits[indexPath.row]
         let tripDayVisit = tripDayVisitSnapshot.value as! [String: String]
         
-        print(tripDayVisit)
-        
         cell.textLabel?.text = tripDayVisit["place"]
         if let startTime = tripDayVisit["startTime"] {
             if let endTime = tripDayVisit["endTime"] {
@@ -125,7 +129,19 @@ extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSourc
         }
         
         return cell
-        
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if Reachability.isConnectedToNetwork() {
+                let visit = tripDayVisits[indexPath.row].value as! [String: String]
+                firebaseService.deleteTripDayVisit(for: tripDay, id: visit["id"]!)
+                tripDayVisits.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            } else {
+                showErrorToUser(title: "No internet!", message: "Trip can be edited only when online.")
+            }
+        }
     }
 }
 
@@ -152,9 +168,7 @@ extension CreateDayPlanViewController {
         fourSquareApiHelper.getPhotosNear(location: location!) { (error, photos) in
             if let error = error {
                 if error == "The Internet connection appears to be offline." {
-                    let alert = UIAlertController(title: "No internet!", message: "We could not fetch suggested places.", preferredStyle: .actionSheet)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    self.showErrorToUser(title: "No internet!", message: "We could not fetch suggested places.")
                 }
             }
             else if let photos = photos {
