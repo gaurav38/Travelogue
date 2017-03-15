@@ -147,7 +147,7 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
             var pathsToReload = indexPathsToReload
             let selectedCell = collectionView.cellForItem(at: indexPath) as? JTAppleDayCell
             if selectedCell == nil {
-                calendarView.reloadItems(at: [indexPath])
+                calendarView.reloadItems(at: [indexPath]) // We use this reload instead of batch because the cells are off the screen.
             }
             // Cell may be nil if user switches month sections
             // Although the cell may be nil, we still want to
@@ -198,7 +198,6 @@ extension JTAppleCalendarView: UICollectionViewDelegate, UICollectionViewDataSou
                 return
         }
         
-    
         // index paths to be reloaded should be index to the left and right of the selected index
         let indexPathsToReload = rangeSelectionWillBeUsed ? validForwardAndBackwordSelectedIndexes(forIndexPath: indexPath) : []
         

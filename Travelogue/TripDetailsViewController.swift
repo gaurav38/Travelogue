@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 import Firebase
+import ReachabilitySwift
 
 class TripDetailsViewController: UIViewController {
     
@@ -28,22 +29,20 @@ class TripDetailsViewController: UIViewController {
     var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     fileprivate let dateFormatter = DateFormatter()
-    
     var delegate = UIApplication.shared.delegate as! AppDelegate
     let firebaseService = FirebaseService.instance
+    let reachability = Reachability()!
+    var ref: FIRDatabaseReference!
+    fileprivate var _refHandle: FIRDatabaseHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tripNameLabel.text = tripName
-        tripDaysTableView.delegate = self
-        tripDaysTableView.dataSource = self
-        dateFormatter.dateFormat = "MMM dd, yyyy"
+        configureUI()
         
         if isOfflineTrip == nil {
             loadingIndicatorView.isHidden = false
             loadingIndicator.startAnimating()
-            configureDatabase()
         } else if let fc = fetchedResultsController {
             loadingIndicatorView.isHidden = true
             do {
@@ -52,14 +51,55 @@ class TripDetailsViewController: UIViewController {
                 print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")
             }
         }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
+        reachability.whenReachable = { reachability in
+            DispatchQueue.main.async {
+                if reachability.isReachable {
+                    if self.isOfflineTrip == nil {
+                        self.tripDays.removeAll(keepingCapacity: false)
+                        self.tripDaysTableView.reloadData()
+                        self.loadingIndicatorView.isHidden = false
+                        self.loadingIndicator.startAnimating()
+                        self.configureDatabase()
+                    }
+                }
+            }
+        }
+        reachability.whenUnreachable = { reachability in
+            DispatchQueue.main.async {
+                self.loadingIndicatorView.isHidden = true
+                self.loadingIndicator.stopAnimating()
+                self.showErrorToUser(title: "No internet!", message: "You are offline.")
+                if let refHandle = self._refHandle {
+                    self.ref.child("trip_days").removeObserver(withHandle: refHandle)
+                }
+            }
+        }
+    }
+    
+    func configureUI() {
+        tripNameLabel.text = tripName
+        tripDaysTableView.delegate = self
+        tripDaysTableView.dataSource = self
+        dateFormatter.dateFormat = "MMM dd, yyyy"
     }
     
     func configureDatabase() {
-        let ref = FIRDatabase.database().reference()
-        ref.child("trip_days").child(tripId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+        _refHandle = ref.child("trip_days").child(tripId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.tripDays.append(snapshot)
             self.tripDaysTableView.insertRows(at: [IndexPath(row: self.tripDays.count - 1, section: 0)], with: .automatic)
         }
+    }
+    
+    deinit {
+        ref.child("trip_days").removeObserver(withHandle: _refHandle!)
+        reachability.stopNotifier()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -72,6 +112,7 @@ class TripDetailsViewController: UIViewController {
                 vc.tripDayId = selectedTripDay["id"]
                 vc.tripDayDate = selectedTripDay["date"]
                 vc.tripDayLocation = selectedTripDay["location"]
+                vc.ref = ref
             } else if let fc = fetchedResultsController {
                 let tripDay = fc.object(at: indexPath) as! TripDay
                 
@@ -88,12 +129,6 @@ class TripDetailsViewController: UIViewController {
                 vc.fetchedResultsController = fc
             }
         }
-    }
-    
-    func showErrorToUser(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -137,7 +172,7 @@ extension TripDetailsViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if isOfflineTrip == nil {
-            if Reachability.isConnectedToNetwork() {
+            if reachability.isReachable {
                 let tripDay = tripDays[indexPath.row].key
                 firebaseService.deleteTripDay(for: tripId, id: tripDay)
             } else {

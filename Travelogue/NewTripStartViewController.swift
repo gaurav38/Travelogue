@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReachabilitySwift
 
 class NewTripStartViewController: UIViewController {
 
@@ -16,12 +17,33 @@ class NewTripStartViewController: UIViewController {
     let delegate = UIApplication.shared.delegate as! AppDelegate
     let dataContainer = NewTripDataContainer.instance
     let firebaseService = FirebaseService.instance
+    let reachability = Reachability()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tripNameTextField.delegate = self
         doneButton.isEnabled = false
         dataContainer.reset()
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
+        reachability.whenReachable = { reachability in
+            DispatchQueue.main.async {
+                if reachability.isReachable {
+                    self.doneButton.isEnabled = true
+                }
+            }
+        }
+        reachability.whenUnreachable = { reachability in
+            DispatchQueue.main.async {
+                self.showErrorToUser(title: "No internet!", message: "You are offline.")
+                self.doneButton.isEnabled = false
+            }
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

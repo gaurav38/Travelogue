@@ -68,6 +68,7 @@ open class JTAppleCalendarView: UIView {
         didSet {
             if oldValue == scrollDirection { return }
             calendarViewLayout.scrollDirection = scrollDirection
+            updateLayoutItemSize()
             layoutNeedsUpdating = true
         }
     }
@@ -549,13 +550,14 @@ open class JTAppleCalendarView: UIView {
                 }
             }
             
-            self.theSelectedIndexPaths = pathsAndCounterPaths
+            theSelectedIndexPaths = pathsAndCounterPaths
         }
         
         // Restore the selected index paths
         let restoreAfterReload = {
             // The bounds of visible cells might have shifted, so reset them
             for cell in self.calendarView.visibleCells { cell.bounds.origin = CGPoint(x: 0, y: 0) }
+            for indexPath in self.theSelectedIndexPaths { self.restoreSelectionStateForCellAtIndexPath(indexPath) }
         }
         
         if let validAnchorDate = anchorDate {
@@ -743,20 +745,18 @@ extension JTAppleCalendarView {
                 let monthSectionIndex = periodApart.month!
                 if monthSectionIndex + 1 >= monthInfo.count {
                     return retval
-                }// If there is no following months,
-                 // there are no counterpart dates
-
+                }
+                
+                // If there is no following months, there are no counterpart dates
                 let followingMonthInfo = monthInfo[monthSectionIndex + 1]
                 if followingMonthInfo.inDates < 1 {
                     return retval
-                } // If there are no predates for the following month,
-                  // then there are no counterpart dates
+                }
+                // If there are no predates for the following month then there are no counterpart dates
                 let lastDateOfCurrentMonth = calendar.endOfMonth(for: date)!
-                let lastDay = calendar.component(.day,
-                                                 from: lastDateOfCurrentMonth)
+                let lastDay = calendar.component(.day, from: lastDateOfCurrentMonth)
                 let section = followingMonthInfo.startSection
-                let index = dayIndex - lastDay +
-                    (followingMonthInfo.inDates - 1)
+                let index = dayIndex - lastDay + (followingMonthInfo.inDates - 1)
                 if index < 0 {
                     return retval
                 }

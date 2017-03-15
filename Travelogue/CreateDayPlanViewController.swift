@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GooglePlaces
+import ReachabilitySwift
 
 class CreateDayPlanViewController: UIViewController {
 
@@ -27,6 +28,7 @@ class CreateDayPlanViewController: UIViewController {
     var firebaseService: FirebaseService!
     let delegate = UIApplication.shared.delegate as! AppDelegate
     var tripDayLocation: String?
+    let reachability = Reachability()!
     
     fileprivate var location: String?
     fileprivate var suggestedPlaces = [FoursquarePhoto]()
@@ -102,12 +104,6 @@ class CreateDayPlanViewController: UIViewController {
             }
         }
     }
-    
-    func showErrorToUser(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
 }
 
 extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSource {
@@ -134,7 +130,7 @@ extension CreateDayPlanViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            if Reachability.isConnectedToNetwork() {
+            if reachability.isReachable {
                 let visit = tripDayVisits[indexPath.row].value as! [String: String]
                 firebaseService.deleteTripDayVisit(for: tripDay, id: visit["id"]!)
                 tripDayVisits.remove(at: indexPath.row)
@@ -153,6 +149,7 @@ extension CreateDayPlanViewController: UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
@@ -217,7 +214,6 @@ extension CreateDayPlanViewController {
 
 extension CreateDayPlanViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(suggestedPlaces.count)
         return suggestedPlaces.count
     }
     

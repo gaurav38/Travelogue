@@ -12,6 +12,7 @@ import FirebaseAuthUI
 import FirebaseGoogleAuthUI
 import FirebaseFacebookAuthUI
 import CoreData
+import ReachabilitySwift
 
 class HomeTableViewController: UIViewController, FUIAuthDelegate {
 
@@ -22,23 +23,57 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     var ref: FIRDatabaseReference!
     var trips: [FIRDataSnapshot]! = []
     let delegate = UIApplication.shared.delegate as! AppDelegate
-    fileprivate var _refHandle: FIRDatabaseHandle!
+    fileprivate var _refHandle: FIRDatabaseHandle?
     fileprivate var _authHandle: FIRAuthStateDidChangeListenerHandle!
     fileprivate var firebaseService = FirebaseService.instance
     fileprivate let fourSquareApiHelper = FourSquareApiHelper.instance
     var dateFormatter = DateFormatter()
     var timeFormatter = DateFormatter()
     var displayName = "Anonymous"
+    let reachability = Reachability()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
+        configureUI()
+        configureAuth()
+        
+        reachability.whenReachable = { reachability in
+            DispatchQueue.main.async {
+                if reachability.isReachable {
+                    self.trips.removeAll(keepingCapacity: false)
+                    self.tripTableView.reloadData()
+                    self.loadingIndicator.startAnimating()
+                    self.loadingIndicatorView.isHidden = false
+                    self.configureDatabase()
+                }
+            }
+        }
+        reachability.whenUnreachable = { reachability in
+            DispatchQueue.main.async {
+                self.showErrorToUser(title: "No internet!", message: "You are offline.")
+                self.loadingIndicator.stopAnimating()
+                self.loadingIndicatorView.isHidden = true
+                if let refHandle = self._refHandle {
+                    self.ref.child("trips").removeObserver(withHandle: refHandle)
+                }
+            }
+        }
+    }
+    
+    func configureUI() {
         tripTableView.delegate = self
         tripTableView.dataSource = self
         loadingIndicator.startAnimating()
         loadingIndicatorView.isHidden = false
         dateFormatter.dateFormat = "MMM dd, yyyy"
         timeFormatter.dateFormat = "h:mm a"
-        configureAuth()
     }
     
     // MARK: Config
@@ -47,20 +82,16 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
         let providers: [FUIAuthProvider] = [FUIGoogleAuth()]
         FUIAuth.defaultAuthUI()?.providers = providers
         
-        // listen for changes in the authentication state
         _authHandle = FIRAuth.auth()?.addStateDidChangeListener { (auth: FIRAuth, user: FIRUser?) in
-            // refresh table state
             self.trips.removeAll(keepingCapacity: false)
             self.tripTableView.reloadData()
             
-            // check if there is a current user
             if let activeUser = user {
-                // check if the current app user is the current FIRUser
                 if self.delegate.user != activeUser {
                     self.delegate.user = activeUser
                     let name = self.delegate.user!.email!.components(separatedBy: "@")[0]
                     self.displayName = name
-                    self.configureDatabase()
+                    self.ref = FIRDatabase.database().reference()
                     self.firebaseService.configure(ref: self.ref)
                 }
             } else {
@@ -73,21 +104,16 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     }
     
     func configureDatabase() {
-        ref = FIRDatabase.database().reference()
-        self.firebaseService.configure(ref: ref)
         _refHandle = ref.child("trips").child((delegate.user?.uid)!).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.trips.append(snapshot)
             self.tripTableView.insertRows(at: [IndexPath(row: self.trips.count - 1, section: 0)], with: .automatic)
         }
     }
     
-    func configureStorage() {
-        // TODO: configure storage using your firebase storage
-    }
-    
     deinit {
-        ref.child("trips").removeObserver(withHandle: _refHandle)
+        ref.child("trips").removeObserver(withHandle: _refHandle!)
         FIRAuth.auth()?.removeStateDidChangeListener(_authHandle)
+        reachability.stopNotifier()
     }
     
     func loginSession() {
@@ -102,12 +128,6 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     }
     
     func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
-    }
-    
-    func showErrorToUser(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -139,33 +159,30 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        if reachability.isReachable {
+            return true
+        }
+        showErrorToUser(title: "No internet!", message: "Trips cannot be edited when offline.")
+        return false
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            if Reachability.isConnectedToNetwork() {
-                let trip = trips[indexPath.row].value as! [String: AnyObject]
-                firebaseService.deleteTrip(id: trip["id"] as! String)
-                trips.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            } else {
-                showErrorToUser(title: "No internet!", message: "Trip can be deleted only when online.")
-            }
-        }
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let favorite = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Favorite", handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
-            
-            let tripSnapshot: FIRDataSnapshot = self.trips[indexPath.row]
-            let trip = tripSnapshot.value as! [String: AnyObject]
-            self.makeTripOffline(trip: trip)
+            if self.reachability.isReachable {
+                let tripSnapshot: FIRDataSnapshot = self.trips[indexPath.row]
+                let trip = tripSnapshot.value as! [String: AnyObject]
+                self.makeTripOffline(trip: trip)
+            } else {
+                self.showErrorToUser(title: "No internet!", message: "Trips cannot be favorited when offline.")
+            }
             
         });
         favorite.backgroundColor = ColorResources.FavoritesForegroundColor
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete", handler: { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            if Reachability.isConnectedToNetwork() {
+            if self.reachability.isReachable {
                 let trip = self.trips[indexPath.row].value as! [String: AnyObject]
                 self.firebaseService.deleteTrip(id: trip["id"] as! String)
                 self.trips.remove(at: indexPath.row)
@@ -188,6 +205,7 @@ extension HomeTableViewController {
             let trip = trips[indexPath.row].value as! [String: AnyObject]
             vc.tripId = trip["id"] as! String
             vc.tripName = trip["name"] as! String
+            vc.ref = ref
         }
     }
 }
@@ -255,6 +273,14 @@ extension HomeTableViewController {
         }
         
         firebaseService.updateTripFavorite(for: trip["id"] as! String, isFavorite: true)
+    }
+}
+
+extension UIViewController {
+    func showErrorToUser(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

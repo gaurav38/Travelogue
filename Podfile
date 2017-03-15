@@ -11,6 +11,7 @@ pod 'FirebaseUI'
 pod 'JTAppleCalendar', '~>6.0'
 pod 'GooglePlaces'
 pod 'GoogleMaps'
+pod 'ReachabilitySwift'
 
 target 'Travelogue' do
 end

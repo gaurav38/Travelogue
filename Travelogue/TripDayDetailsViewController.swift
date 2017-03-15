@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import CoreData
+import ReachabilitySwift
 
 class TripDayDetailsViewController: UIViewController {
 
@@ -26,25 +27,22 @@ class TripDayDetailsViewController: UIViewController {
     var downloadedImages = [String: Data]()
     let fourSquareApiHelper = FourSquareApiHelper.instance
     let firebaseService = FirebaseService.instance
+    let reachability = Reachability()!
     
     var isOfflineTrip: Bool?
     var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
+    var ref: FIRDatabaseReference!
+    fileprivate var _refHandle: FIRDatabaseHandle?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tripDayVisitsTableView.delegate = self
-        tripDayVisitsTableView.dataSource = self
-        locationLabel.text = tripDayLocation
-        let splittedDate = tripDayDate.components(separatedBy: ",")
-        dateLabel.text = splittedDate[0]
-        yearLabel.text = splittedDate[1]
+        configureUI()
         
         if isOfflineTrip == nil {
             loadingIndicatorView.isHidden = false
             loadingIndicator.startAnimating()
-            configureDatabase()
-            
         } else if let fc = fetchedResultsController {
             loadingIndicatorView.isHidden = true
             do {
@@ -56,20 +54,52 @@ class TripDayDetailsViewController: UIViewController {
                 print("Error while trying to perform a search: \n\(e)\n\(fetchedResultsController)")
             }
         }
-    }
-    
-    func configureDatabase() {
-        let ref = FIRDatabase.database().reference()
-        ref.child("trip_visits").child(tripDayId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
-            self.tripDayVisits.append(snapshot)
-            self.tripDayVisitsTableView.insertRows(at: [IndexPath(row: self.tripDayVisits.count - 1, section: 0)], with: .automatic)
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
+        reachability.whenReachable = { reachability in
+            DispatchQueue.main.async {
+                if reachability.isReachable {
+                    if self.isOfflineTrip == nil {
+                        self.tripDayVisits.removeAll(keepingCapacity: false)
+                        self.tripDayVisitsTableView.reloadData()
+                        self.loadingIndicatorView.isHidden = false
+                        self.loadingIndicator.startAnimating()
+                        self.configureDatabase()
+                    }
+                }
+            }
+        }
+        reachability.whenUnreachable = { reachability in
+            DispatchQueue.main.async {
+                self.loadingIndicatorView.isHidden = true
+                self.loadingIndicator.stopAnimating()
+                self.showErrorToUser(title: "No internet!", message: "You are offline.")
+                if let refHandle = self._refHandle {
+                    self.ref.child("trip_visits").removeObserver(withHandle: refHandle)
+                }
+            }
         }
     }
     
-    func showErrorToUser(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+    func configureUI() {
+        tripDayVisitsTableView.delegate = self
+        tripDayVisitsTableView.dataSource = self
+        locationLabel.text = tripDayLocation
+        let splittedDate = tripDayDate.components(separatedBy: ",")
+        dateLabel.text = splittedDate[0]
+        yearLabel.text = splittedDate[1]
+    }
+    
+    func configureDatabase() {
+        _refHandle = ref.child("trip_visits").child(tripDayId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            self.tripDayVisits.append(snapshot)
+            self.tripDayVisitsTableView.insertRows(at: [IndexPath(row: self.tripDayVisits.count - 1, section: 0)], with: .automatic)
+        }
     }
 }
 
@@ -86,7 +116,7 @@ extension TripDayDetailsViewController: UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if isOfflineTrip == nil {
-            if Reachability.isConnectedToNetwork() {
+            if reachability.isReachable {
                 let tripVisitId = tripDayVisits[indexPath.row].key
                 firebaseService.deleteTripDayVisit(for: tripDayId, id: tripVisitId)
             } else {

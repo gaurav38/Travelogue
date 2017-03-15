@@ -10,6 +10,7 @@ extension Calendar {
     static let formatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy MM dd"
+        dateFormatter.isLenient = true
         return dateFormatter
     }()
     
@@ -22,11 +23,11 @@ extension Calendar {
     func endOfMonth(for date: Date) -> Date? {
         guard
             let comp = dateFormatterComponents(from: date),
-            let day = self.range(of: .day, in: .month, for: date)?.count else {
+            let day = self.range(of: .day, in: .month, for: date)?.count,
+            let retVal = Calendar.formatter.date(from: "\(comp.year) \(comp.month) \(day)") else {
                 return nil
         }
-        
-        return Calendar.formatter.date(from: "\(comp.year) \(comp.month) \(day)")
+        return retVal
     }
     
     private func dateFormatterComponents(from date: Date) -> (month: Int, year: Int)? {
