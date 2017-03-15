@@ -20,6 +20,9 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     @IBOutlet weak var loadingIndicatorView: UIView!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var noTripsLabel: UILabel!
+    @IBOutlet weak var signOutSignInButton: UIButton!
+    @IBOutlet weak var addTripButton: UIBarButtonItem!
     var ref: FIRDatabaseReference!
     var trips: [FIRDataSnapshot]! = []
     let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -47,6 +50,7 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
         reachability.whenUnreachable = { reachability in
             DispatchQueue.main.async {
                 self.showErrorToUser(title: "No internet!", message: "You are offline.")
+                self.loadingIndicatorView.isHidden = true
             }
         }
     }
@@ -54,8 +58,6 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     func configureUI() {
         tripTableView.delegate = self
         tripTableView.dataSource = self
-        loadingIndicator.startAnimating()
-        loadingIndicatorView.isHidden = false
         dateFormatter.dateFormat = "MMM dd, yyyy"
         timeFormatter.dateFormat = "h:mm a"
     }
@@ -68,26 +70,53 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
         
         _authHandle = FIRAuth.auth()?.addStateDidChangeListener { (auth: FIRAuth, user: FIRUser?) in
             self.trips.removeAll(keepingCapacity: false)
+            self.noTripsLabel.isHidden = true
             self.tripTableView.reloadData()
             
             if let activeUser = user {
                 if self.delegate.user != activeUser {
-                    self.delegate.user = activeUser
-                    let name = self.delegate.user!.email!.components(separatedBy: "@")[0]
-                    self.displayName = name
+                    self.configureSignedInState(user: activeUser)
                     self.ref = FIRDatabase.database().reference()
                     self.firebaseService.configure(ref: self.ref)
                     self.configureDatabase()
                 }
             } else {
+                self.configureSignedOutState()
                 self.loginSession()
             }
         }
         
     }
     
+    func configureSignedInState(user: FIRUser) {
+        addTripButton.isEnabled = true
+        loadingIndicatorView.isHidden = false
+        loadingIndicator.startAnimating()
+        signOutSignInButton.setTitle("SignOut", for: UIControlState.normal)
+        delegate.user = user
+        let name = delegate.user!.email!.components(separatedBy: "@")[0]
+        displayName = name
+    }
+    
+    func configureSignedOutState() {
+        signOutSignInButton.setTitle("SignIn", for: UIControlState.normal)
+        addTripButton.isEnabled = false
+        loadingIndicatorView.isHidden = true
+        loadingIndicator.stopAnimating()
+    }
+    
     func configureDatabase() {
+        ref.child("trips").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+            if snapshot.hasChild((self.delegate.user?.uid)!) {
+                self.noTripsLabel.isHidden = true
+            } else {
+                self.noTripsLabel.isHidden = false
+                self.loadingIndicatorView.isHidden = true
+                self.loadingIndicator.stopAnimating()
+            }
+        }
         _refHandle = ref.child("trips").child((delegate.user?.uid)!).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            self.noTripsLabel.isHidden = true
             self.trips.append(snapshot)
             self.tripTableView.insertRows(at: [IndexPath(row: self.trips.count - 1, section: 0)], with: .automatic)
         }
@@ -115,8 +144,19 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
     }
     
-    @IBAction func signOut(_ sender: Any) {
+    @IBAction func handleSignInSignOut(_ sender: Any) {
+        print(signOutSignInButton.currentTitle!)
+        if signOutSignInButton.currentTitle! == "SignOut" {
+            signOut(self)
+        } else {
+            loginSession()
+        }
+    }
+    
+    func signOut(_ sender: Any) {
         do {
+            self.loadingIndicatorView.isHidden = true
+            self.loadingIndicator.stopAnimating()
             try FIRAuth.auth()?.signOut()
         } catch {
             print("unable to sign out: \(error)")

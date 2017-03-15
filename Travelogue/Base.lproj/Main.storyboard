@@ -15,7 +15,7 @@
         <scene sceneID="eSR-NK-Qt1">
             <objects>
                 <navigationController title="CreateNewPlanNavScene" id="65f-g0-pq1" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="OlS-NV-woY">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="OlS-NV-woY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -98,36 +98,36 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Aah-WV-dwn">
-                                        <rect key="frame" x="0.0" y="145" width="345" height="12"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Aah-WV-dwn">
+                                        <rect key="frame" x="0.0" y="145" width="345" height="12.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hph-lp-nw8">
-                                                <rect key="frame" x="0.0" y="0.0" width="108" height="12"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="128.5" height="12.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Start date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f90-Ee-ZUm">
-                                                        <rect key="frame" x="0.0" y="0.0" width="108" height="0.0"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="128.5" height="0.0"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="---" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GgA-SF-4H6" userLabel="StartDateLabel">
-                                                        <rect key="frame" x="0.0" y="8" width="108" height="4"/>
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                                        <rect key="frame" x="0.0" y="8" width="128.5" height="4.5"/>
+                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="B9b-en-Jyp">
-                                                <rect key="frame" x="118" y="0.0" width="109" height="12"/>
+                                                <rect key="frame" x="138.5" y="0.0" width="71.5" height="12.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S3Z-rE-5v0" userLabel="MonthLabel">
-                                                        <rect key="frame" x="0.0" y="0.0" width="109" height="0.0"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="71.5" height="0.0"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u0K-VI-ylg" userLabel="YearLabel">
-                                                        <rect key="frame" x="0.0" y="0.0" width="109" height="12"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="71.5" height="12.5"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -135,17 +135,17 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="sgm-7p-V7C">
-                                                <rect key="frame" x="237" y="0.0" width="108" height="12"/>
+                                                <rect key="frame" x="220" y="0.0" width="125" height="12.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="End date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWU-TO-y0B">
-                                                        <rect key="frame" x="0.0" y="0.0" width="108" height="0.0"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="125" height="0.0"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="---" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IqP-h8-OWn" userLabel="EndDateLabel">
-                                                        <rect key="frame" x="0.0" y="10" width="108" height="2"/>
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                                        <rect key="frame" x="0.0" y="10" width="125" height="2.5"/>
+                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
@@ -153,49 +153,49 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="1ll-HX-RlZ">
-                                        <rect key="frame" x="0.0" y="172" width="345" height="401"/>
+                                        <rect key="frame" x="0.0" y="172.5" width="345" height="400.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="MIt-Qt-8fv">
-                                                <rect key="frame" x="0.0" y="0.0" width="345" height="21"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="20.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M1T-1C-YD4">
-                                                        <rect key="frame" x="0.0" y="0.0" width="45" height="21"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="45" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MON" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DwZ-7L-zbU">
-                                                        <rect key="frame" x="50" y="0.0" width="45" height="21"/>
+                                                        <rect key="frame" x="50" y="0.0" width="45" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TUE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pat-y3-TZa">
-                                                        <rect key="frame" x="100" y="0.0" width="45" height="21"/>
+                                                        <rect key="frame" x="100" y="0.0" width="45" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rEU-Qe-74k">
-                                                        <rect key="frame" x="150" y="0.0" width="45" height="21"/>
+                                                        <rect key="frame" x="150" y="0.0" width="45" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="THU" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXq-e7-kc7">
-                                                        <rect key="frame" x="200" y="0.0" width="45" height="21"/>
+                                                        <rect key="frame" x="200" y="0.0" width="45" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FRI" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RO5-HR-4Ay">
-                                                        <rect key="frame" x="250" y="0.0" width="45" height="21"/>
+                                                        <rect key="frame" x="250" y="0.0" width="45" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTr-aS-ERI">
-                                                        <rect key="frame" x="300" y="0.0" width="45" height="21"/>
+                                                        <rect key="frame" x="300" y="0.0" width="45" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -203,7 +203,7 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UV0-1e-8s4" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
-                                                <rect key="frame" x="0.0" y="26" width="345" height="375"/>
+                                                <rect key="frame" x="0.0" y="25.5" width="345" height="375"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                         </subviews>
@@ -332,13 +332,13 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="164" height="116"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Country/City visiting?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tgu-7h-XO1" customClass="BetterLabel" customModule="Travelogue" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="164" height="22"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="164" height="21.5"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hrh-Rc-PMg" customClass="BetterTextField" customModule="Travelogue" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="27" width="164" height="89"/>
+                                                        <rect key="frame" x="0.0" y="26.5" width="164" height="89.5"/>
                                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
                                                         <textInputTraits key="textInputTraits"/>
@@ -352,13 +352,13 @@
                                                         <rect key="frame" x="0.0" y="10" width="196" height="96"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hoK-io-4dT" userLabel="DateLabel">
-                                                                <rect key="frame" x="0.0" y="0.0" width="196" height="69"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="196" height="69.5"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Djl-4u-BJZ" userLabel="YearLabel">
-                                                                <rect key="frame" x="0.0" y="74" width="196" height="22"/>
+                                                                <rect key="frame" x="0.0" y="74.5" width="196" height="21.5"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
@@ -545,13 +545,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4o-pU-7Hi" userLabel="dateLabel">
-                                                <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="80" height="44.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyi-RO-OJ1" userLabel="yearLabel">
-                                                <rect key="frame" x="0.0" y="44" width="80" height="36"/>
+                                                <rect key="frame" x="0.0" y="44.5" width="80" height="35.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -582,19 +582,19 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="dkA-Hr-0Ny" userLabel="DateStackView">
-                                <rect key="frame" x="26" y="260" width="323" height="64"/>
+                                <rect key="frame" x="26" y="260" width="323" height="63.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="N1k-O1-5Nz">
-                                        <rect key="frame" x="0.0" y="0.0" width="152" height="64"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="151.5" height="63.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C9p-oK-tnA" userLabel="Start time:">
-                                                <rect key="frame" x="0.0" y="0.0" width="152" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="151.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="diW-EF-0IW" userLabel="StartTimeTextField">
-                                                <rect key="frame" x="0.0" y="34" width="152" height="30"/>
+                                                <rect key="frame" x="0.0" y="33.5" width="151.5" height="30"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -602,16 +602,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="EVC-cv-YQV">
-                                        <rect key="frame" x="172" y="0.0" width="151" height="64"/>
+                                        <rect key="frame" x="171.5" y="0.0" width="151.5" height="63.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="End time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LiQ-tv-Y19" userLabel="End time:">
-                                                <rect key="frame" x="0.0" y="0.0" width="151" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="151.5" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XAb-GG-KJm" userLabel="EndTimeTextField">
-                                                <rect key="frame" x="0.0" y="34" width="151" height="30"/>
+                                                <rect key="frame" x="0.0" y="33.5" width="151.5" height="30"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -621,7 +621,7 @@
                                 </subviews>
                             </stackView>
                             <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="3KB-q0-Cyo">
-                                <rect key="frame" x="27" y="344" width="320" height="140"/>
+                                <rect key="frame" x="27" y="343.5" width="320" height="140"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="140" id="FLQ-Zr-5zy"/>
                                 </constraints>
@@ -630,7 +630,7 @@
                                 </date>
                             </datePicker>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EBr-2Z-1An" userLabel="ChooseTime">
-                                <rect key="frame" x="26" y="504" width="323" height="30"/>
+                                <rect key="frame" x="26" y="503.5" width="323" height="30"/>
                                 <color key="backgroundColor" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="l6v-8R-FYS"/>
@@ -644,7 +644,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9s-PG-Cxa" userLabel="Done">
-                                <rect key="frame" x="26" y="554" width="323" height="40"/>
+                                <rect key="frame" x="26" y="553.5" width="323" height="40"/>
                                 <color key="backgroundColor" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="vDH-3q-L7Q"/>
@@ -727,7 +727,7 @@
             <objects>
                 <navigationController title="FavoriteTripsNav" id="uMk-P5-E3a" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="favorites" id="gyl-Gh-5ES"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="p7b-GH-J2I">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="p7b-GH-J2I">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -835,7 +835,7 @@
             <objects>
                 <navigationController id="A7W-iE-Ml9" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Trips" image="MyTrips" id="bEW-Iq-AcI"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Gj3-Cc-WoC">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="Gj3-Cc-WoC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -941,10 +941,18 @@
                                     <constraint firstAttribute="width" constant="150" id="vrf-Nq-vTK"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No trips!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d1P-d8-Xzt" userLabel="NoTripsLabel">
+                                <rect key="frame" x="142" y="303.5" width="91.5" height="28"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="d1P-d8-Xzt" firstAttribute="centerX" secondItem="SqZ-dW-PbM" secondAttribute="centerX" id="8Bd-ms-OKc"/>
                             <constraint firstItem="wy9-tp-OSS" firstAttribute="centerY" secondItem="SqZ-dW-PbM" secondAttribute="centerY" id="CwS-eH-dcq"/>
+                            <constraint firstItem="d1P-d8-Xzt" firstAttribute="centerY" secondItem="SqZ-dW-PbM" secondAttribute="centerY" id="KV3-no-pb3"/>
                             <constraint firstItem="wwQ-a3-wLO" firstAttribute="leading" secondItem="J7U-ze-UFr" secondAttribute="leading" id="LUx-ET-hW1"/>
                             <constraint firstItem="SqZ-dW-PbM" firstAttribute="top" secondItem="wwQ-a3-wLO" secondAttribute="bottom" id="Tnk-sO-eWV"/>
                             <constraint firstItem="wwQ-a3-wLO" firstAttribute="top" secondItem="RKe-kE-jfb" secondAttribute="bottom" id="WPg-FI-5aq"/>
@@ -956,13 +964,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Travelogue" id="PGg-nx-9yZ">
-                        <barButtonItem key="leftBarButtonItem" title="Signout" style="plain" id="eoh-Zz-MAV">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="H8U-CL-JUs" userLabel="Signout">
+                        <barButtonItem key="leftBarButtonItem" title="Signout" style="plain" id="eoh-Zz-MAV" userLabel="SignOutSignIn">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="H8U-CL-JUs" userLabel="SignOutSignIn">
                                 <rect key="frame" x="16" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Signout"/>
                                 <connections>
-                                    <action selector="signOut:" destination="vje-ei-LN7" eventType="touchUpInside" id="uTk-0r-M5F"/>
+                                    <action selector="handleSignInSignOut:" destination="vje-ei-LN7" eventType="touchUpInside" id="3Vi-tt-NHH"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -973,8 +981,11 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addTripButton" destination="6rt-YC-3sR" id="G50-6t-ghz"/>
                         <outlet property="loadingIndicator" destination="WRY-7z-ayE" id="Gts-cI-fh4"/>
                         <outlet property="loadingIndicatorView" destination="wy9-tp-OSS" id="5TG-wk-Geu"/>
+                        <outlet property="noTripsLabel" destination="d1P-d8-Xzt" id="tYN-zE-gNW"/>
+                        <outlet property="signOutSignInButton" destination="H8U-CL-JUs" id="reM-1Q-aZW"/>
                         <outlet property="tripTableView" destination="SqZ-dW-PbM" id="PDL-Ln-aFt"/>
                     </connections>
                 </viewController>
@@ -1070,9 +1081,16 @@
                                     <constraint firstAttribute="height" constant="80" id="kge-wm-DFI"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Empty Trip" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ycm-Il-5Mn" userLabel="NoTripDaysLabel">
+                                <rect key="frame" x="135" y="304.5" width="105.5" height="26"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ycm-Il-5Mn" firstAttribute="centerX" secondItem="5BS-sh-Wvp" secondAttribute="centerX" id="JFx-f9-sd1"/>
                             <constraint firstItem="eK4-lS-jpm" firstAttribute="top" secondItem="5BS-sh-Wvp" secondAttribute="bottom" id="KCZ-9M-unh"/>
                             <constraint firstItem="5BS-sh-Wvp" firstAttribute="leading" secondItem="WAP-Fd-eO8" secondAttribute="leading" id="PMx-TB-hnY"/>
                             <constraint firstItem="5BS-sh-Wvp" firstAttribute="top" secondItem="Caq-ee-ElZ" secondAttribute="bottom" id="ULy-nO-5HY"/>
@@ -1080,11 +1098,13 @@
                             <constraint firstItem="ALL-rd-WTh" firstAttribute="centerY" secondItem="5BS-sh-Wvp" secondAttribute="centerY" id="YS3-Iu-qO6"/>
                             <constraint firstAttribute="trailing" secondItem="Caq-ee-ElZ" secondAttribute="trailing" id="fvW-T9-PXp"/>
                             <constraint firstItem="Caq-ee-ElZ" firstAttribute="leading" secondItem="WAP-Fd-eO8" secondAttribute="leading" id="gUN-Z9-ih3"/>
+                            <constraint firstItem="ycm-Il-5Mn" firstAttribute="centerY" secondItem="5BS-sh-Wvp" secondAttribute="centerY" id="jjd-5M-pdt"/>
                             <constraint firstAttribute="trailing" secondItem="5BS-sh-Wvp" secondAttribute="trailing" id="qnw-qs-Pyr"/>
                             <constraint firstItem="Caq-ee-ElZ" firstAttribute="top" secondItem="qjp-jR-3T0" secondAttribute="bottom" id="yLb-eZ-aiQ"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="emptyStateLabel" destination="ycm-Il-5Mn" id="1g3-if-ZNo"/>
                         <outlet property="loadingIndicator" destination="GFa-Pa-twp" id="kSW-Rz-lRQ"/>
                         <outlet property="loadingIndicatorView" destination="ALL-rd-WTh" id="Ouh-G9-RK4"/>
                         <outlet property="tripDaysTableView" destination="5BS-sh-Wvp" id="xmg-06-2ku"/>
@@ -1234,7 +1254,7 @@
                                         <color key="color" red="1" green="0.64590386280000001" blue="0.61826171870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading visits!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fej-YL-InW" userLabel="LoadingLabel">
-                                        <rect key="frame" x="20" y="49" width="110" height="21"/>
+                                        <rect key="frame" x="20.5" y="49.5" width="109.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1250,12 +1270,20 @@
                                     <constraint firstItem="Fej-YL-InW" firstAttribute="centerX" secondItem="3JN-MF-Lpv" secondAttribute="centerX" id="jEr-qJ-hMd"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No visits" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sru-hM-dIk" userLabel="EmptyStateLabel">
+                                <rect key="frame" x="146" y="304" width="84.5" height="26"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="sru-hM-dIk" firstAttribute="centerX" secondItem="i0p-gU-qFI" secondAttribute="centerX" id="Cma-Jw-t9Z"/>
                             <constraint firstItem="ffs-2T-Xys" firstAttribute="top" secondItem="Qem-Z0-Rzb" secondAttribute="bottom" id="HGK-ct-5N2"/>
                             <constraint firstItem="ffs-2T-Xys" firstAttribute="leading" secondItem="tlR-xd-WVW" secondAttribute="leading" id="I62-0R-xCT"/>
                             <constraint firstItem="3JN-MF-Lpv" firstAttribute="centerX" secondItem="i0p-gU-qFI" secondAttribute="centerX" id="KIG-Vz-GEh"/>
+                            <constraint firstItem="sru-hM-dIk" firstAttribute="centerY" secondItem="i0p-gU-qFI" secondAttribute="centerY" id="NYU-ud-xuR"/>
                             <constraint firstItem="u8n-g2-XW2" firstAttribute="top" secondItem="i0p-gU-qFI" secondAttribute="bottom" id="P3b-5u-QvN"/>
                             <constraint firstItem="i0p-gU-qFI" firstAttribute="top" secondItem="ffs-2T-Xys" secondAttribute="bottom" id="YE2-hv-Dw9"/>
                             <constraint firstItem="i0p-gU-qFI" firstAttribute="leading" secondItem="tlR-xd-WVW" secondAttribute="leading" id="gDF-H7-OLY"/>
@@ -1266,6 +1294,7 @@
                     </view>
                     <connections>
                         <outlet property="dateLabel" destination="QhE-NC-aWO" id="Zq8-Sp-ZgF"/>
+                        <outlet property="emptyStateLabel" destination="sru-hM-dIk" id="lT4-wZ-j40"/>
                         <outlet property="loadingIndicator" destination="gCy-mH-4xk" id="H6d-JB-4xp"/>
                         <outlet property="loadingIndicatorView" destination="3JN-MF-Lpv" id="PHs-FX-xgs"/>
                         <outlet property="locationLabel" destination="X7E-bU-cts" id="mCs-gS-l1k"/>

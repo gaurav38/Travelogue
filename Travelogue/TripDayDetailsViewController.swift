@@ -20,6 +20,7 @@ class TripDayDetailsViewController: UIViewController {
     @IBOutlet weak var loadingIndicatorView: UIView!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var emptyStateLabel: UILabel!
     var tripDayId: String!
     var tripDayLocation: String!
     var tripDayDate: String!
@@ -41,6 +42,7 @@ class TripDayDetailsViewController: UIViewController {
         configureUI()
         
         if isOfflineTrip == nil {
+            configureDatabase()
             loadingIndicatorView.isHidden = false
             loadingIndicator.startAnimating()
         } else if let fc = fetchedResultsController {
@@ -61,27 +63,10 @@ class TripDayDetailsViewController: UIViewController {
             print("Unable to start notifier")
         }
         
-        reachability.whenReachable = { reachability in
-            DispatchQueue.main.async {
-                if reachability.isReachable {
-                    if self.isOfflineTrip == nil {
-                        self.tripDayVisits.removeAll(keepingCapacity: false)
-                        self.tripDayVisitsTableView.reloadData()
-                        self.loadingIndicatorView.isHidden = false
-                        self.loadingIndicator.startAnimating()
-                        self.configureDatabase()
-                    }
-                }
-            }
-        }
         reachability.whenUnreachable = { reachability in
             DispatchQueue.main.async {
-                self.loadingIndicatorView.isHidden = true
-                self.loadingIndicator.stopAnimating()
                 self.showErrorToUser(title: "No internet!", message: "You are offline.")
-                if let refHandle = self._refHandle {
-                    self.ref.child("trip_visits").removeObserver(withHandle: refHandle)
-                }
+                self.loadingIndicatorView.isHidden = true
             }
         }
     }
@@ -96,6 +81,15 @@ class TripDayDetailsViewController: UIViewController {
     }
     
     func configureDatabase() {
+        ref.child("trip_visits").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+            if snapshot.hasChild(self.tripDayId) {
+                self.emptyStateLabel.isHidden = true
+            } else {
+                self.emptyStateLabel.isHidden = false
+                self.loadingIndicatorView.isHidden = true
+                self.loadingIndicator.stopAnimating()
+            }
+        }
         _refHandle = ref.child("trip_visits").child(tripDayId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.tripDayVisits.append(snapshot)
             self.tripDayVisitsTableView.insertRows(at: [IndexPath(row: self.tripDayVisits.count - 1, section: 0)], with: .automatic)

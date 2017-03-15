@@ -24,4 +24,8 @@ class TravelogueAuthViewController: FUIAuthPickerViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor(red: CGFloat(239)/255, green: CGFloat(91)/255, blue: CGFloat(48)/255, alpha: 1.0)
     }
+    
+    override func cancelAuthorization() {
+        super.cancelAuthorization()
+    }
 }

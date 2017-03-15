@@ -18,6 +18,7 @@ class TripDetailsViewController: UIViewController {
     @IBOutlet weak var tripDaysTableView: UITableView!
     @IBOutlet weak var loadingIndicatorView: UIView!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var emptyStateLabel: UILabel!
     
     // These properties will be injected by the parent VC
     var tripId: String!
@@ -41,6 +42,7 @@ class TripDetailsViewController: UIViewController {
         configureUI()
         
         if isOfflineTrip == nil {
+            configureDatabase()
             loadingIndicatorView.isHidden = false
             loadingIndicator.startAnimating()
         } else if let fc = fetchedResultsController {
@@ -58,27 +60,10 @@ class TripDetailsViewController: UIViewController {
             print("Unable to start notifier")
         }
         
-        reachability.whenReachable = { reachability in
-            DispatchQueue.main.async {
-                if reachability.isReachable {
-                    if self.isOfflineTrip == nil {
-                        self.tripDays.removeAll(keepingCapacity: false)
-                        self.tripDaysTableView.reloadData()
-                        self.loadingIndicatorView.isHidden = false
-                        self.loadingIndicator.startAnimating()
-                        self.configureDatabase()
-                    }
-                }
-            }
-        }
         reachability.whenUnreachable = { reachability in
             DispatchQueue.main.async {
-                self.loadingIndicatorView.isHidden = true
-                self.loadingIndicator.stopAnimating()
                 self.showErrorToUser(title: "No internet!", message: "You are offline.")
-                if let refHandle = self._refHandle {
-                    self.ref.child("trip_days").removeObserver(withHandle: refHandle)
-                }
+                self.loadingIndicatorView.isHidden = true
             }
         }
     }
@@ -91,7 +76,17 @@ class TripDetailsViewController: UIViewController {
     }
     
     func configureDatabase() {
+        ref.child("trip_days").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+            if snapshot.hasChild(self.tripId) {
+                self.emptyStateLabel.isHidden = true
+            } else {
+                self.emptyStateLabel.isHidden = false
+                self.loadingIndicatorView.isHidden = true
+                self.loadingIndicator.stopAnimating()
+            }
+        }
         _refHandle = ref.child("trip_days").child(tripId).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            self.emptyStateLabel.isHidden = true
             self.tripDays.append(snapshot)
             self.tripDaysTableView.insertRows(at: [IndexPath(row: self.tripDays.count - 1, section: 0)], with: .automatic)
         }
@@ -104,29 +99,29 @@ class TripDetailsViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowTripDayDetails" {
-            let vc = segue.destination as! TripDayDetailsViewController
+            let tripDayDetailsViewController = segue.destination as! TripDayDetailsViewController
             let indexPath = tripDaysTableView.indexPathForSelectedRow!
             
             if isOfflineTrip == nil {
                 let selectedTripDay = tripDays[indexPath.row].value as! [String: String]
-                vc.tripDayId = selectedTripDay["id"]
-                vc.tripDayDate = selectedTripDay["date"]
-                vc.tripDayLocation = selectedTripDay["location"]
-                vc.ref = ref
+                tripDayDetailsViewController.tripDayId = selectedTripDay["id"]
+                tripDayDetailsViewController.tripDayDate = selectedTripDay["date"]
+                tripDayDetailsViewController.tripDayLocation = selectedTripDay["location"]
+                tripDayDetailsViewController.ref = ref
             } else if let fc = fetchedResultsController {
                 let tripDay = fc.object(at: indexPath) as! TripDay
                 
-                let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "TripVisit")
-                fr.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TripVisit")
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
                 
                 let predicate = NSPredicate(format: "tripDay = %@", tripDay)
-                fr.predicate = predicate
+                fetchRequest.predicate = predicate
                 
-                let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
-                vc.tripDayDate = dateFormatter.string(from: tripDay.date! as Date)
-                vc.tripDayLocation = tripDay.location ?? ""
-                vc.isOfflineTrip = true
-                vc.fetchedResultsController = fc
+                let fc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: delegate.stack.context, sectionNameKeyPath: nil, cacheName: nil)
+                tripDayDetailsViewController.tripDayDate = dateFormatter.string(from: tripDay.date! as Date)
+                tripDayDetailsViewController.tripDayLocation = tripDay.location ?? ""
+                tripDayDetailsViewController.isOfflineTrip = true
+                tripDayDetailsViewController.fetchedResultsController = fc
             }
         }
     }
