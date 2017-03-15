@@ -44,25 +44,9 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
         configureUI()
         configureAuth()
         
-        reachability.whenReachable = { reachability in
-            DispatchQueue.main.async {
-                if reachability.isReachable {
-                    self.trips.removeAll(keepingCapacity: false)
-                    self.tripTableView.reloadData()
-                    self.loadingIndicator.startAnimating()
-                    self.loadingIndicatorView.isHidden = false
-                    self.configureDatabase()
-                }
-            }
-        }
         reachability.whenUnreachable = { reachability in
             DispatchQueue.main.async {
                 self.showErrorToUser(title: "No internet!", message: "You are offline.")
-                self.loadingIndicator.stopAnimating()
-                self.loadingIndicatorView.isHidden = true
-                if let refHandle = self._refHandle {
-                    self.ref.child("trips").removeObserver(withHandle: refHandle)
-                }
             }
         }
     }
@@ -93,10 +77,9 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
                     self.displayName = name
                     self.ref = FIRDatabase.database().reference()
                     self.firebaseService.configure(ref: self.ref)
+                    self.configureDatabase()
                 }
             } else {
-                // user must sign in
-                //self.signedInStatus(isSignedIn: false)
                 self.loginSession()
             }
         }
@@ -120,7 +103,9 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
         let authUI = FUIAuth.defaultAuthUI()
         authUI?.delegate = self
         let authViewController = authUI?.authViewController()
-        self.present(authViewController!, animated: true, completion: nil)
+        if let vc = authViewController {
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 
     func authPickerViewController(forAuthUI authUI: FUIAuth) -> FUIAuthPickerViewController {
@@ -128,6 +113,14 @@ class HomeTableViewController: UIViewController, FUIAuthDelegate {
     }
     
     func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
+    }
+    
+    @IBAction func signOut(_ sender: Any) {
+        do {
+            try FIRAuth.auth()?.signOut()
+        } catch {
+            print("unable to sign out: \(error)")
+        }
     }
 }
 

@@ -56,7 +56,6 @@ class NewTripStartViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "CreateTripDetails" {
-            // Create a Trip model here
             let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
             let userId = self.delegate.user!.uid
             let tripId = "TRIP_\(userId)_\(timeStamp)"
@@ -67,6 +66,7 @@ class NewTripStartViewController: UIViewController {
             let vc = segue.destination as! NewTripDetailsViewController
             vc.dataContainer = dataContainer
             vc.firebaseService = firebaseService
+            vc.reachability = reachability
         }
     }
 }

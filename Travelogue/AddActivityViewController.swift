@@ -75,9 +75,13 @@ class AddActivityViewController: UIViewController {
         }
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
+    @IBAction func onCancel(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        view.endEditing(true)
+//    }
 }
 
 extension AddActivityViewController: UITextFieldDelegate {

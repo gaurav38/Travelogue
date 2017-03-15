@@ -8,6 +8,7 @@
 
 import UIKit
 import JTAppleCalendar
+import ReachabilitySwift
 
 class NewTripDetailsViewController: UIViewController {
     
@@ -30,6 +31,7 @@ class NewTripDetailsViewController: UIViewController {
     var selectedDateModelInstance: TripDay!
     var dataContainer: NewTripDataContainer!
     var firebaseService: FirebaseService!
+    var reachability: Reachability!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,6 +189,10 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
     // Function to handle the calendar selection
     func handleCellSelection(view: JTAppleDayCellView?, cellState: CellState) {
         guard let myCustomCell = view as? CalendarCellView  else {
+            return
+        }
+        if !reachability.isReachable {
+            showErrorToUser(title: "No internet!", message: "Selection can only be done when online.")
             return
         }
         if cellState.isSelected {
