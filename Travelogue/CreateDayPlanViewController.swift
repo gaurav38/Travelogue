@@ -28,7 +28,7 @@ class CreateDayPlanViewController: UIViewController {
     var firebaseService: FirebaseService!
     let delegate = UIApplication.shared.delegate as! AppDelegate
     var tripDayLocation: String?
-    let reachability = Reachability()!
+    var reachability: Reachability!
     
     fileprivate var location: String?
     fileprivate var suggestedPlaces = [FoursquarePhoto]()
@@ -40,6 +40,24 @@ class CreateDayPlanViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateUI()
+        configureTripDayVisitsObserver()
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
+        reachability.whenUnreachable = { reachability in
+            DispatchQueue.main.async {
+                self.showErrorToUser(title: "No internet!", message: "You are offline.")
+            }
+        }
+    }
+    
+    func updateUI() {
         locationTextField.placeholder = "Enter city:"
         locationTextField.delegate = self
         addItineraryButton.isEnabled = false
@@ -55,7 +73,6 @@ class CreateDayPlanViewController: UIViewController {
         updateItemSizeBasedOnOrientation()
         activitiesTableView.delegate = self
         activitiesTableView.dataSource = self
-        configureTripDayVisitsObserver()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -80,7 +97,6 @@ class CreateDayPlanViewController: UIViewController {
     }
     
     func configureTripDayVisitsObserver() {
-        print("Adding observer for \(tripDay)")
         FIRDatabase.database().reference().child("trip_visits").child(tripDay).observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             self.tripDayVisits.append(snapshot)
             self.activitiesTableView.reloadData()
@@ -92,7 +108,12 @@ class CreateDayPlanViewController: UIViewController {
         let timeStamp = Int((Date().timeIntervalSince1970 * 1000).rounded())
         let userId = self.delegate.user!.uid
         let tripVisitId = "TRIP_VISIT_\(userId)_\(timeStamp)"
-        firebaseService.createTripDayVisit(for: tripDay, id: tripVisitId, location: location ?? "", place: vc.activityDescription, photoUrl: vc.selectedPlaceUrl, startTime: vc.startTime!, endTime: vc.endTime!)
+        
+        if reachability.isReachable {
+            firebaseService.createTripDayVisit(for: tripDay, id: tripVisitId, location: location ?? "", place: vc.activityDescription, photoUrl: vc.selectedPlaceUrl, startTime: vc.startTime ?? Date(), endTime: vc.endTime ?? Date())
+        } else {
+            showErrorToUser(title: "No internet!", message: "Trip visits can be added only when online.")
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

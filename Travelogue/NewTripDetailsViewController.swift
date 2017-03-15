@@ -35,6 +35,28 @@ class NewTripDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateUI()
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
+        reachability.whenUnreachable = { reachability in
+            DispatchQueue.main.async {
+                self.showErrorToUser(title: "No internet!", message: "You are offline.")
+            }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        locationsCollectionView.reloadData()
+    }
+    
+    func updateUI() {
         tripNameLabel.text = dataContainer.tripName
         formatter.dateFormat = "MMM d, yyyy"
         headerFormatter.dateFormat = "MMMM yyyy"
@@ -46,11 +68,6 @@ class NewTripDetailsViewController: UIViewController {
         locationsCollectionView.delegate = self
         locationsCollectionView.dataSource = self
         updateItemSizeBasedOnOrientation()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        locationsCollectionView.reloadData()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -88,8 +105,13 @@ class NewTripDetailsViewController: UIViewController {
             vc.tripDay = selectedTripDayId!
             vc.date = selectedDate!
             vc.firebaseService = firebaseService
+            vc.reachability = reachability
         }
      }
+    
+    deinit {
+        reachability.stopNotifier()
+    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -129,7 +151,7 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
                                                  numberOfRows: 6,
                                                  calendar: Calendar.current,
                                                  generateInDates: .forAllMonths,
-                                                 generateOutDates: .tillEndOfGrid,
+                                                 generateOutDates: .off,
                                                  firstDayOfWeek: .sunday)
         return parameters
     }
@@ -139,6 +161,19 @@ extension NewTripDetailsViewController: JTAppleCalendarViewDataSource, JTAppleCa
         
         // Setup Cell text
         myCustomCell.dayLabel.text = cellState.text
+        
+        if cellState.dateBelongsTo == .thisMonth {
+            myCustomCell.isUserInteractionEnabled = true
+        } else {
+            myCustomCell.isUserInteractionEnabled = false
+        }
+        
+        if cellState.text == "1" {
+            let dateString = headerFormatter.string(for: cellState.date)
+            var components = dateString?.components(separatedBy: " ")
+            monthLabel.text = components?[0]
+            yearLabel.text = components?[1]
+        }
         
         handleCellTextColor(view: cell, cellState: cellState)
         handleCellSelection(view: cell, cellState: cellState)

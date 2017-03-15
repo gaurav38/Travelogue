@@ -37,7 +37,8 @@ class FirebaseService {
                      "createdByUsername" : delegate.user?.displayName ?? "",
                      "createdByUseremail" : delegate.user?.email ?? "",
                      "startDate" : "",
-                     "endDate" : ""]
+                     "endDate" : "",
+                     "favorite" : false] as [String : Any]
         ref.child(FirebaseService.TRIPS_NODE).child((delegate.user?.uid)!).child(id).setValue(mdata);
         print("Trip added: \(id)")
     }

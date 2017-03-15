@@ -69,6 +69,10 @@ class NewTripStartViewController: UIViewController {
             vc.reachability = reachability
         }
     }
+    
+    deinit {
+        reachability.stopNotifier()
+    }
 }
 
 extension NewTripStartViewController: UITextFieldDelegate {

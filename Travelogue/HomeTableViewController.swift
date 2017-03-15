@@ -165,15 +165,32 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let favorite = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Favorite", handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
             if self.reachability.isReachable {
-                let tripSnapshot: FIRDataSnapshot = self.trips[indexPath.row]
-                let trip = tripSnapshot.value as! [String: AnyObject]
+                let trip = self.trips[indexPath.row].value as! [String: AnyObject]
                 self.makeTripOffline(trip: trip)
+                self.trips.removeAll(keepingCapacity: false)
+                self.tripTableView.reloadData()
+                self.configureDatabase()
             } else {
                 self.showErrorToUser(title: "No internet!", message: "Trips cannot be favorited when offline.")
             }
             
         });
         favorite.backgroundColor = ColorResources.FavoritesForegroundColor
+        
+        let unFavorite = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Unfavorite", handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
+            if self.reachability.isReachable {
+                let trip = self.trips[indexPath.row].value as! [String: AnyObject]
+                self.removeTripFromFavorites(tripId: trip["id"] as! String)
+                self.trips.removeAll(keepingCapacity: false)
+                self.tripTableView.reloadData()
+                self.configureDatabase()
+            } else {
+                self.showErrorToUser(title: "No internet!", message: "Trips cannot be favorited when offline.")
+            }
+            
+        });
+        unFavorite.backgroundColor = ColorResources.FavoritesForegroundColor
+        
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete", handler: { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
             if self.reachability.isReachable {
                 let trip = self.trips[indexPath.row].value as! [String: AnyObject]
@@ -185,6 +202,12 @@ extension HomeTableViewController: UITableViewDelegate, UITableViewDataSource {
             }
         });
         
+        let trip = self.trips[indexPath.row].value as! [String: AnyObject]
+        let isFavorite = trip["favorite"] as! Bool
+        
+        if isFavorite {
+            return [unFavorite, delete]
+        }
         return [favorite, delete]
     }
 }
@@ -266,6 +289,31 @@ extension HomeTableViewController {
         }
         
         firebaseService.updateTripFavorite(for: trip["id"] as! String, isFavorite: true)
+    }
+    
+    func removeTripFromFavorites(tripId: String) {
+        let stack = delegate.stack
+        
+        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: "Trip")
+        fr.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
+        let predicate = NSPredicate(format: "id = %@", tripId)
+        fr.predicate = predicate
+        
+        let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: stack.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        do {
+            try fc.performFetch()
+        } catch let e as NSError {
+            print("Error while trying to perform a search: \n\(e)\n\(fc)")
+        }
+        
+        let trip = fc.object(at: IndexPath(row: 0, section: 0)) as! Trip
+        print(trip.id!)
+        fc.managedObjectContext.delete(fc.object(at: IndexPath(row: 0, section: 0)) as! NSManagedObject)
+        delegate.stack.save()
+        
+        firebaseService.updateTripFavorite(for: tripId, isFavorite: false)
     }
 }
 
