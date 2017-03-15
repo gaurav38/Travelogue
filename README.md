@@ -30,7 +30,7 @@ When the app is first launched, the user is presented with a login page where th
 
 ### Trip details Workflow ###
 
-Trips tab shows a table view of all the trips created by the user. For each trips, there are two `UITableViewRowAction`. The first option is to make a trip favorite which will use Coredata to make the trip available for offline use, and the second option is to delete the trip.
+Trips tab shows a table view of all the trips created by the user. For each trips, there are two `UITableViewRowAction`. The first option is to make a trip favorite which will use Coredata to make the trip available for offline use, and the second option is to delete the trip. If the trip has already been favorited before, the option will change to unfavorite the trip.
 
 If a user goes offline, they will be presented with a message and no editing/favoriting will be allowed.
 
